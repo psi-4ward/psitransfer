@@ -1,0 +1,35 @@
+{
+  "name": "psitransfer",
+  "version": "1.0.0",
+  "description": "Open self-hoste file-sharing solution",
+  "keywords": ["share","upload","transfer","files","wetransfer"],
+  "repository": "psi-4ward/psitransfer",
+  "bugs": "https://github.com/psi-4ward/psitransfer/issues",
+  "main": "app.js",
+  "dependencies": {
+    "compression": "^1.6.2",
+    "crypto-js": "^3.1.9-1",
+    "debug": "^2.6.0",
+    "express": "^4.14.0",
+    "fs-promise": "^2.0.2",
+    "http-errors": "^1.5.1",
+    "morgan": "^1.7.0",
+    "tus-metadata": "^1.0.2",
+    "tusboy": "^1.1.1",
+    "uuid": "^3.0.1"
+  },
+  "devDependencies": {
+  },
+  "scripts": {
+    "start": "NODE_ENV=production node app.js",
+    "dev": "NODE_ENV=dev DEBUG=psitransfer:* nodemon -i app -i dist -i data app.js",
+    "debug": "node --inspect app.js"
+  },
+  "engines": {
+    "node": ">= 7.4.0",
+    "npm": ">= 3"
+  },
+  "author": "Christoph Wiechert <wio@psitrax.de>",
+  "contributors": [],
+  "license": "BSD-2-Clause"
+}

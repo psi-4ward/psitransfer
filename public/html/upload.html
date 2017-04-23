@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>PsiTransfer</title>
+    <link href="/assets/favicon.ico" rel="icon" type="image/x-icon"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <style>
+      html {
+        position: relative;
+        min-height: 100%;
+      }
+      body > .container {
+        padding-bottom: 50px;
+        position: relative;
+      }
+      #dropHelper {
+        position: absolute;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        z-index: -1;
+      }
+      .drag #dropHelper {
+        background-color: rgba(40, 40, 40, 0.45);
+        border: 4px dashed #eeeeee;
+        z-index: 100;
+        font: normal normal normal 14px/1 FontAwesome;
+        text-rendering: auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .drag #dropHelper:before {
+        content: "\f019";
+        font-size: 8em;
+      }
+      .footer {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: 40px;
+        line-height: 40px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="dropHelper"></div>
+    <div class="container">
+      <h1>
+        <i class="fa fa-fw fa-cloud-upload" style="color: #0275D8"></i>
+        PsiTransfer
+      </h1>
+      <hr>
+      <div id="upload"></div>
+    </div>
+
+    <footer class="footer">
+      <div class="container text-right">
+        <span class="text-muted"><a href="http://psitransfer.psi.cx" target="_blank">Powered by PsiTransfer</a></span>
+      </div>
+    </footer>
+    <script src="/app/common.js"></script>
+    <script src="/app/upload.js"></script>
+  </body>
+</html>
