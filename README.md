@@ -9,7 +9,7 @@ Simple open source self-hosted file sharing solution.
 * Password protected downloads ([AES](https://en.wikipedia.org/wiki/Advanced_Encryption_Standard))
 * Requires Node >=7.4
 
-![Screenshot](https://raw.githubusercontent.com/psi-4ward/psitransfer/docs/psitransfer.gif)
+![Screenshot](https://raw.githubusercontent.com/psi-4ward/psitransfer/master/docs/psitransfer.gif)
 
 **Demo**: https://transfer.psi.cx
 
