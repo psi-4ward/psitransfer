@@ -19,7 +19,11 @@
         i.fa.fa-key
         |  decrypt
     .panel.panel-primary(v-if='!needsPassword')
-      .panel-heading Files
+      .panel-heading
+        a.pull-right(style="color:#fff", @click="downloadAll", v-if="downloadsAvailable")
+          i.fa.fa-fw.fa-download
+          |  Download ZIP
+        | Files
       .panel-body
         table.table.table-hover.table-striped(style='margin-bottom: 0')
           tbody
@@ -32,10 +36,8 @@
                     a
                       i.fa.fa-fw.fa-copy
                   i.fa.fa-check.text-success.pull-right(v-show='file.downloaded')
-                  |
-                  strong {{ file.metadata.name }}
-                  |
-                  small ({{ humanFileSize(file.size) }})
+                  strong  {{ file.metadata.name }}
+                  small(v-if="Number.isFinite(file.size)")  ({{ humanFileSize(file.size) }})
                 p {{ file.metadata.comment }}
 </template>
 
@@ -44,6 +46,7 @@
   "use strict";
   import AES from 'crypto-js/aes';
   import encUtf8 from 'crypto-js/enc-utf8';
+  import MD5 from 'crypto-js/md5';
 
   import FileIcon from './common/FileIcon.vue';
   import Clipboard from './common/Clipboard.vue';
@@ -51,6 +54,7 @@
   export default {
     name: 'app',
     components: { FileIcon, Clipboard },
+
     data () {
       return {
         files: [],
@@ -63,6 +67,13 @@
         host: document.location.protocol + '//' + document.location.host
       }
     },
+
+    computed: {
+      downloadsAvailable: function() {
+        return this.files.some(f => !f.downloaded || f.metadata.retention !== 'one-time')
+      }
+    },
+
     methods: {
       download(file) {
         if(file.downloaded && file.metadata.retention === 'one-time') {
@@ -71,6 +82,20 @@
         }
         document.location.href = file.url;
         file.downloaded = true;
+      },
+
+      downloadAll() {
+        document.location.href = document.location.protocol + '//' + document.location.host
+          + '/files/' + this.sid + '++'
+          + MD5(
+          this.files
+            .filter(f => !f.downloaded || f.metadata.retention !== 'one-time')
+            .map(f => f.key).join()
+        ).toString() + '.zip';
+
+        this.files.forEach(f => {
+          f.downloaded = true;
+        });
       },
 
       copied(file, $event) {
