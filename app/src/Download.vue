@@ -20,10 +20,15 @@
         |  decrypt
     .panel.panel-primary(v-if='!needsPassword')
       .panel-heading
-        a.pull-right(style="color:#fff", @click="downloadAll", v-if="downloadsAvailable")
-          i.fa.fa-fw.fa-download
-          |  Download ZIP
-        | Files
+        strong Files
+        div.pull-right(style="margin-top:-5px;")
+          span.btn-group
+            a.btn.btn-sm.btn-default(@click="downloadAll('zip')", title="Archive download is not resumeable!")
+              i.fa.fa-fw.fa-fw.fa-download
+              |  zip
+            a.btn.btn-sm.btn-default(@click="downloadAll('tar.gz')", title="Archive download is not resumeable!")
+              i.fa.fa-fw.fa-fw.fa-download
+              |  tar.gz
       .panel-body
         table.table.table-hover.table-striped(style='margin-bottom: 0')
           tbody
@@ -70,7 +75,7 @@
 
     computed: {
       downloadsAvailable: function() {
-        return this.files.some(f => !f.downloaded || f.metadata.retention !== 'one-time')
+        return this.files.length > 1 && this.files.some(f => !f.downloaded || f.metadata.retention !== 'one-time')
       }
     },
 
@@ -84,14 +89,14 @@
         file.downloaded = true;
       },
 
-      downloadAll() {
+      downloadAll(format) {
         document.location.href = document.location.protocol + '//' + document.location.host
           + '/files/' + this.sid + '++'
           + MD5(
-          this.files
-            .filter(f => !f.downloaded || f.metadata.retention !== 'one-time')
-            .map(f => f.key).join()
-        ).toString() + '.zip';
+            this.files
+              .filter(f => !f.downloaded || f.metadata.retention !== 'one-time')
+              .map(f => f.key).join()
+          ).toString() + '.' + format;
 
         this.files.forEach(f => {
           f.downloaded = true;
