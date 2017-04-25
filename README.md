@@ -84,6 +84,13 @@ Psitransfer uses [debug](https://github.com/visionmedia/debug):
 DEBUG=psitransfer:* npm start
 ```
 
+## Side notes
+
+* There is no (end-to-end) payload encryption (yet).
+* `Download all as ZIP` does not support resuming the download.
+
+:star2: Contribution is highly welcome :metal:
+
 ## License
 
 [BSD](LICENSE)
