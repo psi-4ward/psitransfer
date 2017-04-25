@@ -2,7 +2,7 @@
 
 [![Current Release](https://img.shields.io/github/release/psi-4ward/psitransfer.svg)](https://github.com/psi-4ward/psitransfer/releases)
 [![Dependencies](https://david-dm.org/psi-4ward/psitransfer.svg)](https://david-dm.org/psi-4ward/psitransfer)
-[![Github Stars](https://img.shields.io/github/stars/psi-4ward/psitransfer.svg?style=social&label=Star)](https://github.com/psi-4ward)
+[![Github Stars](https://img.shields.io/github/stars/psi-4ward/psitransfer.svg?style=social&label=Star)](https://github.com/psi-4ward/psitransfer)
 [![Docker Stars](https://img.shields.io/docker/stars/psitrax/psitransfer.svg)](https://hub.docker.com/r/psitrax/psitransfer/)
 [![Image Size](https://images.microbadger.com/badges/image/psitrax/psitransfer.svg)](https://microbadger.com/images/psitrax/psitransfer)
 [![Docker Pulls](https://img.shields.io/docker/pulls/psitrax/psitransfer.svg)](https://hub.docker.com/r/psitrax/psitransfer/)
@@ -23,14 +23,14 @@ Simple open source self-hosted file sharing solution.
 
 ## Quickstart
 
-### Docker (recommended)
+### Docker
 ```bash
 $ docker run -p 0.0.0.0:3000:3000 -v $PWD/data:/data psitrax/psitransfer
 # data volume needs UID 1000
 $ sudo chown -R 1000 $PWD/data 
 ```
 
-### Manual
+### Manual, precompiled
 
 ```bash
 # Be sure to have NodeJS >= 7.4
@@ -42,6 +42,20 @@ v7.4.0
 
 # Install dependencies and start the app
 $ NODE_ENV=production npm install
+$ npm start
+```
+
+### Manual, from source
+
+```bash
+# Compile the frontend apps
+$ cd app
+$ npm install
+$ npm run build
+
+# Install dependencies
+$ cd ..
+$ npm install
 $ npm start
 ```
 
