@@ -11,7 +11,7 @@
 Simple open source self-hosted file sharing solution.  
 
 * Supports many and very big files (Streams ftw)
-* Resumable up- and downloads ([TUS](https://tus.io))
+* Resumable up- and downloads ([tus.io](https://tus.io))
 * Set an expire-time for your upload bucket
 * One-time downloads
 * Requires Node >=7.4 or use `--harmony-async-await` flag
