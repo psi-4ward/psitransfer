@@ -11,11 +11,11 @@
 Simple open source self-hosted file sharing solution.  
 
 * Supports many and very big files (Streams ftw)
-* Resumable up- and downloads ([TUS](https://tus.io))
+* Resumable up- and downloads ([tus.io](https://tus.io))
 * Set an expire-time for your upload bucket
 * One-time downloads
-* Password protected downloads ([AES](https://en.wikipedia.org/wiki/Advanced_Encryption_Standard))
-* Requires Node >=7.4
+* Requires Node >=7.4 or use `--harmony-async-await` flag
+* Password protected download list ([AES](https://en.wikipedia.org/wiki/Advanced_Encryption_Standard))  
 
 ![Screenshot](https://raw.githubusercontent.com/psi-4ward/psitransfer/master/docs/psitransfer.gif)
 
