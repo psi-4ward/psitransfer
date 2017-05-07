@@ -1,19 +1,23 @@
 #!/usr/bin/env bash
 set -e
-
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd $DIR
 
 # Get the current tag or use commit hash if there's none
-NAME=$(git describe --exact-match --tags $(git log -n1 --pretty='%h') 2>/dev/null || git log -n1 --pretty='%h')
+COMMIT=$(git log -n1 --pretty='%h' 2>/dev/null || echo current)
+NAME=$(git describe --exact-match --tags $COMMIT 2>/dev/null || echo $COMMIT)
 
-echo "Building app"
+
+echo "### Building frontend apps"
+echo "======================================================"
 cd $DIR/../app
 npm install
 npm run build
 
 
-echo "Bundling to _releases/psitransfer-$NAME.tar.gz"
+echo
+echo "### Bundling to _releases/psitransfer-$NAME.tar.gz"
+echo "======================================================"
 cd $DIR/..
 mkdir -p _releases
 
@@ -29,4 +33,12 @@ tar -czf _releases/psitransfer-$NAME.tar.gz --transform "s~^~psitransfer-$NAME/~
   lib \
   public
 
-echo "DONE"
+
+cd $DIR/..
+if [ -d .git ]; then
+  LAST_TAG=$(git tag | head -n 2 | tail -n 1)
+  echo
+  echo "### Changelog $LAST_TAG..HEAD"
+  echo "======================================================"
+  [ -z "$LAST_TAG" ] &&  git log --oneline || git log $LAST_TAG..HEAD --oneline
+fi
