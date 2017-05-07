@@ -22,7 +22,7 @@
       .panel-heading
         strong Files
         div.pull-right(style="margin-top:-5px;")
-          span.btn-group
+          span.btn-group(v-if="downloadsAvailable")
             a.btn.btn-sm.btn-default(@click="downloadAll('zip')", title="Archive download is not resumeable!")
               i.fa.fa-fw.fa-fw.fa-download
               |  zip
@@ -75,7 +75,7 @@
 
     computed: {
       downloadsAvailable: function() {
-        return this.files.length > 1 && this.files.some(f => !f.downloaded || f.metadata.retention !== 'one-time')
+        return this.files.filter(f => !f.downloaded || f.metadata.retention !== 'one-time').length > 0
       }
     },
 
