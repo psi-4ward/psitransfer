@@ -9,7 +9,9 @@
 [![Docker Automated buil](https://img.shields.io/docker/automated/psitrax/psitransfer.svg)](https://hub.docker.com/r/psitrax/psitransfer/)
 
 Simple open source self-hosted file sharing solution.  
+It's an alternative to paid services like Dropbox, WeTransfer.
 
+* No accounts, no logins
 * Supports many and very big files (Streams ftw)
 * Resumable up- and downloads ([tus.io](https://tus.io))
 * Set an expire-time for your upload bucket
@@ -96,4 +98,3 @@ DEBUG=psitransfer:* npm start
 ## License
 
 [BSD](LICENSE)
-
