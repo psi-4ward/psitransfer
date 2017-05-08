@@ -1,9 +1,9 @@
 <template lang="pug">
-  .upload-app
+  .upload-app#uploadApp
     .btn-group(style='position: absolute; top: 15px; right: 15px;')
       a.btn.btn-sm.btn-info(@click='newSession()', title='New Upload')
         i.fa.fa-fw.fa-cloud-upload
-        |  new upload
+        span.hidden-xs  new upload
     .alert.alert-danger(v-show="error")
       strong
         i.fa.fa-exclamation-triangle
@@ -66,6 +66,16 @@
         return this.$store.state.config
           && this.$store.state.config.mailTemplate
           && this.$store.state.config.mailTemplate.replace('%%URL%%', this.shareUrl);
+      }
+    },
+
+    watch: {
+      state: function(val) {
+        if(val === 'uploaded' || val === 'uploadError') {
+          const el = document.getElementById('uploadApp');
+          if(!el || !el.scrollIntoView) return;
+          el.scrollIntoView(true);
+        }
       }
     },
 
