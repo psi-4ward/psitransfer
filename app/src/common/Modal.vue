@@ -1,6 +1,6 @@
 <template lang="pug">
   .modal.fade.in.background-darken(ref='modal', style="display:block", tabindex='-1', role='dialog', @click.self='close()', @keyup.esc='close()')
-    .modal-dialog.modal-lg(role='document')
+    .modal-dialog.modal-fluid(role='document')
       .modal-content
         .modal-header(v-if='hasHeader')
           button.close(type='button', data-dismiss='modal', aria-label='Close', @click='close()')
@@ -52,5 +52,8 @@
   .modal.in {
     overflow-x: auto;
     overflow-y: scroll;
+  }
+  .modal-fluid {
+    width: 90%;
   }
 </style>

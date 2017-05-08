@@ -41,7 +41,7 @@
                   clipboard.btn.btn-sm.btn-default(:value='host + file.url', @change='copied(file, $event)', title='Copy to clipboard', style='margin: 0 5px')
                     a
                       i.fa.fa-fw.fa-copy
-                  a.btn.btn-sm.btn-default(title="preview", @click.prevent.stop="preview=file", v-if="getPreviewType(file)")
+                  a.btn.btn-sm.btn-default(title="Preview", @click.prevent.stop="preview=file", v-if="getPreviewType(file)")
                     i.fa.fa-fw.fa-eye
                 p
                   strong {{ file.metadata.name }}
@@ -54,7 +54,9 @@
         div(v-if="getPreviewType(preview) === 'image'", style="text-align:center")
           img(:src="preview.url", style="max-width: 100%; height:auto")
         div(v-if="getPreviewType(preview) === 'text'")
-          pre {{ previewText }}
+          a.btn.btn-sm(style="position:absolute; right:5px; top:-30px;", title="toggle line wrap", @click="lineWrap = !lineWrap", :class="{active:lineWrap}")
+            i.fa.fa-fw.fa-rotate-left.fa-flip-vertical
+          pre(:style="{'white-space':lineWrap?'pre-wrap':'pre'}") {{ previewText }}
         p(v-if="getPreviewType(preview) === false", style="text-align:center")
           strong.text-danger No preview available
 </template>
@@ -85,7 +87,8 @@
         host: document.location.protocol + '//' + document.location.host,
         config: {},
         preview: false,
-        previewText: ''
+        previewText: '',
+        lineWrap: false
       }
     },
 
@@ -104,12 +107,16 @@
 
     methods: {
       getPreviewType(file) {
-        if(!file || !file.metadata.type) return false;
+        if(!file || !file.metadata) return false;
         if(file.metadata.retention === 'one-time') return false;
         // no preview for files size > 2MB
         if(file.size > this.config.maxPreviewSize) return false;
-        if(file.metadata.type.startsWith('image/')) return 'image';
-        else if(file.metadata.type.startsWith('text/')) return 'text';
+        if(file.metadata.type && file.metadata.type.startsWith('image/')) return 'image';
+        else if(file.metadata.type && file.metadata.type.match(/(text\/|xml|json|javascript|x-sh)/)
+          || file.metadata.name && file.metadata.name
+            .match(/\.(jsx|vue|sh|pug|less|scss|sass|c|h|conf|log|bat|cmd|lua|class|java|py|php|yml)$/)) {
+          return 'text';
+        }
         return false;
       },
       getPreviewText() {
