@@ -53,7 +53,9 @@
     overflow-x: auto;
     overflow-y: scroll;
   }
-  .modal-fluid {
-    width: 90%;
+  @media (min-width: 768px) {
+    .modal-fluid {
+      width: 90%;
+    }
   }
 </style>
