@@ -14,6 +14,8 @@ Simple open source self-hosted file sharing solution.
 * Resumable up- and downloads ([tus.io](https://tus.io))
 * Set an expire-time for your upload bucket
 * One-time downloads
+* Download all files as zip/tar.gz archive
+* Modal-style file preview
 * Requires Node >=7.4 or use `--harmony-async-await` flag
 * Password protected download list ([AES](https://en.wikipedia.org/wiki/Advanced_Encryption_Standard))  
 
