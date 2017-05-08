@@ -114,7 +114,7 @@
         if(file.metadata.type && file.metadata.type.startsWith('image/')) return 'image';
         else if(file.metadata.type && file.metadata.type.match(/(text\/|xml|json|javascript|x-sh)/)
           || file.metadata.name && file.metadata.name
-            .match(/\.(jsx|vue|sh|pug|less|scss|sass|c|h|conf|log|bat|cmd|lua|class|java|py|php|yml)$/)) {
+            .match(/\.(jsx|vue|sh|pug|less|scss|sass|c|h|conf|log|bat|cmd|lua|class|java|py|php|yml|sql)$/)) {
           return 'text';
         }
         return false;
