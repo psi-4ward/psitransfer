@@ -6,28 +6,28 @@ const fsp = require('fs-promise');
 // Do not edit this, generate a config.<ENV>.js for your NODE_ENV
 // or use ENV-VARS like PSITRANSFER_PORT=8000
 const config =  {
-  uploadDir: path.resolve(__dirname + '/data'),
-  port: 3000,
-  iface: '0.0.0.0',
-  // retention options in seconds:label; first one is the default
+  "uploadDir": path.resolve(__dirname + '/data'),
+  "port": 3000,
+  "iface": '0.0.0.0',
+  // retention options in seconds:label
   retentions: {
     "one-time": "one time download",
-    3600: "1 Hour",
-    21600: "6 Hours",
-    86400: "1 Day",
-    259200: "3 Days",
-    604800: "1 Week",
-    1209600: "2 Weeks",
-    2419200: "4 Weeks",
-    4838400: "8 Weeks"
+    "3600": "1 Hour",
+    "21600": "6 Hours",
+    "86400": "1 Day",
+    "259200": "3 Days",
+    "604800": "1 Week",
+    "1209600": "2 Weeks",
+    "2419200": "4 Weeks",
+    "4838400": "8 Weeks"
   },
-  defaultRetention: 604800,
+  "defaultRetention": 604800,
   // maximum file-size for previews in byte
-  maxPreviewSize: Math.pow(2,20) * 2, // 2MB
-  mailTemplate: 'mailto:?subject=File Transfer&body=You can download the files here: %%URL%%',
+  "maxPreviewSize": Math.pow(2,20) * 2, // 2MB
+  "mailTemplate": 'mailto:?subject=File Transfer&body=You can download the files here: %%URL%%',
   // see https://github.com/expressjs/morgan
   // set to false to disable logging
-  accessLog: ':date[iso] :method :url :status :response-time :remote-addr'
+  "accessLog": ':date[iso] :method :url :status :response-time :remote-addr'
 };
 
 
@@ -44,6 +44,8 @@ for (let k in config) {
   if(process.env[envName]) {
     if(typeof config[k] === 'number') {
       config[k] = parseInt(process.env[envName], 10);
+    } else if (typeof config[k] === 'object') {
+      config[k] = JSON.parse(process.env[envName]);
     } else {
       config[k] = process.env[envName];
     }
