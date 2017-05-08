@@ -22,6 +22,8 @@ const config =  {
     4838400: "8 Weeks"
   },
   defaultRetention: 604800,
+  // maximum file-size for previews in byte
+  maxPreviewSize: Math.pow(2,20) * 2, // 2MB
   mailTemplate: 'mailto:?subject=File Transfer&body=You can download the files here: %%URL%%',
   // see https://github.com/expressjs/morgan
   // set to false to disable logging
