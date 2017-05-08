@@ -2,11 +2,18 @@
   "name": "psitransfer",
   "version": "1.0.0",
   "description": "Open self-hoste file-sharing solution",
-  "keywords": ["share","upload","transfer","files","wetransfer"],
+  "keywords": [
+    "share",
+    "upload",
+    "transfer",
+    "files",
+    "wetransfer"
+  ],
   "repository": "psi-4ward/psitransfer",
   "bugs": "https://github.com/psi-4ward/psitransfer/issues",
   "main": "app.js",
   "dependencies": {
+    "archiver": "^1.3.0",
     "compression": "^1.6.2",
     "crypto-js": "^3.1.9-1",
     "debug": "^2.6.0",
@@ -18,8 +25,7 @@
     "tusboy": "^1.1.1",
     "uuid": "^3.0.1"
   },
-  "devDependencies": {
-  },
+  "devDependencies": {},
   "scripts": {
     "start": "NODE_ENV=production node app.js",
     "dev": "NODE_ENV=dev DEBUG=psitransfer:* nodemon -i app -i dist -i data app.js",
