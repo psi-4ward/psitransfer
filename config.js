@@ -10,7 +10,7 @@ const config =  {
   "port": 3000,
   "iface": '0.0.0.0',
   // retention options in seconds:label
-  retentions: {
+  "retentions": {
     "one-time": "one time download",
     "3600": "1 Hour",
     "21600": "6 Hours",
@@ -22,6 +22,8 @@ const config =  {
     "4838400": "8 Weeks"
   },
   "defaultRetention": 604800,
+  // expire every file after maxAge (eg never downloaded one-time files)
+  "maxAge": 3600*24*75, // 75 days
   // maximum file-size for previews in byte
   "maxPreviewSize": Math.pow(2,20) * 2, // 2MB
   "mailTemplate": 'mailto:?subject=File Transfer&body=You can download the files here: %%URL%%',
