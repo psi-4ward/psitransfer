@@ -27,16 +27,28 @@
               td(style='width: 60px')
                 file-icon(:file='file')
               td
-                p
-                  clipboard.pull-right(:value='host + file.url', @change='copied(file, $event)', title='Copy to clipboard', style='margin-left: 5px')
+                div.pull-right
+                  i.fa.fa-check.text-success(v-show='file.downloaded')
+                  clipboard.btn.btn-sm.btn-default(:value='host + file.url', @change='copied(file, $event)', title='Copy to clipboard', style='margin: 0 5px')
                     a
                       i.fa.fa-fw.fa-copy
-                  i.fa.fa-check.text-success.pull-right(v-show='file.downloaded')
-                  |
+                  a.btn.btn-sm.btn-default(title="preview", @click.prevent.stop="preview=file", v-if="getPreviewType(file)")
+                    i.fa.fa-fw.fa-eye
+                p
                   strong {{ file.metadata.name }}
                   |
-                  small ({{ humanFileSize(file.size) }})
+                  small(style="margin-left:15px") ({{ humanFileSize(file.size) }})
                 p {{ file.metadata.comment }}
+
+    modal(v-if="preview", @close="preview=false", :has-header="true")
+      h4(slot="header") {{preview.metadata.name}}
+      div(slot="body")
+        div(v-if="getPreviewType(preview) === 'image'", style="text-align:center")
+          img(:src="preview.url", style="max-width: 100%; height:auto")
+        div(v-if="getPreviewType(preview) === 'text'")
+          pre {{ previewText }}
+        p(v-if="getPreviewType(preview) === false", style="text-align:center")
+          strong.text-danger No preview available
 </template>
 
 
@@ -47,10 +59,11 @@
 
   import FileIcon from './common/FileIcon.vue';
   import Clipboard from './common/Clipboard.vue';
+  import Modal from './common/Modal.vue';
 
   export default {
     name: 'app',
-    components: { FileIcon, Clipboard },
+    components: { FileIcon, Clipboard, Modal },
     data () {
       return {
         files: [],
@@ -60,10 +73,44 @@
         password: '',
         content: '',
         error: '',
-        host: document.location.protocol + '//' + document.location.host
+        host: document.location.protocol + '//' + document.location.host,
+        config: {},
+        preview: false,
+        previewText: ''
       }
     },
+
+    watch: {
+      preview: function(preview, old) {
+        if(this.getPreviewType(preview) !== 'text' || preview === old) return;
+        this.getPreviewText();
+      }
+    },
+
     methods: {
+      getPreviewType(file) {
+        if(!file || !file.metadata.type) return false;
+        if(file.metadata.retention === 'one-time') return false;
+        // no preview for files size > 2MB
+        if(file.size > this.config.maxPreviewSize) return false;
+        if(file.metadata.type.startsWith('image/')) return 'image';
+        else if(file.metadata.type.startsWith('text/')) return 'text';
+        return false;
+      },
+      getPreviewText() {
+        this.previewText = '';
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', '//' + document.location.host + this.preview.url);
+        xhr.onload = () => {
+          if(xhr.status === 200) {
+            this.previewText = xhr.responseText
+          } else {
+            this.previewText = `${xhr.status} ${xhr.statusText}: ${xhr.responseText}`;
+          }
+        };
+        xhr.send();
+      },
+
       download(file) {
         if(file.downloaded && file.metadata.retention === 'one-time') {
           alert('One-Time Download: File is not available anymore.');
@@ -120,7 +167,9 @@
       xhr.onload = () => {
         if(xhr.status === 200) {
           try {
-            this.files = JSON.parse(xhr.responseText).map(f => {
+            let data = JSON.parse(xhr.responseText);
+            this.config = data.config;
+            this.files = data.items.map(f => {
               if(typeof f !== 'object') {
                 this.needsPassword = true;
                 return f;
