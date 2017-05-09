@@ -41,24 +41,15 @@
                   clipboard.btn.btn-sm.btn-default(:value='host + file.url', @change='copied(file, $event)', title='Copy to clipboard', style='margin: 0 5px')
                     a
                       i.fa.fa-fw.fa-copy
-                  a.btn.btn-sm.btn-default(title="Preview", @click.prevent.stop="preview=file", v-if="getPreviewType(file)")
+                  a.btn.btn-sm.btn-default(title="Preview", @click.prevent.stop="preview=file", v-if="file.previewType")
                     i.fa.fa-fw.fa-eye
                 p
                   strong {{ file.metadata.name }}
                   small(v-if="Number.isFinite(file.size)", style="margin-left:15px") ({{ humanFileSize(file.size) }})
                 p {{ file.metadata.comment }}
 
-    modal(v-if="preview", @close="preview=false", :has-header="true")
-      h4(slot="header") {{preview.metadata.name}}
-      div(slot="body")
-        div(v-if="getPreviewType(preview) === 'image'", style="text-align:center")
-          img(:src="preview.url", style="max-width: 100%; height:auto")
-        div(v-if="getPreviewType(preview) === 'text'")
-          a.btn.btn-sm(style="position:absolute; right:5px; top:-30px;", title="toggle line wrap", @click="lineWrap = !lineWrap", :class="{active:lineWrap}")
-            i.fa.fa-fw.fa-rotate-left.fa-flip-vertical
-          pre(:style="{'white-space':lineWrap?'pre-wrap':'pre'}") {{ previewText }}
-        p(v-if="getPreviewType(preview) === false", style="text-align:center")
-          strong.text-danger No preview available
+    preview-modal(:preview="preview", :files="previewFiles", :max-size="config.maxPreviewSize", @close="preview=false")
+
 </template>
 
 
@@ -70,11 +61,25 @@
 
   import FileIcon from './common/FileIcon.vue';
   import Clipboard from './common/Clipboard.vue';
-  import Modal from './common/Modal.vue';
+  import PreviewModal from './Download/PreviewModal.vue';
+
+  function getPreviewType(file, maxSize) {
+    if(!file || !file.metadata) return false;
+    if(file.metadata.retention === 'one-time') return false;
+    // no preview for files size > 2MB
+    if(file.size > maxSize) return false;
+    if(file.metadata.type && file.metadata.type.startsWith('image/')) return 'image';
+    else if(file.metadata.type && file.metadata.type.match(/(text\/|xml|json|javascript|x-sh)/)
+      || file.metadata.name && file.metadata.name
+        .match(/\.(jsx|vue|sh|pug|less|scss|sass|c|h|conf|log|bat|cmd|lua|class|java|py|php|yml|sql|md)$/)) {
+      return 'text';
+    }
+    return false;
+  }
 
   export default {
     name: 'app',
-    components: { FileIcon, Clipboard, Modal },
+    components: { FileIcon, Clipboard, PreviewModal },
     data () {
       return {
         files: [],
@@ -86,53 +91,21 @@
         error: '',
         host: document.location.protocol + '//' + document.location.host,
         config: {},
-        preview: false,
-        previewText: '',
-        lineWrap: false
-      }
-    },
-
-    watch: {
-      preview: function(preview, old) {
-        if(this.getPreviewType(preview) !== 'text' || preview === old) return;
-        this.getPreviewText();
+        preview: false
       }
     },
 
     computed: {
       downloadsAvailable: function() {
         return this.files.filter(f => !f.downloaded || f.metadata.retention !== 'one-time').length > 0
+      },
+      previewFiles: function() {
+        return this.files.filter(f => !!f.previewType);
       }
+
     },
 
     methods: {
-      getPreviewType(file) {
-        if(!file || !file.metadata) return false;
-        if(file.metadata.retention === 'one-time') return false;
-        // no preview for files size > 2MB
-        if(file.size > this.config.maxPreviewSize) return false;
-        if(file.metadata.type && file.metadata.type.startsWith('image/')) return 'image';
-        else if(file.metadata.type && file.metadata.type.match(/(text\/|xml|json|javascript|x-sh)/)
-          || file.metadata.name && file.metadata.name
-            .match(/\.(jsx|vue|sh|pug|less|scss|sass|c|h|conf|log|bat|cmd|lua|class|java|py|php|yml|sql)$/)) {
-          return 'text';
-        }
-        return false;
-      },
-      getPreviewText() {
-        this.previewText = '';
-        const xhr = new XMLHttpRequest();
-        xhr.open('GET', '//' + document.location.host + this.preview.url);
-        xhr.onload = () => {
-          if(xhr.status === 200) {
-            this.previewText = xhr.responseText
-          } else {
-            this.previewText = `${xhr.status} ${xhr.statusText}: ${xhr.responseText}`;
-          }
-        };
-        xhr.send();
-      },
-
       download(file) {
         if(file.downloaded && file.metadata.retention === 'one-time') {
           alert('One-Time Download: File is not available anymore.');
@@ -210,7 +183,10 @@
                 this.needsPassword = true;
                 return f;
               }
-              return Object.assign(f, {downloaded: false});
+              return Object.assign(f, {
+                downloaded: false,
+                previewType: getPreviewType(f, this.config.maxPreviewSize)
+              });
             });
           } catch(e) {
             this.error = e.toString();
