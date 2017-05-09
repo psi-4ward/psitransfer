@@ -39,18 +39,3 @@
     }
   }
 </script>
-
-<style>
-  .background-darken {
-    background: rgba(0, 0, 0, 0.3);
-  }
-  .modal.in {
-    overflow-x: auto;
-    overflow-y: scroll;
-  }
-  @media (min-width: 768px) {
-    .modal-fluid {
-      width: 90%;
-    }
-  }
-</style>

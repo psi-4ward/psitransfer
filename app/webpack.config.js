@@ -65,8 +65,7 @@ module.exports = {
       // Proxy requests to BE in DEV mode
       // https://webpack.github.io/docs/webpack-dev-server.html#proxy
       {
-        // everything except of js, html, css
-        context: ['/**', '!/**.js', '!/**.html', '!/**.css'],
+        context: ['/**'],
         target: 'http://localhost:3000/'
       }
     ]

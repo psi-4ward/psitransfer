@@ -1,0 +1,128 @@
+html {
+  position: relative;
+  min-height: 100%;
+}
+body > .container {
+  padding-bottom: 50px;
+  position: relative;
+}
+
+
+/* Fullscreen file drop */
+#dropHelper {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
+}
+.drag #dropHelper {
+  background-color: rgba(40, 40, 40, 0.45);
+  border: 4px dashed #eeeeee;
+  z-index: 100;
+  font: normal normal normal 14px/1 FontAwesome;
+  text-rendering: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.drag #dropHelper:before {
+  content: "\f019";
+  font-size: 8em;
+}
+
+
+/* Common */
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 40px;
+  line-height: 40px;
+}
+.btn-new-session {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+}
+.well h3 {
+  margin-top: 0;
+}
+td.file-icon {
+  width: 60px;
+}
+
+
+/* FileIcon Component */
+.file-icon img {
+  width: 54px;
+  height: auto;
+}
+
+
+/* Modal Component */
+.background-darken {
+  background: rgba(0, 0, 0, 0.3);
+}
+.modal.in {
+  overflow-x: auto;
+  overflow-y: scroll;
+}
+@media (min-width: 768px) {
+  .modal-fluid {
+    width: 90%;
+  }
+}
+
+
+/* Upload Component */
+.upload-app .share-link {
+  margin-top: 1rem;
+  padding-bottom: 0
+}
+.upload-app .share-link .title {
+  font-weight: bold;
+  margin-right: 5px;
+}
+.upload-app .overall-process {
+  margin-bottom: 10px;
+  line-height: 25px
+}
+.upload-app .overall-process .progress {
+  height: 25px;
+}
+
+
+/* Upload::Files Component */
+.upload-files .empty-files-big-plus {
+  text-align: center;
+  padding: 19px 0;
+}
+.upload-files td.btns {
+  width: 33px;
+}
+.upload-files .progress {
+  height: 7px;
+}
+
+
+/* Download Component */
+.download-app .btn-download-archive {
+  margin-top: -5px;
+}
+.download-app .file-size {
+  margin-left: 10px;
+}
+.download-app table {
+  margin-bottom: 0;
+}
+.download-app i.fa.downloaded {
+  margin:10px;
+}
+
+
+/* Download::PreviewModal Component */
+.preview-modal .header .btn-group {
+  margin-left: 15px;
+}

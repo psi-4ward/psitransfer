@@ -1,18 +1,19 @@
 <template lang="pug">
-  div
+  div.upload-files
     .panel.panel-default(:class="{'panel-primary': !disabled}")
       .panel-heading Files
       .panel-body
-        .dropHint(:style="{cursor: disabled ? 'default' : 'pointer'}",
+        .empty-files-big-plus(:style="{cursor: disabled ? 'default' : 'pointer'}",
                   onclick="document.getElementById('fileInput').click();",
                   v-show="files.length === 0")
-          i.fa.fa-plus.fa-4x
-          br
-          |  Drop your files here
+          a
+            i.fa.fa-plus.fa-4x
+            br
+            |  Drop your files here
         table.table.table-striped
           tbody
             tr(v-for="file in files")
-              td(style="width: 60px")
+              td.file-icon
                 file-icon(:file="file._File")
               td
                 p
@@ -23,11 +24,11 @@
                 .alert.alert-danger(v-if="file.error")
                   i.fa.fa-fw.fa-exclamation-triangle
                   |  {{ file.error }}
-                .progress(v-show="!file.error && (state === 'uploading' || state === 'uploaded')", style="height:7px")
+                .progress(v-show="!file.error && (state === 'uploading' || state === 'uploaded')")
                   .progress-bar.progress-bar-success.progress-bar-striped(:style="{width: file.progress.percentage+'%'}",:class="{active:!file.uploaded}")
-              td(style="width: 33px;")
-                a.btn.btn-warning.btn-sm(@click="!disabled && $store.commit('upload/REMOVE_FILE', file)", :disabled="disabled")
-                  i.fa.fa-trash.pull-right(style="display: inline-block; margin-left: auto; margin-right: auto;")
+              td.btns
+                a(style="cursor:pointer", @click="!disabled && $store.commit('upload/REMOVE_FILE', file)", :disabled="disabled")
+                  i.fa.fa-fw.fa-times
 
         input#fileInput(type="file", @change="$store.dispatch('upload/addFiles', $event.target.files)", multiple="", :disabled="disabled", style="display: none")
         .text-right
@@ -59,16 +60,3 @@
     }
   };
 </script>
-
-<style>
-  .dropHint {
-    text-align: center;
-    padding: 19px 0;
-  }
-  .dropHint i {
-    color: #337AB7;
-  }
-  .dropHint:hover i {
-    color: #286090;
-  }
-</style>

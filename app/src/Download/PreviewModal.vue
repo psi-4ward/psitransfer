@@ -1,11 +1,11 @@
 <template lang="pug">
-  modal(v-if="current", @close="current=false", :has-header="true", @next="next", @prev="prev")
-    div(slot="header")
+  modal.preview-modal(v-if="current", @close="current=false", :has-header="true", @next="next", @prev="prev")
+    div.header(slot="header")
       p
         strong {{current.metadata.name}}
       div
         small {{currentIndex+1}} / {{files.length}}
-        span.btn-group(style="margin-left: 15px")
+        span.btn-group
           a.btn.btn-sm.btn-default(title="previous", @click="prev", v-show="currentIndex > 0")
             i.fa.fa-fw.fa-arrow-left
           a.btn.btn-sm.btn-default(title="next", @click="next", v-show="currentIndex < files.length-1")

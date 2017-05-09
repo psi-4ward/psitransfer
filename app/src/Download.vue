@@ -1,15 +1,14 @@
 <template lang="pug">
   .download-app
-    .btn-group(style='position: absolute; top: 15px; right: 15px;')
-      a.btn.btn-sm.btn-info(@click='newSession()', title='New Upload')
-        i.fa.fa-fw.fa-cloud-upload
-        span.hidden-xs  new upload
+    a.btn.btn-sm.btn-info.btn-new-session(@click='newSession()', title='New Upload')
+      i.fa.fa-fw.fa-cloud-upload
+      span.hidden-xs  new upload
     .alert.alert-danger(v-show="error")
       strong
         i.fa.fa-exclamation-triangle
         |  {{ error }}
     .well(v-if='needsPassword')
-      h3(style='margin-top: 0') Password
+      h3 Password
       .form-group
         input.form-control(type='password', v-model='password')
       p.text-danger(v-show='passwordWrong')
@@ -21,31 +20,30 @@
     .panel.panel-primary(v-if='!needsPassword')
       .panel-heading
         strong Files
-        div.pull-right(style="margin-top:-5px;")
-          span.btn-group(v-if="downloadsAvailable")
-            a.btn.btn-sm.btn-default(@click="downloadAll('zip')", title="Archive download is not resumeable!")
-              i.fa.fa-fw.fa-fw.fa-download
-              |  zip
-            a.btn.btn-sm.btn-default(@click="downloadAll('tar.gz')", title="Archive download is not resumeable!")
-              i.fa.fa-fw.fa-fw.fa-download
-              |  tar.gz
+        div.pull-right.btn-group.btn-download-archive(v-if="downloadsAvailable")
+          a.btn.btn-sm.btn-default(@click="downloadAll('zip')", title="Archive download is not resumeable!")
+            i.fa.fa-fw.fa-fw.fa-download
+            |  zip
+          a.btn.btn-sm.btn-default(@click="downloadAll('tar.gz')", title="Archive download is not resumeable!")
+            i.fa.fa-fw.fa-fw.fa-download
+            |  tar.gz
       .panel-body
-        table.table.table-hover.table-striped(style='margin-bottom: 0')
+        table.table.table-hover.table-striped
           tbody
             tr(v-for='file in files', style='cursor: pointer', @click='download(file)')
-              td(style='width: 60px')
+              td.file-icon
                 file-icon(:file='file')
               td
-                div.pull-right
-                  i.fa.fa-check.text-success(v-show='file.downloaded')
-                  clipboard.btn.btn-sm.btn-default(:value='host + file.url', @change='copied(file, $event)', title='Copy to clipboard', style='margin: 0 5px')
+                div.pull-right.btn-group
+                  clipboard.btn.btn-sm.btn-default(:value='host + file.url', @change='copied(file, $event)', title='Copy to clipboard')
                     a
                       i.fa.fa-fw.fa-copy
                   a.btn.btn-sm.btn-default(title="Preview", @click.prevent.stop="preview=file", v-if="file.previewType")
                     i.fa.fa-fw.fa-eye
+                i.pull-right.fa.fa-check.text-success.downloaded(v-show='file.downloaded')
                 p
                   strong {{ file.metadata.name }}
-                  small(v-if="Number.isFinite(file.size)", style="margin-left:15px") ({{ humanFileSize(file.size) }})
+                  small.file-size(v-if="Number.isFinite(file.size)") ({{ humanFileSize(file.size) }})
                 p {{ file.metadata.comment }}
 
     preview-modal(:preview="preview", :files="previewFiles", :max-size="config.maxPreviewSize", @close="preview=false")

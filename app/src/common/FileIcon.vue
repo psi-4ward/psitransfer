@@ -1,8 +1,8 @@
 <template lang="pug">
-  div
+  div.file-icon
     i.fa.fa-fw.fa-3x(v-if='!isImageBlob', :class='iconClass')
     |
-    img(v-if='isImageBlob', :src='blobUrl', style='width:54px; height:auto;')
+    img(v-if='isImageBlob', :src='blobUrl')
 </template>
 
 
