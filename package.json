@@ -1,7 +1,7 @@
 {
   "name": "psitransfer",
   "version": "1.0.0",
-  "description": "Open self-hoste file-sharing solution",
+  "description": "Simple open source self-hosted file sharing solution",
   "keywords": [
     "share",
     "upload",
