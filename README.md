@@ -24,6 +24,9 @@ It's an alternative to paid services like Dropbox, WeTransfer.
 * Requires Node >=7.4 or use `--harmony-async-await` flag
 * Password protected download list ([AES](https://en.wikipedia.org/wiki/Advanced_Encryption_Standard))  
 
+**See the blog posts about PsiTransfer: https://psi.cx/tags/PsiTransfer/ and checkout the 
+[Documentation](https://github.com/psi-4ward/psitransfer/tree/master/docs)**
+
 ![Screenshot](https://raw.githubusercontent.com/psi-4ward/psitransfer/master/docs/psitransfer.gif)
 
 **Demo**: https://transfer.psi.cx
