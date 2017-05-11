@@ -1,0 +1,18 @@
+[Unit]
+Description=PsiTransfer
+Documentation=https://github.com/psi-4ward/psitransfer
+After=network.target
+
+[Service]
+Type=simple
+User=psitransfer
+Restart=on-failure
+
+Environment=NODE_ENV=production
+Environment=PSITRANSFER_PORT=8080
+
+WorkingDirectory=/opt/psitransfer
+ExecStart=/usr/bin/node app.js
+
+[Install]
+WantedBy=multi-user.target
