@@ -37,6 +37,12 @@ $ docker run -p 0.0.0.0:3000:3000 -v $PWD/data:/data psitrax/psitransfer
 $ sudo chown -R 1000 $PWD/data 
 ```
 
+Specify the version by using [image tags](https://hub.docker.com/r/psitrax/psitransfer/tags/) e.g.:
+* `latest`: corresponds to master branch
+* `1`: latest stable `1.x.x`
+* `1.1`: latest stable `1.1.x`
+* `1.0.0`: exact version
+
 ### Manual, precompiled
 
 ```bash
