@@ -135,12 +135,13 @@
         this.passwordWrong = false;
         this.files = this.files.map(item => {
           if(typeof item === 'object') return item;
-          const d = AES.decrypt(item, this.password);
+          let f = AES.decrypt(item, this.password);
           try {
-            return Object.assign(
-              JSON.parse(d.toString(encUtf8)),
-              {downloaded: false}
-            );
+            f = JSON.parse(f.toString(encUtf8));
+            return Object.assign(f, {
+              downloaded: false,
+              previewType: getPreviewType(f, this.config.maxPreviewSize)
+            });
           } catch(e) {
             this.passwordWrong = true;
             return item;
