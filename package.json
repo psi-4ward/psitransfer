@@ -23,13 +23,16 @@
     "morgan": "^1.8.1",
     "tus-metadata": "^1.0.2",
     "tusboy": "^1.1.1",
-    "uuid": "^3.0.1"
+    "uuid": "^3.0.1",
+    "snyk": "^1.30.1"
   },
   "devDependencies": {},
   "scripts": {
     "start": "NODE_ENV=production node app.js",
     "dev": "NODE_ENV=dev DEBUG=psitransfer:* nodemon -i app -i dist -i data app.js",
-    "debug": "node --inspect app.js"
+    "debug": "node --inspect app.js",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
   },
   "engines": {
     "node": ">= 7.4.0",
@@ -37,5 +40,6 @@
   },
   "author": "Christoph Wiechert <wio@psitrax.de>",
   "contributors": [],
-  "license": "BSD-2-Clause"
+  "license": "BSD-2-Clause",
+  "snyk": true
 }
