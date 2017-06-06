@@ -7,8 +7,13 @@ const fsp = require('fs-promise');
 // or use ENV-VARS like PSITRANSFER_PORT=8000
 const config =  {
   "uploadDir": path.resolve(__dirname + '/data'),
-  "port": 3000,
   "iface": '0.0.0.0',
+  // set to false to disable HTTP
+  "port": 3000,
+  // HTTPS, set all 3 values to enable
+  "sslPort": 8443,
+  "sslKeyFile": false,
+  "sslCertFile": false,
   // retention options in seconds:label
   "retentions": {
     "one-time": "one time download",

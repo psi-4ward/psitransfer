@@ -13,5 +13,7 @@ module.exports = {
     "604800": "1 Week",
     "1209600": "2 Weeks"
   },
-  "defaultRetention": 3600
+  "defaultRetention": 3600,
+  "sslKeyFile": './tmp/cert.key',
+  "sslCertFile": './tmp/cert.pem',
 };

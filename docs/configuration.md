@@ -38,3 +38,12 @@ node app.js
 * Then it will overwrite `retentions` and `port` with the values of the environment parameters.
 
 > Environment parameters always have the highest priority.
+
+## SSL
+
+It's recommended to use Nginx for SSL termination, see [nginx-ssl-example.conf](https://github.com/psi-4ward/psitransfer/blob/master/docs/nginx-ssl-example.conf).
+
+For native SSL support provide `sslPort`, `sslKeyFile`, `sslCertFile` options. To generate
+a _snake oil_ certificate use `openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout cert.key -out cert.pem`.
+
+To disable HTTP set the `port` config value to `false`.
