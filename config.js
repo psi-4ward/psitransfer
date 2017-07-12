@@ -26,6 +26,8 @@ const config =  {
     "2419200": "4 Weeks",
     "4838400": "8 Weeks"
   },
+  // admin password, set to false to disable /admin page
+  "adminPass": false,
   "defaultRetention": 604800,
   // expire every file after maxAge (eg never downloaded one-time files)
   "maxAge": 3600*24*75, // 75 days

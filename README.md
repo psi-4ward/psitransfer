@@ -22,7 +22,8 @@ It's an alternative to paid services like Dropbox, WeTransfer.
 * Download all files as zip/tar.gz archive
 * Modal-style file preview
 * Requires Node >=7.4 or use `--harmony-async-await` flag
-* Password protected download list ([AES](https://en.wikipedia.org/wiki/Advanced_Encryption_Standard))  
+* Password protected download list ([AES](https://en.wikipedia.org/wiki/Advanced_Encryption_Standard))
+* `/admin` Page lists bucket information
 
 **See the blog posts about PsiTransfer: https://psi.cx/tags/PsiTransfer/ and checkout the 
 [Documentation](https://github.com/psi-4ward/psitransfer/tree/master/docs)**

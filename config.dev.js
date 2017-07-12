@@ -14,6 +14,7 @@ module.exports = {
     "1209600": "2 Weeks"
   },
   "defaultRetention": 3600,
-  "sslKeyFile": './tmp/cert.key',
-  "sslCertFile": './tmp/cert.pem',
+  "adminPass": "admin"
+  // "sslKeyFile": './tmp/cert.key',
+  // "sslCertFile": './tmp/cert.pem',
 };
