@@ -1,6 +1,6 @@
 <template lang="pug">
   .download-app
-    a.btn.btn-sm.btn-info.btn-new-session(@click='login()', title='Refresh')
+    a.btn.btn-sm.btn-info.btn-new-session(@click='login()', title='Refresh', v-if="loggedIn")
       i.fa.fa-fw.fa-refresh
 
     .alert.alert-danger(v-show="error")
@@ -95,10 +95,10 @@
           if(xhr.status === 200) {
             try {
               this.db = JSON.parse(xhr.responseText);
-              this.expandDb();
               this.loggedIn = true;
               this.error = '';
               this.passwordWrong = false;
+              this.expandDb();
             }
             catch(e) {
               this.error = e.toString();
@@ -112,8 +112,9 @@
       },
 
       expandDb() {
+        this.sizeSum = 0;
         Object.keys(this.db).forEach(sid => {
-          const sum = {
+          const bucketSum = {
             firstExpire: Number.MAX_SAFE_INTEGER,
             lastDownload: 0,
             created: Number.MAX_SAFE_INTEGER,
@@ -121,27 +122,27 @@
             size: 0
           };
           this.db[sid].forEach(file => {
-            sum.size += file.size;
+            bucketSum.size += file.size;
             if(file.metadata._password) {
-              sum.password = true;
+              bucketSum.password = true;
             }
-            if(+file.metadata.createdAt < sum.created) {
-              sum.created = +file.metadata.createdAt;
+            if(+file.metadata.createdAt < bucketSum.created) {
+              bucketSum.created = +file.metadata.createdAt;
             }
-            if(file.metadata.lastDownload && +file.metadata.lastDownload > sum.lastDownload) {
-              sum.lastDownload = +file.metadata.lastDownload;
+            if(file.metadata.lastDownload && +file.metadata.lastDownload > bucketSum.lastDownload) {
+              bucketSum.lastDownload = +file.metadata.lastDownload;
             }
             if(file.metadata.retention === 'one-time') {
-              sum.firstExpire = 'one-time';
+              bucketSum.firstExpire = 'one-time';
               file.expireDate = file.metadata.retention;
             }
             else {
               file.expireDate = +file.metadata.createdAt + (+file.metadata.retention * 1000);
-              if(sum.firstExpire > file.expireDate) sum.firstExpire = file.expireDate;
+              if(bucketSum.firstExpire > file.expireDate) bucketSum.firstExpire = file.expireDate;
             }
           });
-          this.sizeSum += sum.size;
-          this.$set(this.sum, sid, sum);
+          this.sizeSum += bucketSum.size;
+          this.$set(this.sum, sid, bucketSum);
         });
       },
 
