@@ -1,5 +1,8 @@
 <template lang="pug">
   .download-app
+    a.btn.btn-sm.btn-info.btn-new-session(@click='login()', title='Refresh')
+      i.fa.fa-fw.fa-refresh
+
     .alert.alert-danger(v-show="error")
       strong
         i.fa.fa-exclamation-triangle
@@ -11,7 +14,7 @@
       p.text-danger(v-show='passwordWrong')
         strong Access denied!
       |
-      button.btn.btn-primary(type="submit")
+      button.btn.btn-primary(type="submit", :disabled="!password")
         i.fa.fa-sign-in
         |  login
 
@@ -84,6 +87,7 @@
       },
 
       login() {
+        if(!this.password) return;
         const xhr = new XMLHttpRequest();
         xhr.open('GET', '/admin/data.json');
         xhr.setRequestHeader("x-passwd", this.password);
