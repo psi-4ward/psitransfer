@@ -93,6 +93,8 @@
               this.db = JSON.parse(xhr.responseText);
               this.expandDb();
               this.loggedIn = true;
+              this.error = '';
+              this.passwordWrong = false;
             }
             catch(e) {
               this.error = e.toString();
