@@ -23,7 +23,7 @@ It's an alternative to paid services like Dropbox, WeTransfer.
 * Modal-style file preview
 * Requires Node >=7.4 or use `--harmony-async-await` flag
 * Password protected download list ([AES](https://en.wikipedia.org/wiki/Advanced_Encryption_Standard))
-* `/admin` Page lists bucket information
+* `/admin` Page lists bucket information, [Screenshot](https://raw.githubusercontent.com/psi-4ward/psitransfer/master/docs/PsiTransfer-Admin.png) (_disabled until you set `adminPass` config value_)
 
 **See the blog posts about PsiTransfer: https://psi.cx/tags/PsiTransfer/ and checkout the 
 [Documentation](https://github.com/psi-4ward/psitransfer/tree/master/docs)**
@@ -36,7 +36,7 @@ It's an alternative to paid services like Dropbox, WeTransfer.
 
 ### Docker
 ```bash
-$ docker run -p 0.0.0.0:3000:3000 -v $PWD/data:/data psitrax/psitransfer
+$ docker run -p 0.0.0.0:3000:3000 -e PSITRANSFER_ADMIN_PASS=secret -v $PWD/data:/data psitrax/psitransfer
 # data volume needs UID 1000
 $ sudo chown -R 1000 $PWD/data 
 ```
