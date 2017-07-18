@@ -56,6 +56,7 @@ td.file-icon {
 }
 h1 .fa-icon {
   height: 50px;
+  width: 50px;
   vertical-align: middle;
 }
 .btn .fa-icon.fa-fw {

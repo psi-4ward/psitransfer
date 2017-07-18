@@ -1,4 +1,3 @@
-import 'babel-polyfill';
 import Vue from 'vue';
 import Download from './Download.vue';
 import Icon from 'vue-awesome/components/Icon.vue'
