@@ -1,11 +1,11 @@
 <template lang="pug">
   .download-app
     a.btn.btn-sm.btn-info.btn-new-session(@click='login()', title='Refresh', v-if="loggedIn")
-      i.fa.fa-fw.fa-refresh
+      icon(name="refresh")
 
     .alert.alert-danger(v-show="error")
       strong
-        i.fa.fa-exclamation-triangle
+        icon.fa-fw(name="exclamation-triangle")
         |  {{ error }}
     form.well(v-if='!loggedIn', @submit.stop.prevent="login")
       h3 Password
@@ -15,7 +15,7 @@
         strong Access denied!
       |
       button.btn.btn-primary(type="submit", :disabled="!password")
-        i.fa.fa-sign-in
+        icon.fa-fw(name="sign-in")
         |  login
 
     div(v-if="loggedIn")
@@ -32,7 +32,7 @@
             tr.bucket(@click="expandView(sid)")
               td
                 | {{ sid }}
-                i.fa.fa-key.pull-right(v-if="sum[sid].password", title="Password protected")
+                icon.pull-right(name="key", v-if="sum[sid].password", title="Password protected")
               td {{ sum[sid].created | date }}
               td
                 template(v-if="sum[sid].lastDownload") {{ sum[sid].lastDownload | date}}
@@ -62,7 +62,11 @@
 
 
 <script>
-  "use strict";
+  import 'vue-awesome/icons/exclamation-triangle';
+  import 'vue-awesome/icons/refresh';
+  import 'vue-awesome/icons/sign-in';
+  import 'vue-awesome/icons/key';
+
 
   export default {
     name: 'app',

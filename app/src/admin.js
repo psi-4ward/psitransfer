@@ -1,6 +1,7 @@
 import 'babel-polyfill';
 import Vue from 'vue';
 import Admin from './Admin.vue';
+import Icon from 'vue-awesome/components/Icon.vue'
 
 function parseDate(str) {
   if(!str) return str;
@@ -25,6 +26,7 @@ Vue.filter('date', function(val, format) {
   return isDate(val) ? formatDate(val, format) : val;
 });
 
+Vue.component('icon', Icon);
 
 new Vue({
   el: '#admin',

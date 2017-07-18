@@ -17,12 +17,13 @@
                                         @input="$store.commit('upload/PASSWORD', $event.target.value)",
                                         :disabled='disabled', placeholder='optional')
             span.input-group-addon(style='cursor: pointer', title='generate password', @click='generatePassword()')
-              i.fa.fa-key
+              icon(name="key")
 </template>
 
 <script type="text/babel">
   "use strict";
   import {mapState} from 'vuex';
+  import 'vue-awesome/icons/key';
 
   const passGen = {
     _pattern : /[A-Z0-9_\-\+\!]/,

@@ -13,13 +13,17 @@ Copies a string into the clipboard
 <template lang="pug">
   span(@click.stop='copy()', style='cursor: pointer')
     slot(:state='state')
-      i.fa.fa-fw(:class="{'fa-copy':state=='pristine','fa-check':state=='copied','fa-exclamation-triangle':state=='error'}")
+      icon.fa-fw(name="copy", v-if="state==='pristine'")
+      icon.fa-fw(name="check", v-if="state==='copied'")
+      icon.fa-fw(name="exclamation-triangle", v-if="state==='error'")
       slot(name='text')  Copy
 </template>
 
 
 <script type="text/babel">
-  "use strict";
+  import 'vue-awesome/icons/check';
+  import 'vue-awesome/icons/copy';
+  import 'vue-awesome/icons/exclamation-triangle';
 
   export default {
     name: "Clipboard",

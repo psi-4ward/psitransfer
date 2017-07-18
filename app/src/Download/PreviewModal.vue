@@ -7,11 +7,11 @@
         small {{currentIndex+1}} / {{files.length}}
         span.btn-group
           a.btn.btn-sm.btn-default(title="previous", @click="prev", v-show="currentIndex > 0")
-            i.fa.fa-fw.fa-arrow-left
+            icon(name="arrow-left")
           a.btn.btn-sm.btn-default(title="next", @click="next", v-show="currentIndex < files.length-1")
-            i.fa.fa-fw.fa-arrow-right
+            icon(name="arrow-right")
           a.btn.btn-sm.btn-default(title="toggle line wrap", @click="lineWrap = !lineWrap", :class="{active:lineWrap}", v-show="current.previewType === 'text'")
-            i.fa.fa-fw.fa-rotate-left.fa-flip-vertical
+            icon(name="rotate-left", flip="vertical")
     div(slot="body")
       div(v-if="current.previewType === 'image'", style="text-align:center")
         img(:src="current.url", style="max-width: 100%; height:auto")
@@ -24,6 +24,9 @@
 
 <script type="text/babel">
   import Modal from '../common/Modal.vue';
+  import 'vue-awesome/icons/arrow-left';
+  import 'vue-awesome/icons/arrow-right';
+  import 'vue-awesome/icons/rotate-left';
 
   export default {
     components: { Modal },

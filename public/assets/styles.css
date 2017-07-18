@@ -52,6 +52,16 @@ body > .container {
 td.file-icon {
   width: 60px;
 }
+h1 .fa-icon {
+  height: 50px;
+  vertical-align: middle;
+}
+.btn .fa-icon.fa-fw {
+  width: 25px;
+}
+.btn .fa-icon {
+  vertical-align: middle;
+}
 
 
 /* FileIcon Component */

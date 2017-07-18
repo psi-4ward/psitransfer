@@ -7,7 +7,7 @@
                   onclick="document.getElementById('fileInput').click();",
                   v-show="files.length === 0")
           a
-            i.fa.fa-plus.fa-4x
+            icon(name="plus", scale="4")
             br
             |  Drop your files here
         table.table.table-striped
@@ -22,18 +22,18 @@
                 p
                   input.form-control.input-sm(type="text", placeholder="comment...", v-model="file.comment", :disabled="disabled")
                 .alert.alert-danger(v-if="file.error")
-                  i.fa.fa-fw.fa-exclamation-triangle
+                  icon.fa-fw(name="exclamation-triangle")
                   |  {{ file.error }}
                 .progress(v-show="!file.error && (state === 'uploading' || state === 'uploaded')")
                   .progress-bar.progress-bar-success.progress-bar-striped(:style="{width: file.progress.percentage+'%'}",:class="{active:!file.uploaded}")
               td.btns
                 a(style="cursor:pointer", @click="!disabled && $store.commit('upload/REMOVE_FILE', file)", :disabled="disabled")
-                  i.fa.fa-fw.fa-times
+                  icon(name="times")
 
         input#fileInput(type="file", @change="$store.dispatch('upload/addFiles', $event.target.files)", multiple="", :disabled="disabled", style="display: none")
         .text-right
           a.btn.btn-success.btn-sm(onclick="document.getElementById('fileInput').click();", :disabled="disabled", v-show="files.length>0")
-            i.fa.fa-plus-circle.fa-fw
+            icon(name="plus-circle")
 </template>
 
 
@@ -42,6 +42,10 @@
   import {mapState} from 'vuex';
   import dragDrop from 'drag-drop';
   import FileIcon from '../common/FileIcon.vue';
+  import 'vue-awesome/icons/plus'
+  import 'vue-awesome/icons/plus-circle'
+  import 'vue-awesome/icons/times'
+  import 'vue-awesome/icons/exclamation-triangle'
 
   export default {
     name: 'Files',

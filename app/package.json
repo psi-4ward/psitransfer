@@ -15,6 +15,7 @@
     "tus-js-client": "^1.4.3",
     "uuid": "^3.0.1",
     "vue": "^2.3.2",
+    "vue-awesome": "^2.3.1",
     "vuex": "^2.3.1"
   },
   "devDependencies": {

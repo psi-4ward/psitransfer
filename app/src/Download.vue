@@ -1,11 +1,11 @@
 <template lang="pug">
   .download-app
     a.btn.btn-sm.btn-info.btn-new-session(@click='newSession()', title='New Upload')
-      i.fa.fa-fw.fa-cloud-upload
+      icon.fa-fw(name="cloud-upload")
       span.hidden-xs  new upload
     .alert.alert-danger(v-show="error")
       strong
-        i.fa.fa-exclamation-triangle
+        icon.fa-fw(name="exclamation-triangle")
         |  {{ error }}
     .well(v-if='needsPassword')
       h3 Password
@@ -15,17 +15,17 @@
         strong Access denied!
       |
       button.btn.btn-primary(:disabled='password.length<1', @click='decrypt()')
-        i.fa.fa-key
+        icon.fa-fw(name="key")
         |  decrypt
     .panel.panel-primary(v-if='!needsPassword')
       .panel-heading
         strong Files
         div.pull-right.btn-group.btn-download-archive(v-if="downloadsAvailable")
           a.btn.btn-sm.btn-default(@click="downloadAll('zip')", title="Archive download is not resumeable!")
-            i.fa.fa-fw.fa-fw.fa-download
+            icon.fa-fw(name="download")
             |  zip
           a.btn.btn-sm.btn-default(@click="downloadAll('tar.gz')", title="Archive download is not resumeable!")
-            i.fa.fa-fw.fa-fw.fa-download
+            icon.fa-fw(name="download")
             |  tar.gz
       .panel-body
         table.table.table-hover.table-striped
@@ -37,9 +37,9 @@
                 div.pull-right.btn-group
                   clipboard.btn.btn-sm.btn-default(:value='host + file.url', @change='copied(file, $event)', title='Copy to clipboard')
                     a
-                      i.fa.fa-fw.fa-copy
+                      icon(name="copy")
                   a.btn.btn-sm.btn-default(title="Preview", @click.prevent.stop="preview=file", v-if="file.previewType")
-                    i.fa.fa-fw.fa-eye
+                    icon(name="eye")
                 i.pull-right.fa.fa-check.text-success.downloaded(v-show='file.downloaded')
                 p
                   strong {{ file.metadata.name }}
@@ -60,6 +60,14 @@
   import FileIcon from './common/FileIcon.vue';
   import Clipboard from './common/Clipboard.vue';
   import PreviewModal from './Download/PreviewModal.vue';
+
+  import 'vue-awesome/icons/cloud-upload';
+  import 'vue-awesome/icons/exclamation-triangle';
+  import 'vue-awesome/icons/copy';
+  import 'vue-awesome/icons/check';
+  import 'vue-awesome/icons/download';
+  import 'vue-awesome/icons/key';
+  import 'vue-awesome/icons/eye';
 
   function getPreviewType(file, maxSize) {
     if(!file || !file.metadata) return false;

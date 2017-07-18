@@ -1,20 +1,20 @@
 <template lang="pug">
   .upload-app#uploadApp
     a.btn.btn-sm.btn-info.btn-new-session(@click='newSession()', title='New Upload')
-      i.fa.fa-fw.fa-cloud-upload
+      icon.fa-fw(name="cloud-upload")
       span.hidden-xs  new upload
     .alert.alert-danger(v-show="error")
       strong
-        i.fa.fa-exclamation-triangle
+        icon.fa-fw(name="exclamation-triangle")
         |  {{ error }}
     .well(v-show="state === 'uploaded'")
       .pull-right.btn-group
         a.btn.btn-primary(:href="mailLnk")
-          i.fa.fa-fw.fa-envelope
+          icon.fa-fw(name="envelope")
           |  Mail
         clipboard.btn.btn-primary(:value='shareUrl')
       h3.text-success
-        i.fa.fa-check
+        icon.fa-fw(name="check")
         |  Upload completed
       div.share-link
         span.title Download Link:
@@ -22,7 +22,7 @@
         a(:href='shareUrl') {{ shareUrl }}
     .row.overall-process(v-show="state === 'uploading'")
       .col-xs-12
-        i.fa.fa-spinner.fa-spin.fa-2x.fa-fw.pull-left
+        icon.pull-left(name="spinner", scale="2", spin="")
         .progress
           .progress-bar.progress-bar-success.progress-bar-striped.active(:style="{width: percentUploaded+'%'}")
             span(v-show='percentUploaded>10') {{ percentUploaded }}%
@@ -33,11 +33,11 @@
         settings
         .text-right(v-show='files.length && !disabled')
           button.btn.btn-lg.btn-success(@click="$store.dispatch('upload/upload')")
-            i.fa.fa-upload
+            icon.fa-fw(name="upload")
             |  upload
         .text-right(v-show="state === 'uploadError'")
           button.btn.btn-lg.btn-success(@click="$store.dispatch('upload/upload')")
-            i.fa.fa-upload
+            icon.fa-fw(name="upload")
             |  retry
 </template>
 
@@ -48,13 +48,20 @@
   import Settings from './Upload/Settings.vue';
   import Files from './Upload/Files.vue';
   import Clipboard from './common/Clipboard.vue'
+  import 'vue-awesome/icons/cloud-upload';
+  import 'vue-awesome/icons/upload';
+  import 'vue-awesome/icons/check';
+  import 'vue-awesome/icons/spinner';
+  import 'vue-awesome/icons/envelope';
+  import 'vue-awesome/icons/exclamation-triangle';
+
 
   export default {
     name: 'App',
     components: {
       Settings,
       Files,
-      Clipboard
+      Clipboard,
     },
 
     computed: {
@@ -87,3 +94,7 @@
 
   }
 </script>
+
+<style>
+
+</style>
