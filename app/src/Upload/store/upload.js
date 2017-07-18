@@ -1,4 +1,3 @@
-'use strict';
 import tus from "tus-js-client";
 import uuid from 'uuid/v4';
 import md5 from 'crypto-js/md5';

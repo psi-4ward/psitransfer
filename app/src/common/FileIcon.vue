@@ -12,6 +12,7 @@
   import 'vue-awesome/icons/file-video-o';
   import 'vue-awesome/icons/file-audio-o';
   import 'vue-awesome/icons/file-archive-o';
+  import 'vue-awesome/icons/file-o';
 
   export default {
     props: ['file'],
