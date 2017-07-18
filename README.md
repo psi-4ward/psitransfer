@@ -24,6 +24,7 @@ It's an alternative to paid services like Dropbox, WeTransfer.
 * Requires Node >=7.4 or use `--harmony-async-await` flag
 * Password protected download list ([AES](https://en.wikipedia.org/wiki/Advanced_Encryption_Standard))
 * `/admin` Page lists bucket information, [Screenshot](https://raw.githubusercontent.com/psi-4ward/psitransfer/master/docs/PsiTransfer-Admin.png) (_disabled until you set `adminPass` config value_)
+* Lightweight [Vue](https://vuejs.org) based frontend apps. Gzipped less than 65k
 
 **See the blog posts about PsiTransfer: https://psi.cx/tags/PsiTransfer/ and checkout the 
 [Documentation](https://github.com/psi-4ward/psitransfer/tree/master/docs)**
