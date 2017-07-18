@@ -1,3 +1,5 @@
+@import "bootstrap/css/bootstrap.min.css";
+
 html {
   position: relative;
   min-height: 100%;
