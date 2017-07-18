@@ -56,12 +56,13 @@ module.exports = {
   },
   resolve: {
     alias: {
-      'vue$': 'vue/dist/vue.common.js'
+      'vue$': 'vue/dist/vue.runtime.js'
     }
   },
   devServer: {
     historyApiFallback: true,
     noInfo: true,
+    disableHostCheck: true,
     proxy: [
       // Proxy requests to BE in DEV mode
       // https://webpack.github.io/docs/webpack-dev-server.html#proxy
