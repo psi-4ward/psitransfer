@@ -25,10 +25,8 @@ module.exports = {
       name: "common"
     }),
     new webpack.DefinePlugin({
-      'process.env': {
-        NODE_ENV: process.env.NODE_ENV !== 'development' ? '"production"' : '"development"',
-      },
-      PSITRANSFER_VERSION: '"' + (process.env.PSITRANSFER_VERSION || commitShaId || 'dev') + '"'
+      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV !== 'development' ? 'production' : 'development'),
+      PSITRANSFER_VERSION: JSON.stringify(process.env.PSITRANSFER_VERSION || commitShaId || 'dev')
     }),
   ],
   module: {
@@ -56,7 +54,7 @@ module.exports = {
   },
   resolve: {
     alias: {
-      'vue$': 'vue/dist/vue.runtime.js'
+      'vue$': process.env.NODE_ENV !== 'development' ? 'vue/dist/vue.runtime.min.js' : 'vue/dist/vue.runtime.js'
     }
   },
   devServer: {
