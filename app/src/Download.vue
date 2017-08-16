@@ -35,7 +35,7 @@
                 file-icon(:file='file')
               td
                 div.pull-right.btn-group
-                  clipboard.btn.btn-sm.btn-default(:value='host + file.url', @change='copied(file, $event)', title='Copy to clipboard')
+                  clipboard.btn.btn-sm.btn-default(:value='file.url', @change='copied(file, $event)', title='Copy to clipboard')
                     a
                       i.fa.fa-fw.fa-copy
                   a.btn.btn-sm.btn-default(title="Preview", @click.prevent.stop="preview=file", v-if="file.previewType")
@@ -60,6 +60,7 @@
   import FileIcon from './common/FileIcon.vue';
   import Clipboard from './common/Clipboard.vue';
   import PreviewModal from './Download/PreviewModal.vue';
+  import Location from './common/location';
 
   function getPreviewType(file, maxSize) {
     if(!file || !file.metadata) return false;
@@ -81,13 +82,12 @@
     data () {
       return {
         files: [],
-        sid: document.location.pathname.substr(1),
+        sid: Location.tail(1),
         passwordWrong: false,
         needsPassword: false,
         password: '',
         content: '',
         error: '',
-        host: document.location.protocol + '//' + document.location.host,
         config: {},
         preview: false
       }
@@ -114,8 +114,7 @@
       },
 
       downloadAll(format) {
-        document.location.href = document.location.protocol + '//' + document.location.host
-          + '/files/' + this.sid + '++'
+        document.location.href = Location.strip(1) + '/files/' + this.sid + '++'
           + MD5(
             this.files
               .filter(f => !f.downloaded || f.metadata.retention !== 'one-time')
@@ -165,17 +164,19 @@
       },
 
       newSession() {
-        document.location.href = '/';
+        document.location.href = Location.strip(1);
       }
     },
 
     beforeMount() {
       const xhr = new XMLHttpRequest();
-      xhr.open('GET', '/' + this.sid + '.json');
+      xhr.open('GET', Location.current() + '.json');
       xhr.onload = () => {
         if(xhr.status === 200) {
           try {
             let data = JSON.parse(xhr.responseText);
+            let sid = Location.tail(1);
+            let fileUrlBase = Location.strip(1) + '/files/' + sid + '++';
             this.config = data.config;
             this.files = data.items.map(f => {
               if(typeof f !== 'object') {
@@ -183,6 +184,7 @@
                 return f;
               }
               return Object.assign(f, {
+                url: fileUrlBase + f.key,
                 downloaded: false,
                 previewType: getPreviewType(f, this.config.maxPreviewSize)
               });

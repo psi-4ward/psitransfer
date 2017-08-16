@@ -1,5 +1,6 @@
 'use strict';
 import Vue from 'vue';
+import Location from '../../common/location';
 
 export default {
   namespaced: true,
@@ -17,7 +18,7 @@ export default {
   actions: {
     fetch({commit, }) {
       const xhr = new XMLHttpRequest();
-      xhr.open('GET', '/config.json');
+      xhr.open('GET', Location.current() + 'config.json');
       xhr.onload = () => {
         if(xhr.status === 200) {
           try {

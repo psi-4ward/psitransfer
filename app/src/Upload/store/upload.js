@@ -2,6 +2,7 @@
 import tus from "tus-js-client";
 import uuid from 'uuid/v4';
 import md5 from 'crypto-js/md5';
+import Location from '../../common/location';
 
 function humanFileSize(fileSizeInBytes) {
   let i = -1;
@@ -31,7 +32,7 @@ export default {
 
   getters: {
     shareUrl: state => {
-      return document.location.protocol + '//' + document.location.host + '/' + state.sid;
+      return Location.current() + state.sid;
     },
     percentUploaded: state => {
       return Math.min(
@@ -115,7 +116,7 @@ export default {
             type: file._File.type
           },
           resume: true,
-          endpoint: "/files/",
+          endpoint: Location.current() + "files/",
           fingerprint: (file) => {
             // include sid to prevent duplicate file detection on different session
             return ["tus", state.sid, file.name, file.type, file.size, file.lastModified].join("-");

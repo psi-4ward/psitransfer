@@ -63,6 +63,7 @@
 
 <script>
   "use strict";
+  import Location from './common/location';
 
   export default {
     name: 'app',
@@ -89,7 +90,7 @@
       login() {
         if(!this.password) return;
         const xhr = new XMLHttpRequest();
-        xhr.open('GET', '/admin/data.json');
+        xhr.open('GET', Location.current() + '/data.json');
         xhr.setRequestHeader("x-passwd", this.password);
         xhr.onload = () => {
           if(xhr.status === 200) {

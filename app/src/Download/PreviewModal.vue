@@ -66,7 +66,7 @@
       getPreviewText() {
         this.previewText = '';
         const xhr = new XMLHttpRequest();
-        xhr.open('GET', '//' + document.location.host + this.current.url);
+        xhr.open('GET', this.current.url);
         xhr.onload = () => {
           if(xhr.status === 200) {
             this.previewText = xhr.responseText
