@@ -117,7 +117,10 @@
           alert('One-Time Download: File is not available anymore.');
           return;
         }
-        document.location.href = file.url;
+        const aEl = document.createElement('a');
+        aEl.setAttribute('href', file.url);
+        aEl.setAttribute('download', file.metadata.name);
+        aEl.click();
         file.downloaded = true;
       },
 
