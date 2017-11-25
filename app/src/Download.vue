@@ -74,7 +74,7 @@
     if(file.metadata.retention === 'one-time') return false;
     // no preview for files size > 2MB
     if(file.size > maxSize) return false;
-    if(file.metadata.type && file.metadata.type.startsWith('image/')) return 'image';
+    if(file.metadata.type && file.metadata.type.match(/^image\/.*/)) return 'image';
     else if(file.metadata.type && file.metadata.type.match(/(text\/|xml|json|javascript|x-sh)/)
       || file.metadata.name && file.metadata.name
         .match(/\.(jsx|vue|sh|pug|less|scss|sass|c|h|conf|log|bat|cmd|lua|class|java|py|php|yml|sql|md)$/)) {
