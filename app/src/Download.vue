@@ -43,7 +43,7 @@
                 i.pull-right.fa.fa-check.text-success.downloaded(v-show='file.downloaded')
                 p
                   strong {{ file.metadata.name }}
-                  small.file-size(v-if="Number.isFinite(file.size)") ({{ humanFileSize(file.size) }})
+                  small.file-size(v-if="isFinite(file.size)") ({{ humanFileSize(file.size) }})
                 p {{ file.metadata.comment }}
 
     preview-modal(:preview="preview", :files="previewFiles", :max-size="config.maxPreviewSize", @close="preview=false")
@@ -177,6 +177,11 @@
 
       newSession() {
         document.location.href = '/';
+      },
+
+      isFinite(value) {
+        if(typeof value !== 'number') return false;
+        return !(value !== value || value === Infinity || value === -Infinity);
       }
     },
 
