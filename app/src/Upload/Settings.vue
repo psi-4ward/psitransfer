@@ -29,11 +29,19 @@
     _pattern : /[A-Z0-9_\-\+\!]/,
     _getRandomByte: function() {
       const result = new Uint8Array(1);
-      window.crypto.getRandomValues(result);
+	  var fixedcrypto = window.msCrypto;
+	  if (!fixedcrypto) {
+	    var fixedcrypto = window.crypto;
+		}
+      fixedcrypto.getRandomValues(result);
       return result[0];
     },
     generate: function(length) {
-      if(!window.crypto || !window.crypto.getRandomValues) return '';
+	  var fixedcrypto2 = window.msCrypto;
+	  if (!fixedcrypto2) {
+	    var fixedcrypto2 = window.crypto;
+	  }
+      if(!fixedcrypto2 || !fixedcrypto2.getRandomValues) return '';
       return Array.apply(null, {'length': length}).map(function() {
         let result;
         while(true) {
