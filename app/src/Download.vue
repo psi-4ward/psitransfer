@@ -120,7 +120,10 @@
         const aEl = document.createElement('a');
         aEl.setAttribute('href', file.url);
         aEl.setAttribute('download', file.metadata.name);
+        aEl.style.display = 'none';
+        document.body.appendChild(aEl);
         aEl.click();
+        aEl.remove();
         file.downloaded = true;
       },
 
