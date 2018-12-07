@@ -37,7 +37,8 @@ const config =  {
   // see https://github.com/expressjs/morgan
   // set to false to disable logging
   "accessLog": ':date[iso] :method :url :status :response-time :remote-addr',
-  "dynUpload": '/'
+  //use to set custom  upload url
+  "uploadAppPath": '/'
 };
 
 
