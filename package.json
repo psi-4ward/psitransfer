@@ -20,7 +20,7 @@
     "express": "^4.16.2",
     "fs-promise": "^2.0.3",
     "http-errors": "^1.6.2",
-    "morgan": "^1.9.0",
+    "morgan": "^1.9.1",
     "tus-metadata": "^1.0.2",
     "tusboy": "^1.1.1",
     "uuid": "^3.1.0"
