@@ -14,6 +14,10 @@ const config =  {
   "sslPort": 8443,
   "sslKeyFile": false,
   "sslCertFile": false,
+  // Force redirect to https
+  // can be true or a specific url like https://example.com:8443
+  // keep empty to disable
+  "forceHttps": '',
   // retention options in seconds:label
   "retentions": {
     "one-time": "one time download",
