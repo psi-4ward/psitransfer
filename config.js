@@ -38,7 +38,10 @@ const config =  {
   // set to false to disable logging
   "accessLog": ':date[iso] :method :url :status :response-time :remote-addr',
   //use to set custom  upload url
-  "uploadAppPath": '/'
+  "uploadAppPath": '/',
+  // download notification webhook
+  // invokes an HTTP POST to this url whenever a file was downloaded
+  "fileDownloadedWebhook": null
 };
 
 
