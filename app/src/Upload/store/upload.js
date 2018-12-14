@@ -16,6 +16,16 @@ function humanFileSize(fileSizeInBytes) {
 let onOnlineHandler = null;
 let onOnlineHandlerAttached = false;
 
+function getSid() {
+  // support setting an explicit SID by location search param
+  const match = document.location.search.match(/sid=([^&]+)/);
+  if(match) {
+    return match[1];
+  } else {
+    return md5(uuid()).toString().substr(0, 12);
+  }
+}
+
 export default {
   namespaced: true,
 
@@ -23,7 +33,7 @@ export default {
     retention: null,
     password: '',
     files: [],
-    sid: md5(uuid()).toString().substr(0, 12),
+    sid: getSid(),
     bytesUploaded: 0,
 
   },

@@ -25,6 +25,7 @@ It's an alternative to paid services like Dropbox, WeTransfer.
 * Password protected download list ([AES](https://en.wikipedia.org/wiki/Advanced_Encryption_Standard))
 * `/admin` Page lists bucket information, [Screenshot](https://raw.githubusercontent.com/psi-4ward/psitransfer/master/docs/PsiTransfer-Admin.png) (_disabled until you set `adminPass` config value_)
 * Lightweight [Vue](https://vuejs.org) based frontend apps. Gzipped (on by default) less than 65k
+* Explicit named bucket IDs with query param `sid=<myBucketID>`
 
 **See the blog posts about PsiTransfer: https://psi.cx/tags/PsiTransfer/ and checkout the 
 [Documentation](https://github.com/psi-4ward/psitransfer/tree/master/docs)**

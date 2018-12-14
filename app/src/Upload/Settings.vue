@@ -7,46 +7,46 @@
           label(for='retention') Retention
           |
           select#retention.form-control(:value='retention', :disabled='disabled',
-                                        @input="$store.commit('upload/RETENTION', $event.target.value)")
+          @input="$store.commit('upload/RETENTION', $event.target.value)")
             option(v-for='(label, seconds, index) in config.retentions',
-                   :value="seconds", :selected="seconds == retention") {{ label }}
+            :value="seconds", :selected="seconds === retention") {{ label }}
         div
           label(for='password') Password
           .input-group
             input#password.form-control(type='text', :value='password',
-                                        @input="$store.commit('upload/PASSWORD', $event.target.value)",
-                                        :disabled='disabled', placeholder='optional')
+            @input="$store.commit('upload/PASSWORD', $event.target.value)",
+            :disabled='disabled', placeholder='optional')
             span.input-group-addon(style='cursor: pointer', title='generate password', @click='generatePassword()')
               icon(name="key")
 </template>
 
 <script type="text/babel">
   "use strict";
-  import {mapState} from 'vuex';
+  import { mapState } from 'vuex';
   import 'vue-awesome/icons/key';
 
   const passGen = {
-    _pattern : /[A-Z0-9_\-\+\!]/,
+    _pattern: /[A-Z0-9_\-+!]/,
     _getRandomByte: function() {
       const result = new Uint8Array(1);
-	  var fixedcrypto = window.msCrypto;
-	  if (!fixedcrypto) {
-	    var fixedcrypto = window.crypto;
-		}
+      let fixedcrypto = window.msCrypto;
+      if (!fixedcrypto) {
+        fixedcrypto = window.crypto;
+      }
       fixedcrypto.getRandomValues(result);
       return result[0];
     },
     generate: function(length) {
-	  var fixedcrypto2 = window.msCrypto;
-	  if (!fixedcrypto2) {
-	    var fixedcrypto2 = window.crypto;
-	  }
-      if(!fixedcrypto2 || !fixedcrypto2.getRandomValues) return '';
-      return Array.apply(null, {'length': length}).map(function() {
+      let fixedcrypto2 = window.msCrypto;
+      if (!fixedcrypto2) {
+        fixedcrypto2 = window.crypto;
+      }
+      if (!fixedcrypto2 || !fixedcrypto2.getRandomValues) return '';
+      return Array.apply(null, { 'length': length }).map(function() {
         let result;
-        while(true) {
+        while (true) {
           result = String.fromCharCode(this._getRandomByte());
-          if(this._pattern.test(result)) return result;
+          if (this._pattern.test(result)) return result;
         }
       }, this).join('');
     }
@@ -64,7 +64,7 @@
 
     methods: {
       generatePassword() {
-        if(this.disabled) return;
+        if (this.disabled) return;
         this.$store.commit('upload/PASSWORD', passGen.generate(10));
       }
     }
