@@ -7,7 +7,7 @@
           label(for='retention') Retention
           |
           select#retention.form-control(:value='retention', :disabled='disabled',
-          @input="$store.commit('upload/RETENTION', $event.target.value)")
+          @change="$store.commit('upload/RETENTION', $event.target.value)")
             option(v-for='(label, seconds, index) in config.retentions',
             :value="seconds", :selected="seconds === retention") {{ label }}
         div
