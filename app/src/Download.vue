@@ -1,7 +1,7 @@
 <template lang="pug">
   .download-app
     a.btn.btn-sm.btn-info.btn-new-session(@click='newSession()', title='New Upload')
-      icon.fa-fw(name="cloud-upload")
+      icon.fa-fw(name="cloud-upload-alt")
       span.hidden-xs  new upload
     .alert.alert-danger(v-show="error")
       strong
@@ -61,7 +61,7 @@
   import Clipboard from './common/Clipboard.vue';
   import PreviewModal from './Download/PreviewModal.vue';
 
-  import 'vue-awesome/icons/cloud-upload';
+  import 'vue-awesome/icons/cloud-upload-alt';
   import 'vue-awesome/icons/exclamation-triangle';
   import 'vue-awesome/icons/copy';
   import 'vue-awesome/icons/check';
@@ -123,7 +123,7 @@
         aEl.style.display = 'none';
         document.body.appendChild(aEl);
         aEl.click();
-        aEl.remove();
+        document.body.removeChild(aEl);
         file.downloaded = true;
       },
 

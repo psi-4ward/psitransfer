@@ -11,7 +11,7 @@
           a.btn.btn-sm.btn-default(title="next", @click="next", v-show="currentIndex < files.length-1")
             icon(name="arrow-right")
           a.btn.btn-sm.btn-default(title="toggle line wrap", @click="lineWrap = !lineWrap", :class="{active:lineWrap}", v-show="current.previewType === 'text'")
-            icon(name="rotate-left", flip="vertical")
+            icon(name="undo-alt", flip="vertical")
     div(slot="body")
       div(v-if="current.previewType === 'image'", style="text-align:center")
         img(:src="current.url", style="max-width: 100%; height:auto")
@@ -26,7 +26,7 @@
   import Modal from '../common/Modal.vue';
   import 'vue-awesome/icons/arrow-left';
   import 'vue-awesome/icons/arrow-right';
-  import 'vue-awesome/icons/rotate-left';
+  import 'vue-awesome/icons/undo-alt';
 
   export default {
     components: { Modal },

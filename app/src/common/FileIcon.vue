@@ -7,12 +7,12 @@
 
 
 <script type="text/babel">
-  import 'vue-awesome/icons/file-image-o';
-  import 'vue-awesome/icons/file-text-o';
-  import 'vue-awesome/icons/file-video-o';
-  import 'vue-awesome/icons/file-audio-o';
-  import 'vue-awesome/icons/file-archive-o';
-  import 'vue-awesome/icons/file-o';
+  import 'vue-awesome/icons/regular/file-image';
+  import 'vue-awesome/icons/regular/file-alt';
+  import 'vue-awesome/icons/regular/file-video';
+  import 'vue-awesome/icons/regular/file-audio';
+  import 'vue-awesome/icons/regular/file-archive';
+  import 'vue-awesome/icons/regular/file';
 
   export default {
     props: ['file'],
@@ -20,14 +20,14 @@
     computed: {
       iconClass() {
         const type = this.file.type || this.file.metadata && this.file.metadata.type;
-        if(!type) return 'file-o';
-        if(type.startsWith('image')) return 'file-image-o';
-        if(type.startsWith('text')) return 'file-text-o';
-        if(type.startsWith('video')) return 'file-video-o';
-        if(type.startsWith('audio')) return 'file-audio-o';
-        if(type === 'application/pdf') return 'file-pdf-o';
-        if(type.startsWith('application')) return 'file-archive-o';
-        return 'file-o';
+        if(!type) return 'regular/file';
+        if(type.startsWith('image')) return 'regular/file-image';
+        if(type.startsWith('text')) return 'regular/file-alt';
+        if(type.startsWith('video')) return 'regular/file-video';
+        if(type.startsWith('audio')) return 'regular/file-audio';
+        if(type === 'application/pdf') return 'regular/file-pdf';
+        if(type.startsWith('application')) return 'regular/file-archive';
+        return 'regular/file';
       },
       isImageBlob() {
         if(!URL && !webkitURL) return false;

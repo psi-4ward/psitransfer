@@ -5,32 +5,34 @@
   "author": "Christoph Wiechert <wio@psitrax.de>",
   "private": true,
   "scripts": {
-    "dev": "cross-env NODE_ENV=development webpack-dev-server --inline --hot --host 0.0.0.0",
-    "build": "cross-env NODE_ENV=production webpack --progress --hide-modules"
+    "dev": "cross-env NODE_ENV=development webpack-dev-server",
+    "build": "cross-env NODE_ENV=production webpack --progress --hide-modules",
+    "analyze": "cross-env ANALYZE=true npm run build"
   },
   "dependencies": {
     "babel-polyfill": "^6.26.0",
     "crypto-js": "^3.1.9-1",
-    "drag-drop": "^2.13.2",
-    "tus-js-client": "^1.4.5",
-    "uuid": "^3.1.0",
-    "vue": "^2.5.8",
-    "vue-awesome": "^2.3.4",
+    "drag-drop": "^4.2.0",
+    "tus-js-client": "^1.5.2",
+    "uuid": "^3.3.2",
+    "vue": "^2.5.21",
+    "vue-awesome": "^3.2.0",
     "vuex": "^3.0.1"
   },
   "devDependencies": {
-    "babel-core": "^6.26.0",
-    "babel-loader": "^7.1.2",
-    "babel-plugin-transform-runtime": "^6.23.0",
-    "babel-preset-env": "^1.6.1",
-    "babel-preset-stage-2": "^6.24.1",
-    "cross-env": "^5.1.1",
-    "css-loader": "^0.28.7",
-    "file-loader": "^1.1.5",
-    "pug": "^2.0.0-rc.4",
-    "vue-loader": "^13.5.0",
-    "vue-template-compiler": "^2.5.8",
-    "webpack": "^3.8.1",
-    "webpack-dev-server": "^2.9.4"
+    "@babel/core": "^7.2.0",
+    "@babel/preset-env": "^7.2.0",
+    "babel-loader": "^8.0.4",
+    "cross-env": "^5.2.0",
+    "css-loader": "^2.0.0",
+    "file-loader": "^2.0.0",
+    "pug": "^2.0.3",
+    "pug-plain-loader": "^1.0.0",
+    "vue-loader": "^15.4.2",
+    "vue-template-compiler": "^2.5.21",
+    "webpack": "^4.27.1",
+    "webpack-bundle-analyzer": "^3.0.3",
+    "webpack-cli": "^3.1.2",
+    "webpack-dev-server": "^3.1.10"
   }
 }

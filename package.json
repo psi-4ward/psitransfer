@@ -13,17 +13,17 @@
   "bugs": "https://github.com/psi-4ward/psitransfer/issues",
   "main": "app.js",
   "dependencies": {
-    "archiver": "^2.1.0",
-    "compression": "^1.7.1",
+    "archiver": "^3.0.0",
+    "compression": "^1.7.3",
     "crypto-js": "^3.1.9-1",
-    "debug": "^3.1.0",
-    "express": "^4.16.2",
+    "debug": "^4.1.0",
+    "express": "^4.16.4",
     "fs-promise": "^2.0.3",
-    "http-errors": "^1.6.2",
+    "http-errors": "^1.7.1",
     "morgan": "^1.9.1",
     "tus-metadata": "^1.0.2",
     "tusboy": "^1.1.1",
-    "uuid": "^3.1.0"
+    "uuid": "^3.3.2"
   },
   "devDependencies": {},
   "scripts": {

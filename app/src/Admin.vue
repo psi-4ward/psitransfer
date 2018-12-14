@@ -1,7 +1,7 @@
 <template lang="pug">
   .download-app
     a.btn.btn-sm.btn-info.btn-new-session(@click='login()', title='Refresh', v-if="loggedIn")
-      icon(name="refresh")
+      icon(name="sync-alt")
 
     .alert.alert-danger(v-show="error")
       strong
@@ -15,7 +15,7 @@
         strong Access denied!
       |
       button.btn.btn-primary(type="submit", :disabled="!password")
-        icon.fa-fw(name="sign-in")
+        icon.fa-fw(name="sign-in-alt")
         |  login
 
     div(v-if="loggedIn")
@@ -63,8 +63,8 @@
 
 <script>
   import 'vue-awesome/icons/exclamation-triangle';
-  import 'vue-awesome/icons/refresh';
-  import 'vue-awesome/icons/sign-in';
+  import 'vue-awesome/icons/sync-alt';
+  import 'vue-awesome/icons/sign-in-alt';
   import 'vue-awesome/icons/key';
 
 
