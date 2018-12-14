@@ -94,6 +94,26 @@ The following elements are mandatory:
 `common.js` and respectively `upload.js`, `download.js` as well as `<div id="upload">`, `<div id="download">`  
 Please keep a footnote like *Powered by PsiTransfer* :)
 
+You can create style-override.css into public/assets  and override all styles.ccs options
+
+you can add a personal logo, creating an id as:
+
+mylogo {
+  background: url("mylogo.ext");
+}
+
+default height and width is 75px
+
+you can set your personal dimension defining them as:
+
+#mylogo {
+  background: url("mylogo.ext");
+  width: 75px;
+  height: 75px;
+}
+
+NOTE: put you mylogo.ext into public/assets
+
 ### Debug
 
 Psitransfer uses [debug](https://github.com/visionmedia/debug):

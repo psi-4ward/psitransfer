@@ -155,3 +155,10 @@ h1 .fa-icon {
 .preview-modal .header .btn-group {
   margin-left: 15px;
 }
+
+/*mylogo: define id for personalized logo */
+#mylogo {
+  width: 75px;
+    height: 75px;
+}
+
