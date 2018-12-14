@@ -73,6 +73,7 @@ h1 .fa-icon {
   height: 50px;
   width: 50px;
   vertical-align: middle;
+  fill: #0275D8;
 }
 .btn .fa-icon.fa-fw {
   width: 25px;
