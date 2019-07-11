@@ -20,7 +20,7 @@
     "debug": "^4.1.1",
     "express": "^4.17.1",
     "fs-promise": "^2.0.3",
-    "http-errors": "^1.7.2",
+    "http-errors": "^1.7.3",
     "morgan": "^1.9.1",
     "tus-metadata": "^1.0.2",
     "tusboy": "^1.1.1",
