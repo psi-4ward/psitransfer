@@ -20,15 +20,15 @@ const config =  {
   "forceHttps": '',
   // retention options in seconds:label
   "retentions": {
-    "one-time": "one time download",
-    "3600": "1 Hour",
-    "21600": "6 Hours",
-    "86400": "1 Day",
-    "259200": "3 Days",
-    "604800": "1 Week",
-    "1209600": "2 Weeks",
-    "2419200": "4 Weeks",
-    "4838400": "8 Weeks"
+    "one-time": "un seul téléchargement",
+    "3600": "1 heure",
+    "21600": "6 heures",
+    "86400": "1 jour",
+    "259200": "3 jours",
+    "604800": "1 semaine",
+    "1209600": "2 semaines",
+    "2419200": "4 semaines",
+    "4838400": "8 semaines"
   },
   // admin password, set to false to disable /admin page
   "adminPass": false,
@@ -37,7 +37,7 @@ const config =  {
   "maxAge": 3600*24*75, // 75 days
   // maximum file-size for previews in byte
   "maxPreviewSize": Math.pow(2,20) * 2, // 2MB
-  "mailTemplate": 'mailto:?subject=File Transfer&body=You can download the files here: %%URL%%',
+  "mailTemplate": 'mailto:?subject=Transfert de fichiers&body=Vous pouvez télécharger les fichiers ici : %%URL%%',
   // see https://github.com/expressjs/morgan
   // set to false to disable logging
   "accessLog": ':date[iso] :method :url :status :response-time :remote-addr',
