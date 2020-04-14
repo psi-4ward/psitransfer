@@ -1,0 +1,29 @@
+language: node_js
+node_js: 12
+
+script:
+  - (cd app && npm ci && npm run build)
+  - npm ci
+
+before_deploy:
+  - if [ -n "$TRAVIS_TAG" ] ; then npm version $TRAVIS_TAG ; fi
+  - >
+    tar -czf psitransfer-$TRAVIS_TAG.tar.gz
+      LICENSE
+      README.md
+      Dockerfile
+      .dockerignore
+      app.js
+      config.js
+      package.json
+      package-lock.json
+      docs
+      lib
+      public
+
+deploy:
+  provider: releases
+  token: $GH_TOKEN
+  overwrite: true
+  file: $TRAVIS_BUILD_DIR/psitransfer-$TRAVIS_TAG.tar.gz
+  skip_cleanup: true
