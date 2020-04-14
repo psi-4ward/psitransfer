@@ -11,7 +11,7 @@ NAME=$(git describe --exact-match --tags $COMMIT 2>/dev/null || echo $COMMIT)
 echo "### Building frontend apps"
 echo "======================================================"
 cd $DIR/../app
-npm install
+npm ci
 npm run build
 
 
@@ -29,6 +29,7 @@ tar -czf _releases/psitransfer-$NAME.tar.gz --transform "s~^~psitransfer-$NAME/~
   app.js \
   config.js \
   package.json \
+  package-lock.json \
   docs \
   lib \
   public
