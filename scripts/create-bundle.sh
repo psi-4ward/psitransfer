@@ -27,6 +27,7 @@ tar -czf _releases/psitransfer-$NAME.tar.gz --transform "s~^~psitransfer-$NAME/~
   Dockerfile \
   .dockerignore \
   app.js \
+  cli.js \
   config.js \
   package.json \
   package-lock.json \

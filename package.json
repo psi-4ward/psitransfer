@@ -1,6 +1,6 @@
 {
   "name": "psitransfer",
-  "version": "1.3.2",
+  "version": "0.0.0",
   "description": "Simple open source self-hosted file sharing solution",
   "keywords": [
     "share",
@@ -25,6 +25,9 @@
     "tus-metadata": "^1.0.2",
     "tusboy": "^1.1.1",
     "uuid": "^3.3.2"
+  },
+  "bin":{
+    "psitransfer": "cli.js"
   },
   "devDependencies": {},
   "scripts": {

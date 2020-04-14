@@ -14,12 +14,21 @@ before_deploy:
       Dockerfile \
       .dockerignore \
       app.js \
+      cli.js \
       config.js \
       package.json \
       package-lock.json \
       docs \
       lib \
       public
+  # npm deploy
+  - >
+    if [ -n "$TRAVIS_TAG" ] ; then
+      mkdir _pkg; cd _pkg; tar xzf ../psitransfer-$TRAVIS_TAG.tar.gz ;
+      npm set //registry.npmjs.org/:_authToken $NPM_API_TOKEN ;
+      npm publish;
+      cd .. ;
+    fi
 
 deploy:
   provider: releases
