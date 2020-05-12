@@ -41,11 +41,13 @@ const config =  {
   // see https://github.com/expressjs/morgan
   // set to false to disable logging
   "accessLog": ':date[iso] :method :url :status :response-time :remote-addr',
-  //use to set custom  upload url
+  // use to set custom upload url
   "uploadAppPath": '/',
-  // download notification webhook
-  // invokes an HTTP POST to this url whenever a file was downloaded
-  "fileDownloadedWebhook": null
+  // event webhooks
+  // invokes an HTTP POST to a url whenever a file is downloaded
+  // for more info, see the webhooks section of docs/configuration.md
+  "fileDownloadedWebhook": null,
+  "fileUploadedWebhook": null
 };
 
 
