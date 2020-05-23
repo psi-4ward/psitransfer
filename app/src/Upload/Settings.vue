@@ -1,17 +1,17 @@
 <template lang="pug">
   div(v-if="config && config.retentions")
     .panel.panel-default(:class="{'panel-info': !disabled}")
-      .panel-heading Settings
+      .panel-heading Ustawienia
       .panel-body
         .form-group
-          label(for='retention') Retention
+          label(for='retention') Czas
           |
           select#retention.form-control(:value='retention', :disabled='disabled',
           @change="$store.commit('upload/RETENTION', $event.target.value)")
             option(v-for='(label, seconds, index) in config.retentions',
             :value="seconds", :selected="seconds === retention") {{ label }}
         div
-          label(for='password') Password
+          label(for='password') Hasło
           .input-group
             input#password.form-control(type='text', :value='password',
             @input="$store.commit('upload/PASSWORD', $event.target.value)",
