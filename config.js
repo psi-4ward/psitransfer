@@ -20,15 +20,16 @@ const config =  {
   "forceHttps": '',
   // retention options in seconds:label
   "retentions": {
-    "one-time": "one time download",
-    "3600": "1 Hour",
-    "21600": "6 Hours",
-    "86400": "1 Day",
-    "259200": "3 Days",
-    "604800": "1 Week",
-    "1209600": "2 Weeks",
-    "2419200": "4 Weeks",
-    "4838400": "8 Weeks"
+    "one-time": "1 pobieranie",
+    "3600": "1 godzina",
+    "21600": "6 godzin",
+    "86400": "1 dzień",
+    "259200": "3 dni",
+    "604800": "1 tydzień",
+    "1209600": "2 tygodnie",
+    "2419200": "4 tygodnie",
+    "4838400": "8 tygodni"
+    "4838400": "8 tygodni"
   },
   // admin password, set to false to disable /admin page
   "adminPass": false,
