@@ -9,7 +9,7 @@
           a
             icon(name="plus", scale="4")
             br
-            |  Drop your files here
+            |  Tutaj upuść pliki lub kliknij aby wybrać
         table.table.table-striped
           tbody
             tr(v-for="file in files")
