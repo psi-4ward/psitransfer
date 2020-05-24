@@ -5,6 +5,8 @@ ENV PSITRANSFER_UPLOAD_DIR=/data \
 
 MAINTAINER Christoph Wiechert <wio@psitrax.de>
 
+RUN apk add --no-cache tzdata
+
 WORKDIR /app
 
 ADD *.js package.json package-lock.json README.md /app/
