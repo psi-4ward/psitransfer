@@ -10,7 +10,7 @@
           @change="$store.commit('upload/RETENTION', $event.target.value)")
             option(v-for='(label, seconds, index) in config.retentions',
             :value="seconds", :selected="seconds === retention") {{ label }}
-        div
+        div.form-group
           label(for='password') Password
           .input-group
             input#password.form-control(type='text', :value='password',
@@ -18,6 +18,14 @@
             :disabled='disabled', placeholder='optional')
             span.input-group-addon(style='cursor: pointer', title='generate password', @click='generatePassword()')
               icon(name="key")
+        div(v-if='allowUserConfigChunkSize').form-group
+          label(for='chunkSizeInMb') Chunk Size
+          .input-group
+            input#chunkSize.form-control(type='number', min=0, step=8, title='Smaller chunk will make upload more stable by splitting requests into smaller pieces but will take longer to finish',
+            :value='chunkSizeInMb',
+            @input='onChunkSizeInMbInputChange',
+            :disabled='disabled', placeholder='infinite')
+            span.input-group-addon MB
 </template>
 
 <script type="text/babel">
@@ -60,12 +68,19 @@
       disabled: 'disabled',
       retention: state => state.upload.retention,
       password: state => state.upload.password,
+      chunkSizeInMb: state => state.upload.chunkSizeInMb === 0 ? '' : String(state.upload.chunkSizeInMb),
+      allowUserConfigChunkSize: state => state.upload.allowUserConfigChunkSize
     }),
 
     methods: {
       generatePassword() {
         if (this.disabled) return;
         this.$store.commit('upload/PASSWORD', passGen.generate(10));
+      },
+      onChunkSizeInMbInputChange($event) {
+        this.$store.commit('upload/CHUNK_SIZE_IN_MB', $event.target.value);
+        // vue state/DOM out of sync since no rerender when no state change
+        $event.target.value = this.chunkSizeInMb;
       }
     }
   };

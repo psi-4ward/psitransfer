@@ -47,7 +47,11 @@ const config =  {
   // invokes an HTTP POST to a url whenever a file is downloaded
   // for more info, see the webhooks section of docs/configuration.md
   "fileDownloadedWebhook": null,
-  "fileUploadedWebhook": null
+  "fileUploadedWebhook": null,
+  // set chunk size for upload, 0 means upload whole file in single request
+  "chunkSizeInMb": 64, // 64MB
+  // allow config chunk size on web interface
+  "allowUserConfigChunkSize": true
 };
 
 

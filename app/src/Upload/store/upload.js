@@ -32,6 +32,8 @@ export default {
   state: {
     retention: null,
     password: '',
+    chunkSizeInMb: '',
+    allowUserConfigChunkSize: false,
     files: [],
     sid: getSid(),
     bytesUploaded: 0,
@@ -54,6 +56,19 @@ export default {
     },
     PASSWORD(state, pwd) {
       state.password = pwd;
+    },
+    CHUNK_SIZE_IN_MB(state, chunkSizeInMb) {
+      if (typeof chunkSizeInMb ==='string' && chunkSizeInMb.length === 0) {
+        state.chunkSizeInMb = 0;
+      } else {
+        const parsedChunkSizeInMb = parseInt(chunkSizeInMb, 10);
+        if (!isNaN(parsedChunkSizeInMb) && parsedChunkSizeInMb >= 0) {
+          state.chunkSizeInMb = parsedChunkSizeInMb;
+        }
+      }
+    },
+    ALLOW_USER_CONFIG_CHUNK_SIZE(state, allowUserConfigChunkSize) {
+      state.allowUserConfigChunkSize = !!allowUserConfigChunkSize;
     },
     ADD_FILE(state, file) {
       state.files.splice(0, 0, file);
@@ -114,7 +129,7 @@ export default {
         file._retryDelay = 500;
 
         const _File = file._File;
-        let tusUploader = new tus.Upload(_File, {
+        const uploadConfig = {
           metadata: {
             sid: state.sid,
             retention: state.retention,
@@ -184,7 +199,11 @@ export default {
             }});
             if(state.files.every(f => f.uploaded)) commit('STATE', 'uploaded', {root: true});
           }
-        });
+        };
+        if (state.chunkSizeInMb > 0) {
+          uploadConfig.chunkSize = state.chunkSizeInMb * 1024 * 1024;
+        }
+        const tusUploader = new tus.Upload(_File, uploadConfig);
         tusUploader.start();
       });
     }
