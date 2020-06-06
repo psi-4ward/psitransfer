@@ -19,7 +19,7 @@
       div.share-link
         span.title Download Link:
         |
-        a(:href='shareUrl') {{ shareUrl }}
+        a(style="word-wrap: break-word", :href='shareUrl') {{ shareUrl }}
     .row.overall-process(v-show="state === 'uploading'")
       .col-xs-12
         icon.pull-left(name="spinner", scale="2", spin="")
