@@ -34,7 +34,7 @@ const config =  {
   "adminPass": false,
   "defaultRetention": "604800",
   // expire every file after maxAge (eg never downloaded one-time files)
-  "maxAge": 3600*24*75, // 75 days
+  "maxAge": 3600 * 24 * 75, // 75 days
   // maximum file-size for previews in byte
   "maxPreviewSize": Math.pow(2,20) * 2, // 2MB
   "mailTemplate": 'mailto:?subject=File Transfer&body=You can download the files here: %%URL%%',
@@ -51,7 +51,12 @@ const config =  {
   // set chunk size for upload, 0 means upload whole file in single request
   "chunkSizeInMb": 64, // 64MB
   // allow config chunk size on web interface
-  "allowUserConfigChunkSize": true
+  "allowUserConfigChunkSize": true,
+  // enable in browser url shorten capability, url shortener must support CORS
+  // the url shortener button will not show if this value is not a valid RFC URL
+  // the original url will be replacing %%URL%% in the string
+  // exmaple: https://yourls.org/yourls-api.php?signature=1002a612b4&action=shorturl&format=json&url=%%URL%%
+  "urlShortenerEndpoint": null
 };
 
 

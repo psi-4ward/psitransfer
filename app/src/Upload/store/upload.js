@@ -37,7 +37,9 @@ export default {
     files: [],
     sid: getSid(),
     bytesUploaded: 0,
-
+    urlShortenerEndpoint: null,
+    urlShortenerEnabled: false,
+    shortenedUrl: null
   },
 
   getters: {
@@ -69,6 +71,15 @@ export default {
     },
     ALLOW_USER_CONFIG_CHUNK_SIZE(state, allowUserConfigChunkSize) {
       state.allowUserConfigChunkSize = !!allowUserConfigChunkSize;
+    },
+    URL_SHORTENER_ENDPOINT(state, urlShortenerEndpoint) {
+      state.urlShortenerEndpoint = urlShortenerEndpoint;
+    },
+    URL_SHORTENER_ENABLED(state, urlShortenerEnabled) {
+      state.urlShortenerEnabled = urlShortenerEnabled;
+    },
+    SHORTENED_URL(state, shortenedUrl) {
+      state.shortenedUrl = shortenedUrl;
     },
     ADD_FILE(state, file) {
       state.files.splice(0, 0, file);

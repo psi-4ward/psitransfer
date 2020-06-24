@@ -26,6 +26,7 @@ export default {
             commit('upload/RETENTION', conf.defaultRetention, {root:true});
             commit('upload/CHUNK_SIZE_IN_MB', conf.chunkSizeInMb, {root:true});
             commit('upload/ALLOW_USER_CONFIG_CHUNK_SIZE', conf.allowUserConfigChunkSize, {root:true});
+            commit('upload/URL_SHORTENER_ENDPOINT', conf.urlShortenerEndpoint, {root:true});
           }
           catch(e) {
             commit('ERROR', `Config parse Error: ${e.message}`, {root: true});

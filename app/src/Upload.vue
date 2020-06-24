@@ -12,14 +12,17 @@
         a.btn.btn-primary(:href="mailLnk")
           icon.fa-fw(name="envelope")
           |  Mail
-        clipboard.btn.btn-primary(:value='shareUrl')
+        span.btn.btn-primary(v-if="showUrlShortenerButton", :disabled="!urlShortenerEnabled", @click='shorten()')
+          icon.fa-fw(name="link")
+          |  Shorten
+        clipboard.btn.btn-primary(:value='displayUrl')
       h3.text-success
         icon.fa-fw(name="check")
         |  Upload completed
       div.share-link
         span.title Download Link:
         |
-        a(style="word-wrap: break-word", :href='shareUrl') {{ shareUrl }}
+        a(style="word-wrap: break-word", :href='displayUrl') {{ displayUrl }}
       qrcode(:value='shareUrl', style="text-align:center; margin:1em")
       
     .row.overall-process(v-show="state === 'uploading'")
@@ -56,6 +59,7 @@
   import 'vue-awesome/icons/upload';
   import 'vue-awesome/icons/check';
   import 'vue-awesome/icons/spinner';
+  import 'vue-awesome/icons/link';
   import 'vue-awesome/icons/envelope';
   import 'vue-awesome/icons/exclamation-triangle';
 
@@ -71,12 +75,25 @@
 
     computed: {
       ...mapState(['error', 'disabled', 'state']),
-      ...mapState('upload', ['sid', 'files']),
+      ...mapState('upload', ['sid', 'files', 'urlShortenerEndpoint', 'urlShortenerEnabled', 'shortenedUrl']),
       ...mapGetters('upload', ['percentUploaded', 'shareUrl']),
       mailLnk: function() {
         return this.$store.state.config
           && this.$store.state.config.mailTemplate
           && this.$store.state.config.mailTemplate.replace('%%URL%%', this.shareUrl);
+      },
+      showUrlShortenerButton: function() {
+        try {
+          new URL(this.urlShortenerEndpoint);
+          return true;
+        } catch (err) {}
+        return false;
+      },
+      displayUrl: function() {
+        if (typeof this.shortenedUrl === 'string' && this.shortenedUrl.length > 0) {
+          return this.shortenedUrl;
+        }
+        return this.shareUrl;
       }
     },
 
@@ -90,10 +107,57 @@
       }
     },
 
+    mounted() {
+      this.$store.commit('upload/URL_SHORTENER_ENABLED', true);
+      this.$store.commit('upload/SHORTENED_URL', null)
+    },
+
     methods: {
       newSession() {
         if (!confirm('Create a new upload session?')) return;
         document.location.reload();
+      },
+      shorten() {
+        if (this.urlShortenerEnabled) {
+          // disable the button to avoid calling shortener again
+          this.$store.commit('upload/URL_SHORTENER_ENABLED', false);
+          const urlShortenerEndpointWithShareUrl = this.urlShortenerEndpoint.replace('%%URL%%', this.shareUrl);
+          fetch(urlShortenerEndpointWithShareUrl, {
+            method: 'GET',
+            headers: {
+              'Accept': 'text/html, application/xhtml+xml, application/xml, application/json'
+            },
+            mode: 'cors', // no-cors, *cors, same-origin
+            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+            credentials: 'same-origin',
+            redirect: 'follow', // manual, *follow, error
+            referrerPolicy: 'no-referrer'
+          }).then(response => response.text()).then(
+            (result) => {
+              if (typeof result === 'string' && result.length > 0) {
+                const shortUrlMatcher = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/g;
+                const shortUrl = (result.match(shortUrlMatcher) || []).sort(function(a, b) {
+                    return a.length - b.length;
+                })[0];
+                if (typeof shortUrl === 'string' && shortUrl.length > 0) {
+                  this.$store.commit('upload/SHORTENED_URL', shortUrl);
+                  return;
+                }
+              }
+            }
+          ).catch(
+            (err) => {
+              console.error(err);
+              // we don't know why it failed, could be CORS of the external server not setup properly
+              // in which case we attempt to open it in new tab
+              window.open(
+                urlShortenerEndpointWithShareUrl,
+                '_blank',
+                'noopener, noreferrer'
+              );
+            }
+          );
+        }
       }
     }
 
