@@ -25,7 +25,7 @@ export default {
             commit('SET', conf);
             commit('upload/RETENTION', conf.defaultRetention, {root:true});
             commit('upload/CHUNK_SIZE_IN_MB', conf.chunkSizeInMb, {root:true});
-            commit('upload/ALLOW_USER_CONFIG_CHUNK_SIZE', conf.allowUserConfigChunkSize, {root:true})
+            commit('upload/ALLOW_USER_CONFIG_CHUNK_SIZE', conf.allowUserConfigChunkSize, {root:true});
           }
           catch(e) {
             commit('ERROR', `Config parse Error: ${e.message}`, {root: true});
