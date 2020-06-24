@@ -20,6 +20,8 @@
         span.title Download Link:
         |
         a(style="word-wrap: break-word", :href='shareUrl') {{ shareUrl }}
+      qrcode(:value='shareUrl', style="text-align:center; margin:1em")
+      
     .row.overall-process(v-show="state === 'uploading'")
       .col-xs-12
         icon.pull-left(name="spinner", scale="2", spin="")
@@ -48,6 +50,8 @@
   import Settings from './Upload/Settings.vue';
   import Files from './Upload/Files.vue';
   import Clipboard from './common/Clipboard.vue'
+
+  import Qrcode from 'qrcode.vue';
   import 'vue-awesome/icons/cloud-upload-alt';
   import 'vue-awesome/icons/upload';
   import 'vue-awesome/icons/check';
@@ -62,6 +66,7 @@
       Settings,
       Files,
       Clipboard,
+      Qrcode
     },
 
     computed: {
