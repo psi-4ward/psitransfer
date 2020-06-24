@@ -60,7 +60,7 @@
 
     mounted() {
       // init drop files support on <body>
-      dragDrop('body', files => this.$store.dispatch('upload/addFiles', files));
+      dragDrop('body', files => this.disabled ? null : this.$store.dispatch('upload/addFiles', files));
     }
   };
 </script>
