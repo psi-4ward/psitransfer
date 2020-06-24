@@ -27,7 +27,7 @@
                 .progress(v-show="!file.error && (state === 'uploading' || state === 'uploaded')")
                   .progress-bar.progress-bar-success.progress-bar-striped(:style="{width: file.progress.percentage+'%'}",:class="{active:!file.uploaded}")
               td.btns
-                a(style="cursor:pointer", @click="!disabled && $store.commit('upload/REMOVE_FILE', file)", :disabled="disabled")
+                a(:style="{cursor: disabled ? 'not-allowed' : 'pointer'}", @click="!disabled && $store.commit('upload/REMOVE_FILE', file)", :disabled="disabled")
                   icon(name="times")
 
         input#fileInput(type="file", @change="$store.dispatch('upload/addFiles', $event.target.files)", multiple="", :disabled="disabled", style="display: none")
