@@ -8,22 +8,22 @@
         icon.fa-fw(name="exclamation-triangle")
         |  {{ error }}
     .well(v-show="state === 'uploaded'")
-      .pull-right.btn-group
-        a.btn.btn-primary(:href="mailLnk")
-          icon.fa-fw(name="envelope")
-          |  Mail
-        span.btn.btn-primary(v-if="showUrlShortenerButton", :disabled="!urlShortenerEnabled", @click='shorten()')
-          icon.fa-fw(name="link")
-          |  Shorten
-        clipboard.btn.btn-primary(:value='displayUrl')
-      h3.text-success
+      h3.text-success(style="text-align:center")
         icon.fa-fw(name="check")
         |  Upload completed
-      div.share-link
+      qrcode(:value='shareUrl', style="text-align:center; margin:1em")
+      div.share-link(style="text-align:center; margin-bottom:1em")
         span.title Download Link:
         |
-        a(style="word-wrap: break-word", :href='displayUrl') {{ displayUrl }}
-      qrcode(:value='shareUrl', style="text-align:center; margin:1em")
+        a(style="word-wrap:break-word; display:inline-block", :href='displayUrl') {{ displayUrl }}
+      div.btn-group(style="margin:0 auto; display:flex; max-width:40em")
+        a.btn.btn-primary(:href="mailLnk", style="flex:1")
+          icon.fa-fw(name="envelope")
+          |  Mail
+        span.btn.btn-primary(v-if="showUrlShortenerButton", :disabled="!urlShortenerEnabled", @click='shorten()', style="flex:1")
+          icon.fa-fw(name="link")
+          |  Shorten
+        clipboard.btn.btn-primary(:value='displayUrl', style="flex:1")
       
     .row.overall-process(v-show="state === 'uploading'")
       .col-xs-12
