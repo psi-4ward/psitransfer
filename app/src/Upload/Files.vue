@@ -59,8 +59,8 @@
     }),
 
     mounted() {
-      // init drop files support on <body>
-      dragDrop('body', files => this.disabled ? null : this.$store.dispatch('upload/addFiles', files));
+      // init drop files support on <html>
+      dragDrop('html', files => this.disabled ? null : this.$store.dispatch('upload/addFiles', files));
     }
   };
 </script>

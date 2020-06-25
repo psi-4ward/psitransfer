@@ -35,18 +35,9 @@ body > .container {
   z-index: -1;
 }
 .drag #dropHelper {
-  background-color: rgba(40, 40, 40, 0.45);
-  border: 4px dashed #eeeeee;
+  background-color: rgba(2, 117, 216, 0.45);
+  border: 4px dashed rgba(2, 117, 216);
   z-index: 100;
-  font: normal normal normal 14px/1 FontAwesome;
-  text-rendering: auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.drag #dropHelper:before {
-  content: "\f019";
-  font-size: 8em;
 }
 
 
