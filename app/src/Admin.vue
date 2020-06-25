@@ -166,7 +166,7 @@
   }
 </script>
 
-<style>
+<style scoped>
   .bucket {
     cursor: pointer;
   }

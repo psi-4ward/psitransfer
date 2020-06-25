@@ -11,7 +11,7 @@
       h3.text-success(style="text-align:center")
         icon.fa-fw(name="check")
         |  Upload completed
-      qrcode(:value='shareUrl', style="text-align:center; margin:1em")
+      qrcode.qrcode(:value='shareUrl', size="200", style="text-align:center; margin:1em")
       div.share-link(style="text-align:center; margin-bottom:1em")
         span.title Download Link:
         |
@@ -54,7 +54,7 @@
   import Files from './Upload/Files.vue';
   import Clipboard from './common/Clipboard.vue'
 
-  import Qrcode from 'qrcode.vue';
+  import Qrcode from 'qrcode.vue'
   import 'vue-awesome/icons/cloud-upload-alt';
   import 'vue-awesome/icons/upload';
   import 'vue-awesome/icons/check';
@@ -163,3 +163,10 @@
 
   }
 </script>
+
+// cannot use "scoped" here since canvas/svg is not within this component
+<style>
+  .qrcode canvas, .qrcode svg {
+    border: 10px solid white !important;
+  }
+</style>
