@@ -52,7 +52,6 @@
   import 'vue-awesome/icons/cloud-upload-alt';
   import 'vue-awesome/icons/upload';
   import 'vue-awesome/icons/check';
-  import 'vue-awesome/icons/spinner';
   import 'vue-awesome/icons/link';
   import 'vue-awesome/icons/envelope';
   import 'vue-awesome/icons/exclamation-triangle';
