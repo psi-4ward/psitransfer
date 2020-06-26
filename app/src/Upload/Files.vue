@@ -158,10 +158,36 @@
   .table-striped > tbody > tr:last-of-type > td:last-of-type {
     border-radius: 0 0 15px 0;
   }
+  .table-striped > tbody > tr > td {
+    border: none;
+  }
   input {
     border-radius: 20px;
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
+  }
+  /* Safari only, since Safari don't support using element as background */
+  _::-webkit-full-page-media, _:future, :root .table tr:first-of-type .progress-background {
+    border-radius: 5px;
+  }
+  _::-webkit-full-page-media, _:future, :root .table tr:last-of-type .progress-background {
+    border-radius: 5px;
+  }
+  _::-webkit-full-page-media, _:future, :root .progress-background {
+    position: relative;
+    z-index: initial;
+    top: initial;
+    left: initial;
+    height: 10px;
+    display: block;
+    width: 100%;
+    transform: translateY(10px);
+  }
+  _::-webkit-full-page-media, _:future, :root .table-striped > tbody > tr:not(:last-of-type) > td {
+    background-color: rgba(255, 255, 255, 0.5);
+  }
+  _::-webkit-full-page-media, _:future, :root tr:last-of-type .progress-background {
+    display: none;
   }
 </style>
