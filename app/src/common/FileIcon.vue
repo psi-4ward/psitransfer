@@ -12,6 +12,7 @@
   import 'vue-awesome/icons/regular/file-video';
   import 'vue-awesome/icons/regular/file-audio';
   import 'vue-awesome/icons/regular/file-archive';
+  import 'vue-awesome/icons/regular/file-pdf'
   import 'vue-awesome/icons/regular/file';
 
   export default {
