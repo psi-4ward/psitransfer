@@ -13,9 +13,9 @@ Copies a string into the clipboard
 <template lang="pug">
   span(@click.stop='copy()', style='cursor: pointer')
     slot(:state='state')
-      icon.fa-fw(name="copy", v-if="state==='pristine'")
-      icon.fa-fw(name="check", v-if="state==='copied'")
-      icon.fa-fw(name="exclamation-triangle", v-if="state==='error'")
+      icon.fa-fw(name="copy", v-if="state === 'pristine'")
+      icon.fa-fw(name="check", v-if="state === 'copied'")
+      icon.fa-fw(name="exclamation-triangle", v-if="state === 'error'")
       slot(name='text')  Copy
 </template>
 
