@@ -146,7 +146,7 @@
               if(bucketSum.firstExpire > file.expireDate) bucketSum.firstExpire = file.expireDate;
             }
           });
-          this.totalSize += bucketSum.size;
+          this.totalSize += isNaN(bucketSum.size) ? 0 : bucketSum.size;
           this.$set(this.sum, sid, bucketSum);
         });
       },
