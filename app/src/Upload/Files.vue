@@ -9,7 +9,7 @@
         |  Drag your files here
     table.table.table-striped
       tbody
-        tr(v-for="file in files", style="position: relative")
+        tr(v-for="file in files", style="position: relative; transform: scale(1)", :class="{disabled: disabled}")
           td.file-icon(style="position: relative; overflow: hidden")
             file-icon(:file="file._File", style="position: absolute; width: 100%; text-align: center; top: 50%; transform: translateY(-50%)")
           td
@@ -27,7 +27,7 @@
           td.btns
             span(:style="{cursor: disabled ? 'not-allowed' : 'pointer'}", @click="!disabled && $store.commit('upload/REMOVE_FILE', file)", :disabled="disabled")
               icon(name="times")
-        tr(v-if="files.length > 0", style="position: relative")
+        tr(v-if="files.length > 0", style="position: relative; transform: scale(1)")
           td
             strong(style="display: block; text-align: right") Total
           td
@@ -133,8 +133,8 @@
     background-color: unset;
     color: #C17600;
   }
-  .table-striped > tbody > tr > td {
-    background-color: rgba(255,255,255,0.5);
+  .table-striped > tbody > tr:not(.disabled) > td {
+    background-color: rgba(255, 255, 255, 0.5);
   }
   .table-striped > tbody > tr:first-of-type {
     background-color: unset;
