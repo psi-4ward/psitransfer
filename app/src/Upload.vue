@@ -1,13 +1,13 @@
 <template lang="pug">
   .upload-app#uploadApp
-    a.btn.btn-sm.btn-info.btn-new-session(@click='newSession()', title='New Upload')
+    div.btn.btn-default.btn-new-session(@click='newSession()', title='New Upload')
       icon.fa-fw(name="cloud-upload-alt")
-      span.hidden-xs  new upload
+      span.hidden-xs  New Upload
     .alert.alert-danger(v-show="error")
       strong
         icon.fa-fw(name="exclamation-triangle")
         |  {{ error }}
-    .well(v-show="state === 'uploaded'")
+    .uploaded(v-show="state === 'uploaded'")
       h3.text-success(style="text-align:center")
         icon.fa-fw(name="check")
         |  Upload completed
@@ -17,33 +17,27 @@
         |
         a(style="word-wrap:break-word; display:inline-block", :href='displayUrl') {{ displayUrl }}
       div.btn-group(style="margin:0 auto; display:flex; max-width:40em")
-        a.btn.btn-primary(:href="mailLnk", style="flex:1")
+        a.btn.btn-warning(:href="mailLnk", style="flex:1")
           icon.fa-fw(name="envelope")
           |  Mail
         span.btn.btn-primary(v-if="showUrlShortenerButton", :disabled="!urlShortenerEnabled", @click='shorten()', style="flex:1")
           icon.fa-fw(name="link")
           |  Shorten
-        clipboard.btn.btn-primary(:value='displayUrl', style="flex:1")
-      
-    .row.overall-process(v-show="state === 'uploading'")
-      .col-xs-12
-        icon.pull-left(name="spinner", scale="2", spin="")
-        .progress
-          .progress-bar.progress-bar-success.progress-bar-striped.active(:style="{width: percentUploaded+'%'}")
-            span(v-show='percentUploaded>10') {{ percentUploaded }}%
+        clipboard.btn.btn-default(:value='displayUrl', style="flex:1")
+
     .row
       .col-sm-7
         files
       .col-sm-5
         settings
         .text-right(v-show='files.length && !disabled')
-          button.btn.btn-lg.btn-success(@click="$store.dispatch('upload/upload')")
+          button.btn.btn-lg.btn-info(@click="$store.dispatch('upload/upload')")
             icon.fa-fw(name="upload")
-            |  upload
+            |  Upload
         .text-right(v-show="state === 'uploadError'")
-          button.btn.btn-lg.btn-success(@click="$store.dispatch('upload/upload')")
+          button.btn.btn-lg.btn-warning(@click="$store.dispatch('upload/upload')")
             icon.fa-fw(name="upload")
-            |  retry
+            |  Retry
 </template>
 
 <script type="text/babel">
@@ -76,7 +70,7 @@
     computed: {
       ...mapState(['error', 'disabled', 'state']),
       ...mapState('upload', ['sid', 'files', 'urlShortenerEndpoint', 'urlShortenerEnabled', 'shortenedUrl']),
-      ...mapGetters('upload', ['percentUploaded', 'shareUrl']),
+      ...mapGetters('upload', ['shareUrl']),
       mailLnk: function() {
         return this.$store.state.config
           && this.$store.state.config.mailTemplate
@@ -168,5 +162,16 @@
 <style>
   .qrcode canvas, .qrcode svg {
     border: 10px solid white !important;
+    max-width: 50vmin;
+    max-height: 50vmin;
+  }
+  .uploaded {
+    min-height: 20px;
+    padding: 19px;
+    margin-bottom: 20px;
+    background-color: #f5f5f5;
+    border: 1px solid #e3e3e3;
+    border-radius: 5px;
+    box-shadow: 0 10px 75px rgba(0, 0, 0, 0.5);
   }
 </style>

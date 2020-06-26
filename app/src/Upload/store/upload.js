@@ -35,6 +35,7 @@ export default {
     chunkSizeInMb: '',
     allowUserConfigChunkSize: false,
     files: [],
+    totalHumanSize: '',
     sid: getSid(),
     bytesUploaded: 0,
     urlShortenerEndpoint: null,
@@ -83,10 +84,12 @@ export default {
     },
     ADD_FILE(state, file) {
       state.files.splice(0, 0, file);
+      state.totalHumanSize = humanFileSize(state.files.reduce((sum, f) => sum + f._File.size, 0));
     },
     REMOVE_FILE(state, file) {
       let index = state.files.indexOf(file);
       if(index > -1) state.files.splice(index, 1);
+      state.totalHumanSize = humanFileSize(state.files.reduce((sum, f) => sum + f._File.size, 0));
     },
     UPDATE_FILE(state, payload) {
       for(let k in payload.data) {

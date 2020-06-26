@@ -36,7 +36,8 @@ body > .container {
 }
 .drag #dropHelper {
   background-color: rgba(2, 117, 216, 0.45);
-  border: 4px dashed rgba(2, 117, 216);
+  border: 5px dashed rgba(2, 117, 216);
+  border-radius: 5px;
   z-index: 100;
 }
 
@@ -51,8 +52,9 @@ body > .container {
 }
 .btn-new-session {
   position: absolute;
-  top: 15px;
+  top: 2em;
   right: 15px;
+  border-radius: 20px;
 }
 .well h3 {
   margin-top: 0;
@@ -60,16 +62,39 @@ body > .container {
 td.file-icon {
   width: 60px;
 }
+.logo {
+  background-color: #0275D8;
+  border-radius: 50%;
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  position: relative;
+  box-shadow: 0 5px 25px #31708f;
+  vertical-align: bottom;
+}
+.title-main {
+  font-weight: bolder;
+}
+.title-sub {
+  font-weight: lighter;
+}
 h1 .fa-icon {
-  height: 50px;
-  width: 50px;
-  vertical-align: middle;
+  height: 0.6em;
+  width: 0.6em;
+  fill: white;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 .btn .fa-icon.fa-fw {
   width: 25px;
 }
 .btn .fa-icon {
   vertical-align: middle;
+}
+.btn {
+  border-radius: 25px;
 }
 
 
@@ -114,10 +139,6 @@ h1 .fa-icon {
 
 
 /* Upload::Files Component */
-.upload-files .empty-files-big-plus {
-  text-align: center;
-  padding: 19px 0;
-}
 .upload-files td.btns {
   width: 33px;
 }
@@ -127,12 +148,6 @@ h1 .fa-icon {
 
 
 /* Download Component */
-.download-app .btn-download-archive {
-  margin-top: -5px;
-}
-.download-app .file-size {
-  margin-left: 10px;
-}
 .download-app table {
   margin-bottom: 0;
 }

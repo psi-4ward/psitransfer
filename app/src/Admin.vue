@@ -7,7 +7,7 @@
       strong
         icon.fa-fw(name="exclamation-triangle")
         |  {{ error }}
-    form.well(v-if='!loggedIn', @submit.stop.prevent="login")
+    form.password(v-if='!loggedIn', @submit.stop.prevent="login")
       h3 Password
       .form-group
         input.form-control(type='password', v-model='password', autofocus="")
@@ -26,7 +26,7 @@
             th Created
             th Downloaded
             th Expire
-            th Size
+            th(style="text-align: right") Size
         template(v-for="(bucket, sid) in db")
           tbody(:class="{expanded: expand === sid}")
             tr.bucket(@click="expandView(sid)")
@@ -43,8 +43,9 @@
               td.text-right {{ humanFileSize(sum[sid].size) }}
           tbody.expanded(v-if="expand === sid")
             template(v-for="file in bucket")
-              tr.file
-                td {{ file.metadata.name }}
+              tr.file(style="background-color: rgba(0, 0, 0, 0.2)")
+                td
+                  span(style="margin-left: 1em") {{ file.metadata.name }}
                 td {{+file.metadata.createdAt | date}}
                 td
                   template(v-if="file.metadata.lastDownload") {{ +file.metadata.lastDownload | date}}
@@ -56,7 +57,7 @@
         tfoot
           tr
             td(colspan="3")
-            td.text-right(colspan="2") Sum: {{ humanFileSize(sizeSum) }}
+            td.text-right(colspan="2") Total: {{ humanFileSize(totalSize) }}
 
 </template>
 
@@ -80,7 +81,7 @@
         error: '',
         passwordWrong: false,
         expand: false,
-        sizeSum: 0
+        totalSize: 0
       }
     },
 
@@ -116,7 +117,7 @@
       },
 
       expandDb() {
-        this.sizeSum = 0;
+        this.totalSize = 0;
         Object.keys(this.db).forEach(sid => {
           const bucketSum = {
             firstExpire: Number.MAX_SAFE_INTEGER,
@@ -145,7 +146,7 @@
               if(bucketSum.firstExpire > file.expireDate) bucketSum.firstExpire = file.expireDate;
             }
           });
-          this.sizeSum += bucketSum.size;
+          this.totalSize += bucketSum.size;
           this.$set(this.sum, sid, bucketSum);
         });
       },
@@ -178,5 +179,14 @@
   }
   tfoot {
     font-weight: bold;
+  }
+  .password {
+    min-height: 20px;
+    padding: 19px;
+    margin-bottom: 20px;
+    background-color: #f5f5f5;
+    border: 1px solid #e3e3e3;
+    border-radius: 5px;
+    box-shadow: 0 10px 75px rgba(0, 0, 0, 0.5);
   }
 </style>

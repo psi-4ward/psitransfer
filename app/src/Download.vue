@@ -1,13 +1,13 @@
 <template lang="pug">
   .download-app
-    a.btn.btn-sm.btn-info.btn-new-session(@click='newSession()', title='New Upload')
+    div.btn.btn-default.btn-new-session(@click='newSession()', title='New Upload')
       icon.fa-fw(name="cloud-upload-alt")
-      span.hidden-xs  new upload
+      span.hidden-xs  New Upload
     .alert.alert-danger(v-show="error")
       strong
         icon.fa-fw(name="exclamation-triangle")
         |  {{ error }}
-    .well(v-if='needsPassword')
+    .password(v-if='needsPassword')
       h3 Password
       .form-group
         input.form-control(type='password', v-model='password')
@@ -17,34 +17,36 @@
       button.btn.btn-primary(:disabled='password.length<1', @click='decrypt()')
         icon.fa-fw(name="key")
         |  decrypt
-    .panel.panel-primary(v-if='!needsPassword')
-      .panel-heading
-        strong Files
-        div.pull-right.btn-group.btn-download-archive(v-if="downloadsAvailable")
-          a.btn.btn-sm.btn-default(@click="downloadAll('zip')", title="Archive download is not resumeable!")
-            icon.fa-fw(name="download")
-            |  zip
-          a.btn.btn-sm.btn-default(@click="downloadAll('tar.gz')", title="Archive download is not resumeable!")
-            icon.fa-fw(name="download")
-            |  tar.gz
-      .panel-body
-        table.table.table-hover.table-striped
-          tbody
-            tr(v-for='file in files', style='cursor: pointer', @click='download(file)')
-              td.file-icon
-                file-icon(:file='file')
-              td
-                div.pull-right.btn-group
-                  clipboard.btn.btn-sm.btn-default(:value='host + file.url', @change='copied(file, $event)', title='Copy to clipboard')
-                    a
-                      icon(name="copy")
-                  a.btn.btn-sm.btn-default(title="Preview", @click.prevent.stop="preview=file", v-if="file.previewType")
-                    icon(name="eye")
-                i.pull-right.fa.fa-check.text-success.downloaded(v-show='file.downloaded')
-                p
-                  strong {{ file.metadata.name }}
-                  small.file-size(v-if="isFinite(file.size)") ({{ humanFileSize(file.size) }})
-                p {{ file.metadata.comment }}
+    .download-files(v-if='!needsPassword')
+      table.table.table-hover.table-striped
+        tbody
+          tr(v-for='file in files', style='cursor: pointer', @click='download(file)')
+            td.file-icon
+              file-icon(:file='file', style="width: 100%; text-align: center")
+            td
+              div.pull-right.btn-group
+                clipboard.btn.btn-sm.btn-default(:value='host + file.url', @change='copied(file, $event)', title='Copy to clipboard')
+                  a
+                    icon(name="copy")
+                a.btn.btn-sm.btn-default(title="Preview", @click.prevent.stop="preview=file", v-if="file.previewType")
+                  icon(name="eye")
+              i.pull-right.fa.fa-check.text-success.downloaded(v-show='file.downloaded')
+              p
+                strong {{ file.metadata.name }}
+                .file-size(v-if="isFinite(file.size)") {{ humanFileSize(file.size) }}
+              p {{ file.metadata.comment }}
+          tr
+            td(style="position: relative")
+              strong(style="position: absolute; top: 50%; transform: translateY(-50%); display: block; width: 100%; text-align: center") Total
+            td(style="position: relative")
+              div.pull-right.btn-group.btn-download-archive(v-if="downloadsAvailable")
+                a.btn.btn-sm.btn-default(@click="downloadAll('zip')", title="Archive download is not resumeable!")
+                  icon.fa-fw(name="download")
+                  |  zip
+                a.btn.btn-sm.btn-default(@click="downloadAll('tar.gz')", title="Archive download is not resumeable!")
+                  icon.fa-fw(name="download")
+                  |  tar.gz
+              div(style="position: absolute; top: 50%; transform: translateY(-50%)") {{ humanFileSize(totalSize) }}
 
     preview-modal(:preview="preview", :files="previewFiles", :max-size="config.maxPreviewSize", @close="preview=false")
 
@@ -107,8 +109,10 @@
       },
       previewFiles: function() {
         return this.files.filter(f => !!f.previewType);
+      },
+      totalSize: function() {
+        return this.files.reduce((sum, f) => sum + f.size, 0);
       }
-
     },
 
     methods: {
@@ -217,3 +221,66 @@
     }
   }
 </script>
+
+<style scoped>
+  .password {
+    min-height: 20px;
+    padding: 19px;
+    margin-bottom: 20px;
+    background-color: #f5f5f5;
+    border: 1px solid #e3e3e3;
+    border-radius: 5px;
+    box-shadow: 0 10px 75px rgba(0, 0, 0, 0.5);
+  }
+  .download-files {
+    background-image: linear-gradient(15deg, #bce8f111, #31708f84);
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    min-height: 50vh;
+    margin-bottom: 2em;
+    padding: 2em;
+  }
+  .download-files * {
+    word-break: break-all;
+  }
+  .table {
+    border-collapse: separate;
+  }
+  .table-striped > tbody > tr:nth-of-type(2n+1) {
+    color: #017bbb;
+    background-color: unset;
+  }
+  .table-striped > tbody > tr:nth-of-type(2n) {
+    background-color: unset;
+    color: #C17600;
+  }
+  .table-striped > tbody > tr > td {
+    background-color: rgba(255,255,255,0.5);
+  }
+  .table-striped > tbody > tr:first-of-type {
+    background-color: unset;
+  }
+  .table-striped > tbody > tr:last-of-type {
+    background-color: unset;
+    color: white;
+  }
+  .table-striped > tbody > tr:last-of-type > td {
+    background-color: rgba(0, 0, 0, 0.4);
+  }
+  .table-striped > tbody > tr:first-of-type > td:first-of-type {
+    border-radius: 15px 0 0 0;
+  }
+  .table-striped > tbody > tr:first-of-type > td:last-of-type {
+    border-radius: 0 15px 0 0;
+  }
+  .table-striped > tbody > tr:last-of-type > td:first-of-type {
+    border-radius: 0 0 0 15px;
+  }
+  .table-striped > tbody > tr:last-of-type > td:last-of-type {
+    border-radius: 0 0 15px 0;
+  }
+</style>
