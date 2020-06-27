@@ -32,7 +32,8 @@
             tr.bucket(@click="expandView(sid)")
               td
                 | {{ sid }}
-                icon.pull-right(name="key", v-if="sum[sid].password", title="Password protected")
+                icon.pull-right.marker(name="key", v-if="sum[sid].password", title="Password protected")
+                icon.pull-right.marker(name="exclamation-triangle", v-if="sum[sid].hasFailedUpload", title="Some upload(s) failed")
               td {{ sum[sid].created | date }}
               td
                 template(v-if="sum[sid].lastDownload") {{ sum[sid].lastDownload | date}}
@@ -53,7 +54,7 @@
                 td
                   template(v-if="typeof file.expireDate === 'number'") {{ file.expireDate | date }}
                   template(v-else) {{ file.expireDate }}
-                td.text-right {{ humanFileSize(file.size) }}
+                td.text-right {{ isNaN(file.size) ? 'Upload Failed' : humanFileSize(file.size) }}
         tfoot
           tr
             td(colspan="3")
@@ -124,10 +125,12 @@
             lastDownload: 0,
             created: Number.MAX_SAFE_INTEGER,
             password: false,
+            hasFailedUpload: false,
             size: 0
           };
           this.db[sid].forEach(file => {
-            bucketSum.size += file.size;
+            bucketSum.size += isNaN(file.size) ? 0 : file.size;
+            bucketSum.hasFailedUpload = isNaN(file.size) || bucketSum.hasFailedUpload;
             if(file.metadata._password) {
               bucketSum.password = true;
             }
@@ -188,5 +191,8 @@
     border: 1px solid #e3e3e3;
     border-radius: 5px;
     box-shadow: 0 10px 75px rgba(0, 0, 0, 0.5);
+  }
+  .marker {
+    margin: 0 0.5rem;
   }
 </style>
