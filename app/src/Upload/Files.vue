@@ -146,6 +146,7 @@
   }
   .table-striped > tbody > tr:last-of-type > td {
     background-color: rgba(0, 0, 0, 0.4);
+    transition: 0.25s background-color ease;
   }
   .table-striped > tbody > tr:first-of-type > td:first-of-type {
     border-radius: 15px 0 0 0;
@@ -190,11 +191,11 @@
   }
   /* Firefox only, since Firefox don't support background color with alpha channel while using element as background */
   @-moz-document url-prefix() {
-    .table-striped > tbody > tr[disabled] > td {
+    .table-striped > tbody > tr[disabled]:not(:last-of-type) > td {
       background-color: initial;
     }
-    .table-striped > tbody > tr[disabled]:last-of-type {
-      color: rgba(0, 0, 0, 0.8);
+    .table-striped > tbody > tr[disabled]:last-of-type > td {
+      background-color: rgba(0, 0, 0, 0.8);
     }
     .table tr .progress-background {
       opacity: 0.5;
