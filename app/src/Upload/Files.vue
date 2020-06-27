@@ -27,7 +27,7 @@
           td.btns
             span(:style="{cursor: disabled ? 'not-allowed' : 'pointer'}", @click="!disabled && $store.commit('upload/REMOVE_FILE', file)", :disabled="disabled")
               icon(name="times")
-        tr(v-if="files.length > 0", style="position: relative; transform: scale(1)")
+        tr(v-if="files.length > 0", style="position: relative; transform: scale(1)", :disabled="disabled")
           td
             strong(style="display: block; text-align: right") Total
           td
@@ -133,7 +133,7 @@
     background-color: unset;
     color: #C17600;
   }
-  .table-striped > tbody > tr:not([disabled]) > td {
+  .table-striped > tbody > tr > td {
     background-color: rgba(255, 255, 255, 0.5);
   }
   .table-striped > tbody > tr:first-of-type {
@@ -142,6 +142,7 @@
   .table-striped > tbody > tr:last-of-type {
     background-color: unset;
     color: white;
+    transition: 0.25 color ease;
   }
   .table-striped > tbody > tr:last-of-type > td {
     background-color: rgba(0, 0, 0, 0.4);
@@ -168,11 +169,8 @@
     appearance: none;
   }
   /* Safari only, since Safari don't support using element as background */
-  _::-webkit-full-page-media, _:future, :root .table tr:first-of-type .progress-background {
-    border-radius: 5px;
-  }
-  _::-webkit-full-page-media, _:future, :root .table tr:last-of-type .progress-background {
-    border-radius: 5px;
+  _::-webkit-full-page-media, _:future, :root .table tr .progress-background {
+    border-radius: 4px;
   }
   _::-webkit-full-page-media, _:future, :root .progress-background {
     position: relative;
@@ -189,5 +187,17 @@
   }
   _::-webkit-full-page-media, _:future, :root tr:last-of-type .progress-background {
     display: none;
+  }
+  /* Firefox only, since Firefox don't support background color with alpha channel while using element as background */
+  @-moz-document url-prefix() {
+    .table-striped > tbody > tr[disabled] > td {
+      background-color: initial;
+    }
+    .table-striped > tbody > tr[disabled]:last-of-type {
+      color: rgba(0, 0, 0, 0.8);
+    }
+    .table tr .progress-background {
+      opacity: 0.5;
+    }
   }
 </style>
