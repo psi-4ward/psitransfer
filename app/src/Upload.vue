@@ -10,7 +10,7 @@
     .uploaded(v-show="state === 'uploaded'")
       h3.text-success(style="text-align:center")
         icon.fa-fw(name="check")
-        |  Upload completed
+        |  Upload Completed
       qrcode.qrcode(:value='shareUrl', size="200", style="text-align:center; margin:1em")
       div.share-link(style="text-align:center; margin-bottom:1em")
         span.title Download Link:
