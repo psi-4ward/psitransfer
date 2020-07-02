@@ -33,7 +33,7 @@
               td
                 | {{ sid }}
                 icon.pull-right.marker(name="key", v-if="sum[sid].password", title="Password protected")
-                icon.pull-right.marker(name="exclamation-triangle", v-if="sum[sid].hasFailedUpload", title="Some upload(s) failed")
+                icon.pull-right.marker(name="exclamation-triangle", v-if="sum[sid].hasFailedUpload", title="Some upload(s) incomplete")
               td {{ sum[sid].created | date }}
               td
                 template(v-if="sum[sid].lastDownload") {{ sum[sid].lastDownload | date}}
@@ -54,7 +54,7 @@
                 td
                   template(v-if="typeof file.expireDate === 'number'") {{ file.expireDate | date }}
                   template(v-else) {{ file.expireDate }}
-                td.text-right {{ isNaN(file.size) ? 'Upload Failed' : humanFileSize(file.size) }}
+                td.text-right {{ isNaN(file.size) ? 'Upload Incomplete' : humanFileSize(file.size) }}
         tfoot
           tr
             td(colspan="3")

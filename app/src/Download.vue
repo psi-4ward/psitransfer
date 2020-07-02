@@ -34,6 +34,7 @@
               p
                 strong {{ file.metadata.name }}
                 .file-size(v-if="isFinite(file.size)") {{ humanFileSize(file.size) }}
+                .file-size(v-if="!isFinite(file.size)") Incomplete
               p {{ file.metadata.comment }}
           tr
             td(style="position: relative")
@@ -111,7 +112,7 @@
         return this.files.filter(f => !!f.previewType);
       },
       totalSize: function() {
-        return this.files.reduce((sum, f) => sum + f.size, 0);
+        return this.files.reduce((sum, f) => isNaN(f.size) ? sum : sum + f.size, 0);
       }
     },
 
