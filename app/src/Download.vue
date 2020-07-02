@@ -7,14 +7,14 @@
       strong
         icon.fa-fw(name="exclamation-triangle")
         |  {{ error }}
-    .password(v-if='needsPassword')
+    form.password(v-if='needsPassword', @submit.stop.prevent='password.length < 1 ? false : decrypt()')
       h3 Password
       .form-group
-        input.form-control(type='password', v-model='password')
+        input.form-control(type='password', ref='password-input', v-model='password', @mouseover='e => e.target.select()')
       p.text-danger(v-show='passwordWrong')
         strong Access denied!
       |
-      button.btn.btn-primary(:disabled='password.length<1', @click='decrypt()')
+      button.btn.btn-primary(:disabled='password.length < 1', type="submit", @click='decrypt()')
         icon.fa-fw(name="key")
         |  Decrypt
     .download-files(v-if='!needsPassword')
@@ -113,6 +113,19 @@
       },
       totalSize: function() {
         return this.files.reduce((sum, f) => isNaN(f.size) ? sum : sum + f.size, 0);
+      }
+    },
+
+    watch: {
+      needsPassword: function(newVal, oldVal) {
+        if (newVal && !oldVal) {
+          // input will not be rendered until next tick
+          this.$nextTick(
+            () => {
+              this.$refs['password-input'] && this.$refs['password-input'].focus();
+            }
+          );
+        }
       }
     },
 
