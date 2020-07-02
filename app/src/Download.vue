@@ -16,7 +16,7 @@
       |
       button.btn.btn-primary(:disabled='password.length<1', @click='decrypt()')
         icon.fa-fw(name="key")
-        |  decrypt
+        |  Decrypt
     .download-files(v-if='!needsPassword')
       table.table.table-hover.table-striped
         tbody

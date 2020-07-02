@@ -16,7 +16,7 @@
       |
       button.btn.btn-primary(type="submit", :disabled="!password")
         icon.fa-fw(name="sign-in-alt")
-        |  login
+        |  Login
 
     div(v-if="loggedIn")
       table.table.table-hover
