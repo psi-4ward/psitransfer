@@ -1,0 +1,19 @@
+base(href=baseUrl)
+meta(charset='utf-8')
+title PsiTransfer
+link(href='assets/favicon.ico' rel='icon' type='image/x-icon')
+meta(name='viewport' content='width=device-width, initial-scale=1')
+meta(name='robots' content='noindex,nofollow')
+meta(http-equiv='x-ua-compatible' content='IE=edge')
+link(href='assets/styles.css' rel='stylesheet')
+script.
+  // Add ployfills for stupid IE
+  if (document.documentMode || /Edge/.test(navigator.userAgent)) {
+    (function(d, script) {
+      script = d.createElement('script');
+      script.type = 'text/javascript';
+      script.async = false;
+      script.src = 'assets/babel-polyfill.js';
+      d.getElementsByTagName('head')[0].appendChild(script);
+    }(document));
+  }

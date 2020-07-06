@@ -93,7 +93,7 @@
       login() {
         if(!this.password) return;
         const xhr = new XMLHttpRequest();
-        xhr.open('GET', '/admin/data.json');
+        xhr.open('GET', 'admin/data.json');
         xhr.setRequestHeader("x-passwd", this.password);
         xhr.onload = () => {
           if(xhr.status === 200) {

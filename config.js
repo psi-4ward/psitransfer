@@ -7,6 +7,10 @@ const fsp = require('fs-promise');
 // or use ENV-VARS like PSITRANSFER_PORT=8000
 const config =  {
   "uploadDir": path.resolve(__dirname + '/data'),
+  // set to serve PsiTransfer from a sub-path
+  "baseUrl": '/',
+  // use to set custom upload url
+  "uploadAppPath": '/',
   "iface": '0.0.0.0',
   // set to false to disable HTTP
   "port": 3000,
@@ -41,8 +45,6 @@ const config =  {
   // see https://github.com/expressjs/morgan
   // set to false to disable logging
   "accessLog": ':date[iso] :method :url :status :response-time :remote-addr',
-  // use to set custom upload url
-  "uploadAppPath": '/',
   // event webhooks
   // invokes an HTTP POST to a url whenever a file is downloaded
   // for more info, see the webhooks section of docs/configuration.md
@@ -71,5 +73,8 @@ for (let k in config) {
     }
   }
 }
+
+if(!config.baseUrl.endsWith('/')) config.baseUrl = config.baseUrl + '/';
+if(!config.uploadAppPath.endsWith('/')) config.uploadAppPath = config.uploadAppPath + '/';
 
 module.exports = config;

@@ -40,7 +40,7 @@ export default {
 
   getters: {
     shareUrl: state => {
-      return document.location.protocol + '//' + document.location.host + '/' + state.sid;
+      return document.baseURI + state.sid;
     },
     percentUploaded: state => {
       return Math.min(
@@ -124,7 +124,7 @@ export default {
             type: file._File.type
           },
           resume: true,
-          endpoint: "/files/",
+          endpoint: "files/",
           fingerprint: (file) => {
             // include sid to prevent duplicate file detection on different session
             return ["tus", state.sid, file.name, file.type, file.size, file.lastModified].join("-");
