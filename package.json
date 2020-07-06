@@ -13,20 +13,23 @@
   "bugs": "https://github.com/psi-4ward/psitransfer/issues",
   "main": "app.js",
   "dependencies": {
-    "archiver": "^3.0.0",
-    "axios": "^0.19.0",
+    "archiver": "^4.0.1",
+    "axios": "^0.19.2",
+    "common-streams": "^1.4.0",
     "compression": "^1.7.4",
-    "crypto-js": "^3.2.1",
+    "cors": "^2.8.5",
+    "crypto-js": "^4.0.0",
     "debug": "^4.1.1",
     "express": "^4.17.1",
     "fs-promise": "^2.0.3",
-    "http-errors": "^1.7.3",
-    "morgan": "^1.9.1",
-    "tus-metadata": "^1.0.2",
-    "tusboy": "^1.1.1",
-    "uuid": "^3.3.2"
+    "http-errors": "^1.8.0",
+    "method-override": "^3.0.0",
+    "morgan": "^1.10.0",
+    "pug": "^3.0.0",
+    "to-object-reducer": "^1.0.1",
+    "uuid": "^8.2.0"
   },
-  "bin":{
+  "bin": {
     "psitransfer": "cli.js"
   },
   "devDependencies": {},
