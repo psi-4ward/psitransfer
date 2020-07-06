@@ -17,7 +17,7 @@ export default {
   actions: {
     fetch({commit, }) {
       const xhr = new XMLHttpRequest();
-      xhr.open('GET', '/config.json');
+      xhr.open('GET', 'config.json');
       xhr.onload = () => {
         if(xhr.status === 200) {
           try {

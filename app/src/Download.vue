@@ -35,7 +35,7 @@
                 file-icon(:file='file')
               td
                 div.pull-right.btn-group
-                  clipboard.btn.btn-sm.btn-default(:value='host + file.url', @change='copied(file, $event)', title='Copy to clipboard')
+                  clipboard.btn.btn-sm.btn-default(:value='baseURI + file.url', @change='copied(file, $event)', title='Copy to clipboard')
                     a
                       icon(name="copy")
                   a.btn.btn-sm.btn-default(title="Preview", @click.prevent.stop="preview=file", v-if="file.previewType")
@@ -89,13 +89,13 @@
     data () {
       return {
         files: [],
-        sid: document.location.pathname.substr(1),
+        sid: document.location.href.substr(document.baseURI.length),
+        baseURI: document.baseURI,
         passwordWrong: false,
         needsPassword: false,
         password: '',
         content: '',
         error: '',
-        host: document.location.protocol + '//' + document.location.host,
         config: {},
         preview: false
       }
@@ -128,7 +128,7 @@
       },
 
       downloadAll(format) {
-        document.location.href = document.location.protocol + '//' + document.location.host
+        document.location.href = document.baseURI
           + '/files/' + this.sid + '++'
           + MD5(
             this.files
@@ -179,7 +179,7 @@
       },
 
       newSession() {
-        document.location.href = '/';
+        document.location.href = document.baseURI;
       },
 
       isFinite(value) {
@@ -190,7 +190,7 @@
 
     beforeMount() {
       const xhr = new XMLHttpRequest();
-      xhr.open('GET', '/' + this.sid + '.json');
+      xhr.open('GET', this.sid + '.json');
       xhr.onload = () => {
         if(xhr.status === 200) {
           try {
