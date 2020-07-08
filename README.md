@@ -8,6 +8,7 @@
 [![Image Size](https://images.microbadger.com/badges/image/psitrax/psitransfer.svg)](https://microbadger.com/images/psitrax/psitransfer)
 [![Docker Pulls](https://img.shields.io/docker/pulls/psitrax/psitransfer.svg)](https://hub.docker.com/r/psitrax/psitransfer/)
 [![Docker Automated buil](https://img.shields.io/docker/automated/psitrax/psitransfer.svg)](https://hub.docker.com/r/psitrax/psitransfer/)
+[![BrowserStack Status](https://automate.browserstack.com/badge.svg?badge_key=Ym1VTEpTSzhYd3QwcU0xR2M5WEZHTklrZWxZZWlrUGpNcnFndlF6dHVadz0tLWU4U1NtNVdDTU5lRHNrSHlkZVJxNHc9PQ==--02d369ac39b0a9d00e89b8adf96d43d368d1dbf8)](https://automate.browserstack.com/public-build/Ym1VTEpTSzhYd3QwcU0xR2M5WEZHTklrZWxZZWlrUGpNcnFndlF6dHVadz0tLWU4U1NtNVdDTU5lRHNrSHlkZVJxNHc9PQ==--02d369ac39b0a9d00e89b8adf96d43d368d1dbf8)
 [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=RTWDCH74TJN54&item_name=psitransfer)
 
 Simple open source self-hosted file sharing solution.  
