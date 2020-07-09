@@ -94,7 +94,7 @@ export default {
       }
     },
 
-    upload({commit, dispatch, state}) {
+    upload({commit, dispatch, state, rootState}) {
       commit('STATE', 'uploading', {root:true});
       commit('ERROR', '', {root:true});
 
@@ -123,9 +123,13 @@ export default {
             comment: file.comment,
             type: file._File.type
           },
+          headers: {
+            "x-passwd": rootState.config.uploadPass
+          },
+          chunkSize: 5000000,
           resume: true,
           endpoint: "files/",
-          fingerprint: (file) => {
+          fingerprint: async (file) => {
             // include sid to prevent duplicate file detection on different session
             return ["tus", state.sid, file.name, file.type, file.size, file.lastModified].join("-");
           },

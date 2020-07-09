@@ -1,44 +1,55 @@
 <template lang="pug">
   .upload-app#uploadApp
-    a.btn.btn-sm.btn-info.btn-new-session(@click='newSession()', title='New Upload')
+    a.btn.btn-sm.btn-info.btn-new-session(v-if='!showLogin', @click='newSession()', title='New Upload')
       icon.fa-fw(name="cloud-upload-alt")
       span.hidden-xs  new upload
     .alert.alert-danger(v-show="error")
       strong
         icon.fa-fw(name="exclamation-triangle")
         |  {{ error }}
-    .well(v-show="state === 'uploaded'")
-      .pull-right.btn-group
-        a.btn.btn-primary(:href="mailLnk")
-          icon.fa-fw(name="envelope")
-          |  Mail
-        clipboard.btn.btn-primary(:value='shareUrl')
-      h3.text-success
-        icon.fa-fw(name="check")
-        |  Upload completed
-      div.share-link
-        span.title Download Link:
-        |
-        a(:href='shareUrl') {{ shareUrl }}
-    .row.overall-process(v-show="state === 'uploading'")
-      .col-xs-12
-        icon.pull-left(name="spinner", scale="2", spin="")
-        .progress
-          .progress-bar.progress-bar-success.progress-bar-striped.active(:style="{width: percentUploaded+'%'}")
-            span(v-show='percentUploaded>10') {{ percentUploaded }}%
-    .row
-      .col-sm-7
-        files
-      .col-sm-5
-        settings
-        .text-right(v-show='files.length && !disabled')
-          button.btn.btn-lg.btn-success(@click="$store.dispatch('upload/upload')")
-            icon.fa-fw(name="upload")
-            |  upload
-        .text-right(v-show="state === 'uploadError'")
-          button.btn.btn-lg.btn-success(@click="$store.dispatch('upload/upload')")
-            icon.fa-fw(name="upload")
-            |  retry
+    form.well.upload-password(v-if='showLogin', @submit.prevent='setUploadPass()')
+      h3 Password
+      .form-group
+        input.form-control(type='password', v-model='password', autofocus)
+      p.text-danger(v-show='passwordWrong')
+        strong Access denied!
+      |
+      button.uploadPass.btn.btn-primary(:disabled='password.length<1', type="submit")
+        icon.fa-fw(name="key")
+        |  LOGIN
+    div(v-else-if="$root.configFetched")
+      .well(v-show="state === 'uploaded'")
+        .pull-right.btn-group
+          a.btn.btn-primary(:href="mailLnk")
+            icon.fa-fw(name="envelope")
+            |  Mail
+          clipboard.btn.btn-primary(:value='shareUrl')
+        h3.text-success
+          icon.fa-fw(name="check")
+          |  Upload completed
+        div.share-link
+          span.title Download Link:
+          |
+          a(:href='shareUrl') {{ shareUrl }}
+      .row.overall-process(v-show="state === 'uploading'")
+        .col-xs-12
+          icon.pull-left(name="spinner", scale="2", spin="")
+          .progress
+            .progress-bar.progress-bar-success.progress-bar-striped.active(:style="{width: percentUploaded+'%'}")
+              span(v-show='percentUploaded>10') {{ percentUploaded }}%
+      .row
+        .col-sm-7
+          files
+        .col-sm-5
+          settings
+          .text-right(v-show='files.length && !disabled')
+            button#uploadBtn.btn.btn-lg.btn-success(@click="$store.dispatch('upload/upload')")
+              icon.fa-fw(name="upload")
+              |  upload
+          .text-right(v-show="state === 'uploadError'")
+            button#uploadRetryBtn.btn.btn-lg.btn-success(@click="$store.dispatch('upload/upload')")
+              icon.fa-fw(name="upload")
+              |  retry
 </template>
 
 <script type="text/babel">
@@ -64,14 +75,25 @@
       Clipboard,
     },
 
+    data() {
+      return {
+        password: '',
+        passwordWrong: null,
+      }
+    },
+
     computed: {
       ...mapState(['error', 'disabled', 'state']),
+      ...mapState('config', ['uploadPassRequired', 'uploadPass']),
       ...mapState('upload', ['sid', 'files']),
       ...mapGetters('upload', ['percentUploaded', 'shareUrl']),
       mailLnk: function() {
         return this.$store.state.config
           && this.$store.state.config.mailTemplate
           && this.$store.state.config.mailTemplate.replace('%%URL%%', this.shareUrl);
+      },
+      showLogin() {
+        return this.uploadPassRequired && this.passwordWrong !== false;
       }
     },
 
@@ -89,6 +111,20 @@
       newSession() {
         if (!confirm('Create a new upload session?')) return;
         document.location.reload();
+      },
+      async setUploadPass() {
+        try {
+          this.$store.commit('config/SET', {uploadPass: this.password});
+          await this.$store.dispatch('config/fetch');
+          this.passwordWrong = false;
+        } catch(e) {
+          if(e.code === 'PWDREQ') {
+            this.password = '';
+            this.passwordWrong = true;
+          } else {
+            console.error(e);
+          }
+        }
       }
     }
 

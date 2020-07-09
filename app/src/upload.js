@@ -15,8 +15,15 @@ new Vue({
   },
   store,
   render: h => h(Upload),
-  beforeCreate() {
-    this.$store.dispatch('config/fetch');
+  async beforeCreate() {
+    try {
+      await this.$store.dispatch('config/fetch');
+    } catch(e) {
+      if(e.code !== 'PWDREQ') {
+        console.error(e);
+      }
+    }
+    this.configFetched = true;
   }
 });
 
