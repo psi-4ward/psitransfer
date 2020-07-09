@@ -12,10 +12,15 @@
             :value="seconds", :selected="seconds === retention") {{ label }}
         div
           label(for='password') Password
-          .input-group
-            input#password.form-control(type='text', :value='password',
-            @input="$store.commit('upload/PASSWORD', $event.target.value)",
-            :disabled='disabled', placeholder='optional')
+          .input-group(:class="{'has-error': config.requireBucketPassword && !password}")
+            input#password.form-control(
+              type='text'
+              :value='password'
+              @input="$store.commit('upload/PASSWORD', $event.target.value)"
+              :disabled='disabled'
+              :placeholder="config.requireBucketPassword ? 'required' : 'optional'"
+              required="config.requireBucketPassword"
+            )
             span.input-group-addon(style='cursor: pointer', title='generate password', @click='generatePassword()')
               icon(name="key")
 </template>
