@@ -7,14 +7,14 @@
       strong
         icon.fa-fw(name="exclamation-triangle")
         |  {{ error }}
-    form.well.upload-password(v-if='showLogin', @submit.prevent='setUploadPass()')
-      h3 Password
+    form.well.upload-uploadPassword(v-if='showLogin', @submit.prevent='setUploadPass()')
+      h3 uploadPassword
       .form-group
-        input.form-control(type='password', v-model='password', autofocus)
-      p.text-danger(v-show='passwordWrong')
+        input.form-control(type='uploadPassword', v-model='uploadPassword', autofocus)
+      p.text-danger(v-show='uploadPasswordWrong')
         strong Access denied!
       |
-      button.uploadPass.btn.btn-primary(:disabled='password.length<1', type="submit")
+      button.uploadPass.btn.btn-primary(:disabled='uploadPassword.length<1', type="submit")
         icon.fa-fw(name="key")
         |  LOGIN
     div(v-else-if="$root.configFetched")
@@ -42,7 +42,7 @@
           files
         .col-sm-5
           settings
-          .text-right(v-show='files.length && !disabled')
+          .text-right(v-show='showUploadBtn')
             button#uploadBtn.btn.btn-lg.btn-success(@click="$store.dispatch('upload/upload')")
               icon.fa-fw(name="upload")
               |  upload
@@ -77,15 +77,15 @@
 
     data() {
       return {
-        password: '',
-        passwordWrong: null,
+        uploadPassword: '',
+        uploadPasswordWrong: null,
       }
     },
 
     computed: {
       ...mapState(['error', 'disabled', 'state']),
-      ...mapState('config', ['uploadPassRequired', 'uploadPass']),
-      ...mapState('upload', ['sid', 'files']),
+      ...mapState('config', ['uploadPassRequired', 'uploadPass', 'requireBucketPassword']),
+      ...mapState('upload', ['sid', 'files', 'password']),
       ...mapGetters('upload', ['percentUploaded', 'shareUrl']),
       mailLnk: function() {
         return this.$store.state.config
@@ -93,7 +93,12 @@
           && this.$store.state.config.mailTemplate.replace('%%URL%%', this.shareUrl);
       },
       showLogin() {
-        return this.uploadPassRequired && this.passwordWrong !== false;
+        return this.uploadPassRequired && this.uploadPasswordWrong !== false;
+      },
+      showUploadBtn() {
+        return this.files.length
+          && !this.disabled
+          && (this.requireBucketPassword && this.password || !this.requireBucketPassword)
       }
     },
 
@@ -114,13 +119,13 @@
       },
       async setUploadPass() {
         try {
-          this.$store.commit('config/SET', {uploadPass: this.password});
+          this.$store.commit('config/SET', {uploadPass: this.uploadPassword});
           await this.$store.dispatch('config/fetch');
-          this.passwordWrong = false;
+          this.uploadPasswordWrong = false;
         } catch(e) {
           if(e.code === 'PWDREQ') {
-            this.password = '';
-            this.passwordWrong = true;
+            this.uploadPassword = '';
+            this.uploadPasswordWrong = true;
           } else {
             console.error(e);
           }
