@@ -3,6 +3,7 @@
 [![Current Release](https://img.shields.io/github/release/psi-4ward/psitransfer.svg)](https://github.com/psi-4ward/psitransfer/releases)
 [![Dependencies](https://david-dm.org/psi-4ward/psitransfer.svg)](https://david-dm.org/psi-4ward/psitransfer)
 [![Known Vulnerabilities](https://snyk.io/test/github/psi-4ward/psitransfer/badge.svg)](https://snyk.io/test/github/psi-4ward/psitransfer)
+[![BrowserStack Status](https://automate.browserstack.com/badge.svg?badge_key=aUJvWHBEbXh3NmJMRmptb1p1SEdJclFMbFNUZDVTSDRwbVhINlZJcWg1ST0tLTBKc0N5ZFlldSsyVXFEWmJxR2FwOHc9PQ==--000796d7b849d3bd9fdd77a875d168e2b3e71c73)](https://automate.browserstack.com/public-build/aUJvWHBEbXh3NmJMRmptb1p1SEdJclFMbFNUZDVTSDRwbVhINlZJcWg1ST0tLTBKc0N5ZFlldSsyVXFEWmJxR2FwOHc9PQ==--000796d7b849d3bd9fdd77a875d168e2b3e71c73)
 [![Github Stars](https://img.shields.io/github/stars/psi-4ward/psitransfer.svg?style=social&label=Star)](https://github.com/psi-4ward/psitransfer)
 [![Docker Stars](https://img.shields.io/docker/stars/psitrax/psitransfer.svg)](https://hub.docker.com/r/psitrax/psitransfer/)
 [![Image Size](https://images.microbadger.com/badges/image/psitrax/psitransfer.svg)](https://microbadger.com/images/psitrax/psitransfer)
@@ -11,7 +12,7 @@
 [![BrowserStack Status](https://automate.browserstack.com/badge.svg?badge_key=Ym1VTEpTSzhYd3QwcU0xR2M5WEZHTklrZWxZZWlrUGpNcnFndlF6dHVadz0tLWU4U1NtNVdDTU5lRHNrSHlkZVJxNHc9PQ==--02d369ac39b0a9d00e89b8adf96d43d368d1dbf8)](https://automate.browserstack.com/public-build/Ym1VTEpTSzhYd3QwcU0xR2M5WEZHTklrZWxZZWlrUGpNcnFndlF6dHVadz0tLWU4U1NtNVdDTU5lRHNrSHlkZVJxNHc9PQ==--02d369ac39b0a9d00e89b8adf96d43d368d1dbf8)
 [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=RTWDCH74TJN54&item_name=psitransfer)
 
-Simple open source self-hosted file sharing solution.  
+Simple open source self-hosted file sharing solution.
 It's an alternative to paid services like Dropbox, WeTransfer.
 
 * No accounts, no logins
@@ -28,7 +29,7 @@ It's an alternative to paid services like Dropbox, WeTransfer.
 * Lightweight [Vue](https://vuejs.org) based frontend apps. Gzipped (on by default) less than 65k
 * Explicit named bucket IDs with query param `sid=<myBucketID>`
 
-**See the blog posts about PsiTransfer: https://psi.cx/tags/PsiTransfer/ and checkout the 
+**See the blog posts about PsiTransfer: https://psi.cx/tags/PsiTransfer/ and checkout the
 [Documentation](https://github.com/psi-4ward/psitransfer/tree/master/docs)**
 
 ![Screenshot](https://raw.githubusercontent.com/psi-4ward/psitransfer/master/docs/psitransfer.gif)
@@ -41,7 +42,7 @@ It's an alternative to paid services like Dropbox, WeTransfer.
 ```bash
 $ docker run -p 0.0.0.0:3000:3000 -e PSITRANSFER_ADMIN_PASS=secret -v $PWD/data:/data psitrax/psitransfer
 # data volume needs UID 1000
-$ sudo chown -R 1000 $PWD/data 
+$ sudo chown -R 1000 $PWD/data
 ```
 
 Specify the version by using [image tags](https://hub.docker.com/r/psitrax/psitransfer/tags/) e.g.:
@@ -81,19 +82,19 @@ $ npm start
 
 ### Configuration
 
-There are some configs in `config.js` like port and data-dir.  
+There are some configs in `config.js` like port and data-dir.
 You can:
 * Edit the `config.js` **(not recommend)**
-* Add a `config.production.js` where `production` is the value from `NODE_ENV`  
+* Add a `config.production.js` where `production` is the value from `NODE_ENV`
   See `config.dev.js`
 * Define environment Variables like `PSITRANSFER_UPLOAD_DIR`
 
 ### Customization
 
-`public/upload.html` and `download.html` are kept simple.  
-You can alter these files and add your logo and styles.  
-The following elements are mandatory:  
-`common.js` and respectively `upload.js`, `download.js` as well as `<div id="upload">`, `<div id="download">`  
+`public/upload.html` and `download.html` are kept simple.
+You can alter these files and add your logo and styles.
+The following elements are mandatory:
+`common.js` and respectively `upload.js`, `download.js` as well as `<div id="upload">`, `<div id="download">`
 Please keep a footnote like *Powered by PsiTransfer* :)
 
 ### Debug

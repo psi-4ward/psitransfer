@@ -1,5 +1,5 @@
-import tus from "tus-js-client";
-import uuid from 'uuid/v4';
+import * as tus from "tus-js-client";
+import {v4 as uuid} from 'uuid';
 import md5 from 'crypto-js/md5';
 
 function humanFileSize(fileSizeInBytes) {
@@ -40,7 +40,7 @@ export default {
 
   getters: {
     shareUrl: state => {
-      return document.baseURI + state.sid;
+      return document.head.getElementsByTagName('base')[0].href + state.sid;
     },
     percentUploaded: state => {
       return Math.min(

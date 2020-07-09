@@ -7,8 +7,10 @@ const execSync = require('child_process').execSync;
 let commitShaId;
 
 try {
-  commitShaId = '#'+execSync('git rev-parse HEAD').toString().substr(0,10);
-} catch (e) {}
+  commitShaId = '#' + execSync('git rev-parse HEAD').toString().substr(0, 10);
+}
+catch (e) {
+}
 
 const mode = process.env.NODE_ENV || 'development';
 
@@ -27,6 +29,7 @@ module.exports = {
   optimization: {
     splitChunks: {
       chunks: 'all',
+      minChunks: 2,
       name: 'common'
     }
   },
@@ -40,14 +43,14 @@ module.exports = {
       },
       {
         test: /\.js$/,
-        exclude: /node_modules\/(?!(vue-awesome|)\/).*/,
+        exclude: /node_modules\/(?!(vue-awesome|drag-drop)\/).*/,
         use: {
           loader: 'babel-loader',
           options: {
             presets: [['@babel/preset-env', {
               modules: false,
-              "useBuiltIns": "usage",
-              "targets": ["last 2 version", "ie 11", "not dead"]
+              useBuiltIns: false,
+              targets: "last 2 versions, ie 11, not dead",
             }]],
           }
         }
@@ -113,6 +116,6 @@ module.exports = {
   },
 };
 
-if(process.env.ANALYZE) {
+if (process.env.ANALYZE) {
   module.exports.plugins.push(new BundleAnalyzerPlugin());
 }
