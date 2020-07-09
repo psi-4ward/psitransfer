@@ -57,7 +57,7 @@
 
 
   export default {
-    name: 'App',
+    name: 'Upload',
     components: {
       Settings,
       Files,

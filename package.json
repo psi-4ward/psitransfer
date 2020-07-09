@@ -32,7 +32,11 @@
   "bin": {
     "psitransfer": "cli.js"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "filecompare": "^1.0.4",
+    "testcafe": "^1.8.8",
+    "testcafe-browser-provider-browserstack": "^1.13.0"
+  },
   "scripts": {
     "start": "NODE_ENV=production node app.js",
     "dev": "NODE_ENV=dev DEBUG=psitransfer:* nodemon -i app -i dist -i data app.js",

@@ -14,7 +14,7 @@
       p.text-danger(v-show='passwordWrong')
         strong Access denied!
       |
-      button.btn.btn-primary(:disabled='password.length<1', @click='decrypt()')
+      button.decrypt.btn.btn-primary(:disabled='password.length<1', @click='decrypt()')
         icon.fa-fw(name="key")
         |  decrypt
     .panel.panel-primary(v-if='!needsPassword')
@@ -28,7 +28,7 @@
             icon.fa-fw(name="download")
             |  tar.gz
       .panel-body
-        table.table.table-hover.table-striped
+        table.table.table-hover.table-striped.files
           tbody
             tr(v-for='file in files', style='cursor: pointer', @click='download(file)')
               td.file-icon
@@ -89,8 +89,8 @@
     data () {
       return {
         files: [],
-        sid: document.location.href.substr(document.baseURI.length),
-        baseURI: document.baseURI,
+        sid: document.location.href.substr(this.$root.baseURI.length),
+        baseURI: this.$root.baseURI,
         passwordWrong: false,
         needsPassword: false,
         password: '',
@@ -128,7 +128,7 @@
       },
 
       downloadAll(format) {
-        document.location.href = document.baseURI
+        document.location.href = this.$root.baseURI
           + '/files/' + this.sid + '++'
           + MD5(
             this.files
@@ -179,7 +179,7 @@
       },
 
       newSession() {
-        document.location.href = document.baseURI;
+        document.location.href = this.$root.baseURI;
       },
 
       isFinite(value) {

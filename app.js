@@ -1,4 +1,3 @@
-'use strict';
 const config = require('./config');
 const app = require('./lib/endpoints');
 const https = require('https');
