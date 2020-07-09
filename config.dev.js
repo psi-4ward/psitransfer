@@ -1,5 +1,3 @@
-'use strict';
-
 module.exports = {
   "accessLog": 'dev',
   "retentions": {
@@ -14,7 +12,10 @@ module.exports = {
     "1209600": "2 Weeks"
   },
   "defaultRetention": "3600",
-  "adminPass": "admin"
+  "adminPass": "admin",
+  "uploadPass": false,
+  "baseUrl": '/',
+  "uploadAppPath": '/',
   // "sslKeyFile": './tmp/cert.key',
   // "sslCertFile": './tmp/cert.pem',
 };
