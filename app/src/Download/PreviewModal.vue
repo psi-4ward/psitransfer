@@ -18,7 +18,7 @@
       div(v-if="current.previewType === 'text'")
         pre(:style="{'white-space':lineWrap?'pre-wrap':'pre'}") {{ previewText }}
       p(v-if="current.previewType === false", style="text-align:center")
-        strong.text-danger No preview available
+        strong.text-danger {{ $root.lang.noPreviewAvailable }}
 </template>
 
 

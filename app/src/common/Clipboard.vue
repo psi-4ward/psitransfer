@@ -54,7 +54,7 @@ Copies a string into the clipboard
           success = document.execCommand('copy');
         }
         catch(e) {
-          alert('Dein alter Browser unterstützt diese Funktion leider nicht.');
+          alert(this.$root.lang.oldBrowserError);
           console.error(e);
         }
         document.body.removeChild(el);
