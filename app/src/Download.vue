@@ -2,7 +2,7 @@
   .download-app
     a.btn.btn-sm.btn-info.btn-new-session(@click='newSession()', title='New Upload')
       icon.fa-fw(name="cloud-upload-alt")
-      span.hidden-xs  new upload
+      span.hidden-xs  {{ $root.lang.newUpload }}
     .alert.alert-danger(v-show="error")
       strong
         icon.fa-fw(name="exclamation-triangle")
@@ -12,19 +12,19 @@
       .form-group
         input.form-control(type='password', v-model='password')
       p.text-danger(v-show='passwordWrong')
-        strong Access denied!
+        strong {{ $root.lang.accessDenied }}
       |
       button.decrypt.btn.btn-primary(:disabled='password.length<1', @click='decrypt()')
         icon.fa-fw(name="key")
-        |  decrypt
+        |  {{ $root.lang.decrypt }}
     .panel.panel-primary(v-if='!needsPassword')
       .panel-heading
-        strong Files
+        strong {{ $root.lang.files }}
         div.pull-right.btn-group.btn-download-archive(v-if="downloadsAvailable")
-          a.btn.btn-sm.btn-default(@click="downloadAll('zip')", title="Archive download is not resumeable!")
+          a.btn.btn-sm.btn-default(@click="downloadAll('zip')", :title="$root.lang.zipDownload")
             icon.fa-fw(name="download")
             |  zip
-          a.btn.btn-sm.btn-default(@click="downloadAll('tar.gz')", title="Archive download is not resumeable!")
+          a.btn.btn-sm.btn-default(@click="downloadAll('tar.gz')", :title="$root.lang.tarGzDownload")
             icon.fa-fw(name="download")
             |  tar.gz
       .panel-body
@@ -114,7 +114,7 @@
     methods: {
       download(file) {
         if(file.downloaded && file.metadata.retention === 'one-time') {
-          alert('One-Time Download: File is not available anymore.');
+          alert(this.$root.lang.oneTimeDownloadExpired);
           return;
         }
         const aEl = document.createElement('a');

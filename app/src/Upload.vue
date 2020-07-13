@@ -2,7 +2,7 @@
   .upload-app#uploadApp
     a.btn.btn-sm.btn-info.btn-new-session(v-if='!showLogin', @click='newSession()', title='New Upload')
       icon.fa-fw(name="cloud-upload-alt")
-      span.hidden-xs  new upload
+      span.hidden-xs  {{ $root.lang.newUpload }}
     .alert.alert-danger(v-show="error")
       strong
         icon.fa-fw(name="exclamation-triangle")
@@ -12,23 +12,23 @@
       .form-group
         input.form-control(type='uploadPassword', v-model='uploadPassword', autofocus)
       p.text-danger(v-show='uploadPasswordWrong')
-        strong Access denied!
+        strong {{ $root.lang.accessDenied }}
       |
       button.uploadPass.btn.btn-primary(:disabled='uploadPassword.length<1', type="submit")
         icon.fa-fw(name="key")
-        |  LOGIN
+        |  {{ $root.lang.login }}
     div(v-else-if="$root.configFetched")
       .well(v-show="state === 'uploaded'")
         .pull-right.btn-group
           a.btn.btn-primary(:href="mailLnk")
             icon.fa-fw(name="envelope")
-            |  Mail
+            |  {{ $root.lang.sendViaMail }}
           clipboard.btn.btn-primary(:value='shareUrl')
         h3.text-success
           icon.fa-fw(name="check")
-          |  Upload completed
+          |  {{ uploadCompleted }}
         div.share-link
-          span.title Download Link:
+          span.title {{ $root.lang.downloadLink }}:
           |
           a(:href='shareUrl') {{ shareUrl }}
       .row.overall-process(v-show="state === 'uploading'")
@@ -45,15 +45,14 @@
           .text-right(v-show='showUploadBtn')
             button#uploadBtn.btn.btn-lg.btn-success(@click="$store.dispatch('upload/upload')")
               icon.fa-fw(name="upload")
-              |  upload
+              |  {{ $root.lang.upload }}
           .text-right(v-show="state === 'uploadError'")
             button#uploadRetryBtn.btn.btn-lg.btn-success(@click="$store.dispatch('upload/upload')")
               icon.fa-fw(name="upload")
-              |  retry
+              |  {{ $root.lang.retry }}
 </template>
 
 <script type="text/babel">
-  "use strict";
   import { mapState, mapGetters } from 'vuex';
 
   import Settings from './Upload/Settings.vue';
@@ -114,7 +113,7 @@
 
     methods: {
       newSession() {
-        if (!confirm('Create a new upload session?')) return;
+        if (!confirm(this.$root.lang.createNewUploadSession)) return;
         document.location.reload();
       },
       async setUploadPass() {

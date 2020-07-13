@@ -1,4 +1,5 @@
 const path = require('path');
+const fs = require('fs');
 const fsp = require('fs-promise');
 
 // Default Config
@@ -52,9 +53,9 @@ const config =  {
   // invokes an HTTP POST to a url whenever a file is downloaded
   // for more info, see the webhooks section of docs/configuration.md
   "fileDownloadedWebhook": null,
-  "fileUploadedWebhook": null
+  "fileUploadedWebhook": null,
+  "defaultLanguage": "en",
 };
-
 
 // Load NODE_ENV specific config
 const envConfFile = path.resolve(__dirname, `config.${process.env.NODE_ENV}.js`);
@@ -79,5 +80,18 @@ for (let k in config) {
 
 if(!config.baseUrl.endsWith('/')) config.baseUrl = config.baseUrl + '/';
 if(!config.uploadAppPath.endsWith('/')) config.uploadAppPath = config.uploadAppPath + '/';
+
+// Load language files
+config.languages = {
+  [config.defaultLanguage]: require(`./lang/${config.defaultLanguage}`) // default language
+};
+fs.readdirSync(path.resolve(__dirname, 'lang')).forEach(lang => {
+  lang = lang.replace('.js', '');
+  if(lang === config.defaultLanguage) return;
+  config.languages[lang] = {
+    ...config.languages[config.defaultLanguage],
+    ...require(`./lang/${ lang }`)
+  };
+});
 
 module.exports = config;
