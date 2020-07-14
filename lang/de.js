@@ -15,6 +15,7 @@ module.exports = {
   login: "Login",
   email: "E-Mail",
   sendViaMail: "Per E-Mail verschicken",
+  showQrCode: "QR-Code anzeigen",
   clipboard: "Zwischenablage",
   copyToClipboard: "In die Zwischenablage kopieren",
   uploadCompleted: "Upload vollständig",

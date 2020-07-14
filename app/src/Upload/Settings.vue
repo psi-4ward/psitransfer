@@ -33,7 +33,6 @@
 </template>
 
 <script type="text/babel">
-  "use strict";
   import { mapState } from 'vuex';
   import 'vue-awesome/icons/key';
 

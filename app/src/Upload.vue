@@ -20,6 +20,9 @@
     div(v-else-if="$root.configFetched")
       .well(v-show="state === 'uploaded'")
         .pull-right.btn-group
+          a.btn.btn-primary(@click.prevent="showQrCode" href="#" :title="$root.lang.showQrCode")
+            icon.fa-fw(name="qrcode")
+            | QR-Code
           a.btn.btn-primary(:href="mailLnk" :title="$root.lang.sendViaMail")
             icon.fa-fw(name="envelope")
             |  {{ $root.lang.email }}
@@ -53,6 +56,7 @@
 </template>
 
 <script type="text/babel">
+  import { Encoder, ErrorCorrectionLevel, QRByte } from "@nuintun/qrcode";
   import { mapState, mapGetters } from 'vuex';
 
   import Settings from './Upload/Settings.vue';
@@ -63,6 +67,7 @@
   import 'vue-awesome/icons/check';
   import 'vue-awesome/icons/spinner';
   import 'vue-awesome/icons/envelope';
+  import 'vue-awesome/icons/qrcode';
   import 'vue-awesome/icons/exclamation-triangle';
 
 
@@ -129,6 +134,23 @@
             console.error(e);
           }
         }
+      },
+      showQrCode() {
+        const qrcode = new Encoder();
+        qrcode.setEncodingHint(true);
+        qrcode.setErrorCorrectionLevel(ErrorCorrectionLevel.H);
+        qrcode.write(new QRByte(this.shareUrl));
+        qrcode.make();
+        const imgSrc = qrcode.toDataURL(7, 10);
+        const data = imgSrc.substr(imgSrc.indexOf(',') + 1);
+        const byteCharacters = atob(data);
+        const byteNumbers = new Array(byteCharacters.length);
+        for (let i = 0; i < byteCharacters.length; i++) {
+          byteNumbers[i] = byteCharacters.charCodeAt(i);
+        }
+        const byteArray = new Uint8Array(byteNumbers);
+        const file = new Blob([byteArray], { type: 'image/gif;base64' });
+        window.open(URL.createObjectURL(file));
       }
     }
 
