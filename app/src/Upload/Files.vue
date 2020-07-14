@@ -1,7 +1,7 @@
 <template lang="pug">
   div.upload-files
     .panel.panel-default(:class="{'panel-primary': !disabled}")
-      .panel-heading Files
+      .panel-heading {{ $root.lang.files }}
       .panel-body
         .empty-files-big-plus(:style="{cursor: disabled ? 'default' : 'pointer'}",
                   onclick="document.getElementById('fileInput').click();",
