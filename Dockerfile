@@ -12,6 +12,7 @@ WORKDIR /app
 ADD *.js package.json package-lock.json README.md /app/
 ADD lib /app/lib
 ADD app /app/app
+ADD lang /app/lang
 ADD public /app/public
 
 # Rebuild the frontend apps
