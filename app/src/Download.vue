@@ -1,6 +1,6 @@
 <template lang="pug">
   .download-app
-    a.btn.btn-sm.btn-info.btn-new-session(@click='newSession()', title='New Upload')
+    a.btn.btn-sm.btn-info.btn-new-session(@click='newSession()', :title='$root.lang.newUpload')
       icon.fa-fw(name="cloud-upload-alt")
       span.hidden-xs  {{ $root.lang.newUpload }}
     .alert.alert-danger(v-show="error")
@@ -35,10 +35,10 @@
                 file-icon(:file='file')
               td
                 div.pull-right.btn-group
-                  clipboard.btn.btn-sm.btn-default(:value='baseURI + file.url', @change='copied(file, $event)', title='Copy to clipboard')
+                  clipboard.btn.btn-sm.btn-default(:value='baseURI + file.url', @change='copied(file, $event)', :title='$root.lang.copyToClipboard')
                     a
                       icon(name="copy")
-                  a.btn.btn-sm.btn-default(title="Preview", @click.prevent.stop="preview=file", v-if="file.previewType")
+                  a.btn.btn-sm.btn-default(:title="$root.lang.preview", @click.prevent.stop="preview=file", v-if="file.previewType")
                     icon(name="eye")
                 i.pull-right.fa.fa-check.text-success.downloaded(v-show='file.downloaded')
                 p

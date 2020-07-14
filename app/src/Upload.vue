@@ -1,6 +1,6 @@
 <template lang="pug">
   .upload-app#uploadApp
-    a.btn.btn-sm.btn-info.btn-new-session(v-if='!showLogin', @click='newSession()', title='New Upload')
+    a.btn.btn-sm.btn-info.btn-new-session(v-if='!showLogin', @click='newSession()', :title='$root.lang.newUpload')
       icon.fa-fw(name="cloud-upload-alt")
       span.hidden-xs  {{ $root.lang.newUpload }}
     .alert.alert-danger(v-show="error")
@@ -20,13 +20,13 @@
     div(v-else-if="$root.configFetched")
       .well(v-show="state === 'uploaded'")
         .pull-right.btn-group
-          a.btn.btn-primary(:href="mailLnk")
+          a.btn.btn-primary(:href="mailLnk" :title="$root.lang.sendViaMail")
             icon.fa-fw(name="envelope")
-            |  {{ $root.lang.sendViaMail }}
-          clipboard.btn.btn-primary(:value='shareUrl')
+            |  {{ $root.lang.email }}
+          clipboard.btn.btn-primary(:value='shareUrl' :title="$root.lang.copyToClipboard")
         h3.text-success
           icon.fa-fw(name="check")
-          |  {{ uploadCompleted }}
+          |  {{ $root.lang.uploadCompleted }}
         div.share-link
           span.title {{ $root.lang.downloadLink }}:
           |

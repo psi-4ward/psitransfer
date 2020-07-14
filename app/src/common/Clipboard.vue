@@ -16,7 +16,7 @@ Copies a string into the clipboard
       icon.fa-fw(name="copy", v-if="state==='pristine'")
       icon.fa-fw(name="check", v-if="state==='copied'")
       icon.fa-fw(name="exclamation-triangle", v-if="state==='error'")
-      slot(name='text')  Copy
+      slot(name='text')  {{ $root.lang.clipboard }}
 </template>
 
 
