@@ -33,8 +33,8 @@ module.exports = {
       name: 'common'
     }
   },
-  // devtool: 'source-map',
-  devtool: 'none',
+  devtool: 'source-map',
+  // devtool: 'none',
   module: {
     rules: [
       {

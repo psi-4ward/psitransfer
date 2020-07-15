@@ -129,103 +129,112 @@ export default {
       if (onOnlineHandlerAttached) window.removeEventListener('online', onOnlineHandler);
 
       // upload all files in parallel
-      state.files.forEach(file => {
+      state.files.forEach(async file => {
         file.error = '';
         file._retries = 0;
         file._retryDelay = 500;
 
         const _File = file._File;
-        let tusUploader = new tus.Upload(_File, {
-          metadata: {
-            sid: state.sid,
-            retention: state.retention,
-            password: state.password,
-            name: file.name,
-            comment: file.comment,
-            type: file._File.type
-          },
-          headers: {
-            "x-passwd": rootState.config.uploadPass
-          },
-          chunkSize: 5000000,
-          resume: true,
-          endpoint: "files/",
-          fingerprint: async (file) => {
-            // include sid to prevent duplicate file detection on different session
-            return ["tus", state.sid, file.name, file.type, file.size, file.lastModified].join("-");
-          },
-          retryDelays: null,
-          onError(error) {
-            let jsonResMessage = null;
-            try {
-              jsonResMessage = JSON.parse(error.originalResponse.getBody()).message;
-            }
-            catch (e) {
-            }
-            // browser is offline
-            if (!navigator.onLine) {
-              commit('ERROR', 'You are offline. Your uploads will resume as soon as you are back online.', { root: true });
-              if (!onOnlineHandlerAttached) {
-                onOnlineHandlerAttached = true;
-                // attach onOnline handler
-                window.addEventListener('online', onOnlineHandler);
+        const startTusUpload = () => {
+          console.log(file._uploadUrl);
+          new tus.Upload(_File, {
+            uploadUrl: file._uploadUrl,
+            metadata: {
+              sid: state.sid,
+              retention: state.retention,
+              password: state.password,
+              name: file.name,
+              comment: file.comment,
+              type: file._File.type
+            },
+            headers: {
+              "x-passwd": rootState.config.uploadPass
+            },
+            parallelUploads: 1,
+            chunkSize: 500000,
+            endpoint: "files/",
+            storeFingerprintForResuming: false,
+            retryDelays: null,
+            onAfterResponse: function(req, res) {
+              // Remember uploadUrl for resuming
+              if(req.getMethod() === 'POST'
+                && req.getURL() === this.endpoint
+                && res.getStatus() === 201
+              ) {
+                file._uploadUrl = res.getHeader('location');
               }
-            }
-            // Client Error
-            else if (error && error.originalResponse && error.originalResponse._xhr &&
-              error.originalResponse._xhr.status >= 400 && error.originalResponse._xhr.status < 500) {
-              commit('UPDATE_FILE', {
-                file, data: {
-                  error: jsonResMessage || error.message || error.toString()
+            },
+            onError(error) {
+              let jsonResMessage = null;
+              try {
+                jsonResMessage = JSON.parse(error.originalResponse.getBody()).message;
+              }
+              catch (e) {
+              }
+              // browser is offline
+              if (!navigator.onLine) {
+                commit('ERROR', 'You are offline. Your uploads will resume as soon as you are back online.', { root: true });
+                if (!onOnlineHandlerAttached) {
+                  onOnlineHandlerAttached = true;
+                  // attach onOnline handler
+                  window.addEventListener('online', onOnlineHandler);
                 }
-              });
-            }
-            // Generic Error
-            else {
-              if (file._retries > 30) {
+              }
+              // Client Error
+              else if (error && error.originalResponse && error.originalResponse._xhr &&
+                error.originalResponse._xhr.status >= 400 && error.originalResponse._xhr.status < 500) {
                 commit('UPDATE_FILE', {
                   file, data: {
                     error: jsonResMessage || error.message || error.toString()
                   }
                 });
-                if (state.files.every(f => f.error)) {
-                  commit('STATE', 'uploadError', { root: true });
-                  commit('ERROR', 'Upload failed.', { root: true });
+              }
+              // Generic Error
+              else {
+                if (file._retries > 30) {
+                  commit('UPDATE_FILE', {
+                    file, data: {
+                      error: jsonResMessage || error.message || error.toString()
+                    }
+                  });
+                  if (state.files.every(f => f.error)) {
+                    commit('STATE', 'uploadError', { root: true });
+                    commit('ERROR', 'Upload failed.', { root: true });
+                  }
+                  return;
                 }
-                return;
-              }
 
-              file._retryDelay = Math.min(file._retryDelay * 1.7, 10000);
-              file._retries++;
-              if (console) console.log(error.message || error.toString(), '; will retry in', file._retryDelay, 'ms');
-              setTimeout(() => tusUploader.start(), file._retryDelay);
+                file._retryDelay = Math.min(file._retryDelay * 1.7, 10000);
+                file._retries++;
+                if (console) console.log(error.message || error.toString(), '; will retry in', file._retryDelay, 'ms');
+                setTimeout(startTusUpload, file._retryDelay);
+              }
+            },
+            onProgress(bytesUploaded, bytesTotal) {
+              // uploaded=total gets also emitted on error
+              if (bytesUploaded === bytesTotal) return;
+
+              file.error = '';
+              file._retries = 0;
+              file._retryDelay = 500;
+              const percentage = Math.round(bytesUploaded / bytesTotal * 10000) / 100;
+              commit('UPDATE_FILE', {
+                file,
+                data: { progress: { percentage, humanSize: humanFileSize(bytesUploaded) } }
+              });
+            },
+            onSuccess() {
+              commit('UPDATE_FILE', {
+                file, data: {
+                  uploaded: true,
+                  progress: { percentage: 100, humanFileSize: file.humanSize }
+                }
+              });
+              if (state.files.every(f => f.uploaded)) commit('STATE', 'uploaded', { root: true });
             }
-          },
-          onProgress(bytesUploaded, bytesTotal) {
-            // uploaded=total gets also emitted on error
-            if (bytesUploaded === bytesTotal) return;
-
-            file.error = '';
-            file._retries = 0;
-            file._retryDelay = 500;
-            const percentage = Math.round(bytesUploaded / bytesTotal * 10000) / 100;
-            commit('UPDATE_FILE', {
-              file,
-              data: { progress: { percentage, humanSize: humanFileSize(bytesUploaded) } }
-            });
-          },
-          onSuccess() {
-            localStorage.removeItem(tusUploader._fingerprint);
-            commit('UPDATE_FILE', {
-              file, data: {
-                uploaded: true,
-                progress: { percentage: 100, humanFileSize: file.humanSize }
-              }
-            });
-            if (state.files.every(f => f.uploaded)) commit('STATE', 'uploaded', { root: true });
-          }
-        });
-        tusUploader.start();
+          }).start();
+        }
+        startTusUpload();
       });
     }
   }
