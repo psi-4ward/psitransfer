@@ -151,7 +151,7 @@ export default {
               "x-passwd": rootState.config.uploadPass
             },
             parallelUploads: 1,
-            chunkSize: 500000,
+            chunkSize: 5000000,
             endpoint: "files/",
             storeFingerprintForResuming: false,
             retryDelays: null,
