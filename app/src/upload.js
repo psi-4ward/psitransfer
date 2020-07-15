@@ -21,6 +21,7 @@ new Vue({
     // Fetch translations
     try {
       this.lang = await fetchLanguage();
+      this.$store.commit('LANG', this.lang);
     } catch (e) {
       alert(e);
     }

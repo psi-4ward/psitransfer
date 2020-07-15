@@ -54,7 +54,11 @@ const config =  {
   // for more info, see the webhooks section of docs/configuration.md
   "fileDownloadedWebhook": null,
   "fileUploadedWebhook": null,
+  // Fallback language
   "defaultLanguage": "en",
+  // Limit upload size
+  "maxFileSize": null, // Math.pow(2, 30) * 2, // 2GB
+  "maxBucketSize": null, // Math.pow(2, 30) * 2, // 10GB
 };
 
 // Load NODE_ENV specific config

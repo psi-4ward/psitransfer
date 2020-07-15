@@ -87,9 +87,10 @@
     },
 
     computed: {
-      ...mapState(['error', 'disabled', 'state']),
+      ...mapState(['state']),
       ...mapState('config', ['uploadPassRequired', 'uploadPass', 'requireBucketPassword']),
       ...mapState('upload', ['sid', 'files', 'password']),
+      ...mapGetters(['error', 'disabled']),
       ...mapGetters('upload', ['percentUploaded', 'shareUrl']),
       mailLnk: function() {
         return this.$store.state.config
