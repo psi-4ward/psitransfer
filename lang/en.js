@@ -28,6 +28,8 @@ module.exports = {
   zipDownload: "Download all files as ZIP (not resumeable)",
   tarGzDownload: "Download all files as tar.gz (not resumeable)",
   oneTimeDownloadExpired: "One-Time Download: File is not available anymore.",
+  fileSizeExceed: "File size %% exceeds maximum of %%",
+  bucketSizeExceed: "Upload size %% exceeds maximum of %%",
   retentions: {
     "one-time": "one time download",
     "3600": "1 Hour",

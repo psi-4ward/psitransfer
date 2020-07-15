@@ -21,7 +21,17 @@ export default new Vuex.Store({
      * uploading: probably let user pause/cancel upload
      * uploaded: show download link
      * uploadError: show retry btn */
-    state: 'new'
+    state: 'new',
+    lang: {}
+  },
+
+  getters: {
+    error: (state, getters) => {
+      return state.error || getters['upload/bucketSizeError'];
+    },
+    disabled: (state, getters) => {
+      return !!getters.error;
+    }
   },
 
   mutations: {
@@ -36,6 +46,8 @@ export default new Vuex.Store({
       state.state = val;
       if(val !== 'new') state.disabled = true;
     },
+    LANG(state, val) {
+      state.lang = val;
+    }
   },
-
 });

@@ -16,6 +16,8 @@ module.exports = {
   "uploadPass": false,
   "baseUrl": '/',
   "uploadAppPath": '/',
+  "maxFileSize": Math.pow(2, 20) * 15,
+  "maxBucketSize": Math.pow(2, 20) * 20,
   // "sslKeyFile": './tmp/cert.key',
   // "sslCertFile": './tmp/cert.pem',
 };
