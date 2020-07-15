@@ -50,7 +50,7 @@ function shutdown() {
   setTimeout(function() {
     console.log('Could not close connections in time, forcefully shutting down');
     process.exit(1);
-  }, 60 * 1000);
+  }, 15 * 1000);
 }
 process.on('SIGTERM', shutdown);
 process.on('SIGINT', shutdown);
