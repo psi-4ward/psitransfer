@@ -2,7 +2,7 @@ import md5 from 'crypto-js/md5';
 import * as tus from "tus-js-client";
 import { v4 as uuid } from 'uuid';
 
-function humanFileSize(fileSizeInBytes) {
+export function humanFileSize(fileSizeInBytes) {
   let i = -1;
   const byteUnits = [' kB', ' MB', ' GB', ' TB', 'PB', 'EB', 'ZB', 'YB'];
   do {
@@ -34,25 +34,26 @@ export default {
     password: '',
     files: [],
     sid: getSid(),
-    bytesUploaded: 0,
-
   },
 
   getters: {
     shareUrl: state => {
       return document.head.getElementsByTagName('base')[0].href + state.sid;
     },
-    percentUploaded: state => {
+    percentUploaded: (state, getters) => {
       return Math.min(
-        Math.round(state.files.reduce((sum, file) => sum + file.progress.percentage, 0) / state.files.length), 100);
+        Math.round(getters.bytesUploaded / getters.bucketSize * 100), 100);
+    },
+    bytesUploaded: state => state.files.reduce((sum, file) => sum + file.progress.bytesUploaded, 0),
+    bucketSize: state => {
+      return state.files.reduce((sum, file) => sum + file._File.size, 0);
     },
     bucketSizeError: (state, getters, rootState) => {
-      const sum = state.files.reduce((sum, file) => sum + file._File.size, 0);
       const maxBucketSize = rootState.config && rootState.config.maxBucketSize;
       if(!maxBucketSize) return false;
-      if(sum > maxBucketSize) {
+      if(getters.bucketSize > maxBucketSize) {
         return rootState.lang.bucketSizeExceed
-          .replace('%%', humanFileSize(sum))
+          .replace('%%', humanFileSize(getters.bucketSize))
           .replace('%%', humanFileSize(maxBucketSize));
       }
       return false;
@@ -101,7 +102,7 @@ export default {
           _File: files[i],
           name: files[i].name,
           comment: '',
-          progress: { percentage: 0, humanSize: 0 },
+          progress: { percentage: 0, humanSize: 0, bytesUploaded: 0 },
           uploaded: false,
           error,
           humanSize: humanFileSize(files[i].size),
@@ -136,7 +137,6 @@ export default {
 
         const _File = file._File;
         const startTusUpload = () => {
-          console.log(file._uploadUrl);
           new tus.Upload(_File, {
             uploadUrl: file._uploadUrl,
             metadata: {
@@ -220,14 +220,14 @@ export default {
               const percentage = Math.round(bytesUploaded / bytesTotal * 10000) / 100;
               commit('UPDATE_FILE', {
                 file,
-                data: { progress: { percentage, humanSize: humanFileSize(bytesUploaded) } }
+                data: { progress: { percentage, humanSize: humanFileSize(bytesUploaded), bytesUploaded } }
               });
             },
             onSuccess() {
               commit('UPDATE_FILE', {
                 file, data: {
                   uploaded: true,
-                  progress: { percentage: 100, humanFileSize: file.humanSize }
+                  progress: { percentage: 100, humanFileSize: file.humanSize, bytesUploaded: file._File.size }
                 }
               });
               if (state.files.every(f => f.uploaded)) commit('STATE', 'uploaded', { root: true });
