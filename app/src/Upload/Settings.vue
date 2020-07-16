@@ -1,7 +1,8 @@
 <template lang="pug">
   div(v-if="config && config.retentions")
     .panel.panel-default(:class="{'panel-info': !disabled}")
-      .panel-heading {{ $root.lang.settings }}
+      .panel-heading
+        strong {{ $root.lang.settings }}
       .panel-body
         .form-group
           label(for='retention') {{ $root.lang.retention }}

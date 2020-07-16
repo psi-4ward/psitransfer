@@ -36,10 +36,11 @@
           a(:href='shareUrl') {{ shareUrl }}
       .row.overall-process(v-show="state === 'uploading'")
         .col-xs-12
-          icon.pull-left(name="spinner", scale="2", spin="")
+          icon.pull-left(name="spinner", scale="2", spin="", style="margin-right: 10px")
           .progress
             .progress-bar.progress-bar-success.progress-bar-striped.active(:style="{width: percentUploaded+'%'}")
-              span(v-show='percentUploaded>10') {{ percentUploaded }}%
+              span(v-show='percentUploaded>8') {{ percentUploaded }}%
+              span(v-show='percentUploaded>15' style="margin-left: 10px") ({{ humanFileSize(bytesUploaded) }} / {{ humanFileSize(bucketSize) }})
       .row
         .col-sm-7
           files
@@ -69,6 +70,7 @@
   import 'vue-awesome/icons/envelope';
   import 'vue-awesome/icons/qrcode';
   import 'vue-awesome/icons/exclamation-triangle';
+  import { humanFileSize } from "./Upload/store/upload";
 
 
   export default {
@@ -91,7 +93,7 @@
       ...mapState('config', ['uploadPassRequired', 'uploadPass', 'requireBucketPassword']),
       ...mapState('upload', ['sid', 'files', 'password']),
       ...mapGetters(['error', 'disabled']),
-      ...mapGetters('upload', ['percentUploaded', 'shareUrl']),
+      ...mapGetters('upload', ['percentUploaded', 'shareUrl', 'bucketSize', 'bytesUploaded']),
       mailLnk: function() {
         return this.$store.state.config
           && this.$store.state.config.mailTemplate
@@ -152,7 +154,8 @@
         const byteArray = new Uint8Array(byteNumbers);
         const file = new Blob([byteArray], { type: 'image/gif;base64' });
         window.open(URL.createObjectURL(file));
-      }
+      },
+      humanFileSize
     }
 
   }

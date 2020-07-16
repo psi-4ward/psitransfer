@@ -30,7 +30,7 @@ export default new Vuex.Store({
       return state.error || getters['upload/bucketSizeError'];
     },
     disabled: (state, getters) => {
-      return !!getters.error;
+      return !!getters.error || state.disabled;
     }
   },
 
