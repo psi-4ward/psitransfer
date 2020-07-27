@@ -102,7 +102,7 @@
     methods: {
       newSession() {
         //if (!confirm('Create a new upload session?')) return;
-        document.location.reload();
+        document.location.href="/";
       },
 
       kcLogout() {
