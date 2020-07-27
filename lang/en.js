@@ -1,4 +1,5 @@
 module.exports = {
+  langCode: "en",
   oldBrowserError: "Your browser is too old and does not support this function.",
   dropFilesHere: "Drop your files here",
   noPreviewAvailable: "No preview available",
@@ -30,6 +31,17 @@ module.exports = {
   oneTimeDownloadExpired: "One-Time Download: File is not available anymore.",
   fileSizeExceed: "File size %% exceeds maximum of %%",
   bucketSizeExceed: "Upload size %% exceeds maximum of %%",
+  mailTo: "Send to",
+  mailToPlaceholder: "E-Mail addresses",
+  mailFrom: "My E-Mail address",
+  mailFromPlaceholder: "E-Mail address",
+  mailMessage: "My message",
+  mailDownloadNotification: "Notify me when a file hase been downloaded.",
+  mailSendBtn: "Send E-Mail",
+  mailsSent: "The e-mails have been sent.",
+  mailSubjectUploader: "PsiTransfer File-Upload",
+  mailSubjectDownloader: "PsiTransfer File-Download",
+  mailSubjectFileDownloaded: "File has been downloaded",
   retentions: {
     "one-time": "one time download",
     "3600": "1 Hour",
