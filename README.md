@@ -50,6 +50,12 @@ Specify the version by using [image tags](https://hub.docker.com/r/psitrax/psitr
 * `1.1`: latest stable `1.1.x`
 * `1.0.0`: exact version
 
+### Docker with keycloak
+```bash
+$ docker run -p 0.0.0.0:3000:3000 -e PSITRANSFER_ADMIN_PASS=secret -e PSITRANSFER_KEYCLOAK='{"front":{"realm":"PsiTransfer","auth-server-url":"http://192.168.5.4:8080/auth","ssl-required":"external","resource":"PsiTransfer_FrontEnd","public-client":true,"confidential-port":0},"back":{"realm":"PsiTransfer","bearer-only":true,"auth-server-url":"http://192.168.5.4:8080/auth","ssl-required":"external","resource":"PsiTransfer_BackEnd","confidential-port":0}}' -v $PWD/data:/data smartblug/psitransfer
+# data volume needs UID 1000
+$ sudo chown -R 1000 $PWD/data 
+```
 ### Manual, precompiled
 
 ```bash

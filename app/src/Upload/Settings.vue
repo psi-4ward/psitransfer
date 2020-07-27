@@ -60,7 +60,14 @@
       disabled: 'disabled',
       retention: state => state.upload.retention,
       password: state => state.upload.password,
+      autoPassword: state => state.config.autoPassword
     }),
+
+    watch: {
+      autoPassword: function(autoPassword) {
+        if (autoPassword) this.generatePassword();
+      }
+    },
 
     methods: {
       generatePassword() {
@@ -68,9 +75,5 @@
         this.$store.commit('upload/PASSWORD', passGen.generate(10));
       }
     },
-
-    beforeMount() {
-      this.generatePassword();
-    }
   };
 </script>

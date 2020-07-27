@@ -15,6 +15,7 @@ module.exports = {
   },
   "defaultRetention": "300",
   "adminPass": "securedadmin",
+  "autoPassword":false,
   "keycloak": { 
     "front": {
       "realm": "PsiTransfer",
