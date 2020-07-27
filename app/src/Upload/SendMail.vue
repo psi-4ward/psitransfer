@@ -3,32 +3,79 @@
     .panel.panel-success()
       .panel-heading
         strong {{ $root.lang.sendViaMail }}
-      .panel-body
+      form.panel-body(@submit.prevent="send" v-if="!sendSuccess")
         .form-group
-          label(for='to') Send to
-          input.form-control(type="email" id="to" placeholder="E-Mail addresses" multiple autofocus)
+          label(for='to') {{ $root.lang.mailTo }}
+          input.form-control(
+            type="email"
+            id="to"
+            :placeholder="$root.lang.mailToPlaceholder"
+            v-model="mail.to"
+            multiple autofocus required
+          )
         .form-group
-          label(for='from') My E-Mail address
-          input.form-control(type="email" id="from" placeholder="E-Mail address")
+          label(for='from') {{ $root.lang.mailFrom }}
+          input.form-control(
+            type="email"
+            id="from"
+            :placeholder="$root.lang.mailFromPlaceholder"
+            v-model="mail.from"
+            required
+          )
         .form-group
-          label(for='message') My message
-          textarea.form-control(id="message" placeholder="Meine Nachricht")
+          label(for='message') {{ $root.lang.mailMessage }}
+          textarea.form-control(id="message" :placeholder="$root.lang.mailMessage" v-model="mail.message")
+        .checkbox
+          label
+            input#downloadNotification(type="checkbox" v-model="mail.downloadNotifications")
+            | {{ $root.lang.mailDownloadNotification }}
         .form-group.text-right
-          button#sendMailBtn.btn.btn-success(@click="alert('Diese Funktion ist noch nicht implementiert')")
+          button#sendMailBtn.btn.btn-success(type="submit")
             icon.fa-fw(name="paper-plane")
-            |  send
+            |  {{ $root.lang.mailSendBtn }}
+      .panel-body(v-else)
+        strong {{ $root.lang.mailsSent }}
 </template>
 
 <script type="text/babel">
-  import { mapState } from 'vuex';
+  import { mapState, mapGetters } from 'vuex';
   import 'vue-awesome/icons/paper-plane';
+  import { httpPost } from "../common/util";
 
   export default {
     name: 'SendMail',
 
+    data() {
+      return {
+        mail: {
+          to: '',
+          from: '',
+          message: '',
+          downloadNotifications: false
+        },
+        sendSuccess: false
+      }
+    },
+
+    computed: {
+      ...mapState('upload', ['sid']),
+      ...mapGetters('upload', ['shareUrl'])
+    },
+
     methods: {
-      alert(v) {
-        alert(v);
+      async send() {
+        const data = {
+          ...this.mail,
+          sid: this.sid,
+          lang: this.$root.lang.langCode,
+          shareLink: this.shareUrl,
+        }
+        try {
+          await httpPost('send-mail', data);
+          this.sendSuccess = true;
+        } catch(e) {
+          alert(e);
+        }
       }
     }
   };

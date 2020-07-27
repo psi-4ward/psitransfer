@@ -59,7 +59,18 @@ const config =  {
   // Limit upload size
   "maxFileSize": null, // Math.pow(2, 30) * 2, // 2GB
   "maxBucketSize": null, // Math.pow(2, 30) * 2, // 10GB
-  "plugins": ['file-downloaded-webhook', 'file-uploaded-webhook'],
+  "plugins": ['file-downloaded-webhook', 'file-uploaded-webhook', 'mail-notifications'],
+  // Nodemailer smtp transport config: https://nodemailer.com/smtp/
+  "mailer": {
+    "host": "localhost",
+    "port": 25,
+    "secure": false, // true for 465, false for other ports
+    "auth": {
+      "user": "", // generated ethereal user
+      "pass": "", // generated ethereal password
+    },
+  },
+  "mailFrom": "PsiTransfer <psitransfer@example.com>",
 };
 
 // Load NODE_ENV specific config

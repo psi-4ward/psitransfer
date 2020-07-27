@@ -1,0 +1,9 @@
+*File share*
+
+${this.from} has uploaded ${this.filesCount} file(s) for you.
+
+Share-Link: ${this.shareLink}
+
+The link is valid until ${this.validUntilDate}.
+
+> ${this.message.replace(/\r?\n/g, "\n> ")}
