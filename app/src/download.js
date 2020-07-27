@@ -8,7 +8,7 @@ if(!String.prototype.startsWith) {
 }
 
 import Vue from 'vue';
-import fetchLanguage from "./common/fetchLanguage";
+import { httpGet } from "./common/util";
 import Download from './Download.vue';
 import Icon from 'vue-awesome/components/Icon.vue'
 
@@ -23,7 +23,7 @@ new Vue({
   async beforeCreate() {
     // Fetch translations
     try {
-      this.lang = await fetchLanguage();
+      this.lang = await httpGet('lang.json');
     }
     catch (e) {
       alert(e);

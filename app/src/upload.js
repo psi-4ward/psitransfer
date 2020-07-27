@@ -4,7 +4,7 @@ import Vue from 'vue';
 import Upload from './Upload.vue';
 import store from './Upload/store.js';
 import Icon from 'vue-awesome/components/Icon.vue'
-import fetchLanguage from "./common/fetchLanguage";
+import {httpGet} from "./common/util";
 
 Vue.component('icon', Icon);
 
@@ -20,7 +20,7 @@ new Vue({
   async beforeCreate() {
     // Fetch translations
     try {
-      this.lang = await fetchLanguage();
+      this.lang = await httpGet('lang.json');
       this.$store.commit('LANG', this.lang);
     } catch (e) {
       alert(e);

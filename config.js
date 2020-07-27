@@ -59,6 +59,7 @@ const config =  {
   // Limit upload size
   "maxFileSize": null, // Math.pow(2, 30) * 2, // 2GB
   "maxBucketSize": null, // Math.pow(2, 30) * 2, // 10GB
+  "plugins": ['file-downloaded-webhook', 'file-uploaded-webhook'],
 };
 
 // Load NODE_ENV specific config
@@ -74,6 +75,8 @@ for (let k in config) {
   if(process.env[envName]) {
     if(typeof config[k] === 'number') {
       config[k] = parseInt(process.env[envName], 10);
+    } else if (Array.isArray(config[k])) {
+      config[k] = process.env[envName].split(',');
     } else if (typeof config[k] === 'object') {
       config[k] = JSON.parse(process.env[envName]);
     } else {
