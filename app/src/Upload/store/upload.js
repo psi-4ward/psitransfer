@@ -34,13 +34,15 @@ export default {
     password: '',
     files: [],
     sid: getSid(),
-    bytesUploaded: 0,
-
+    bytesUploaded: 0
   },
 
   getters: {
     shareUrl: state => {
       return document.location.protocol + '//' + document.location.host + '/' + state.sid;
+    },
+    guestUrl: state => {
+      return document.location.protocol + '//' + document.location.host + '/guest/' + state.sid;
     },
     percentUploaded: state => {
       return Math.min(
@@ -107,6 +109,12 @@ export default {
       }
       if(onOnlineHandlerAttached) window.removeEventListener('online', onOnlineHandler);
 
+      // Use sid if guest
+      let guestsid = '';
+      if(guest) {
+        const pathnames = document.location.pathname.split('/');
+        guestsid = pathnames[pathnames.length-1];
+      }
       // upload all files in parallel
       state.files.forEach(file => {
         file.error = '';
@@ -121,10 +129,14 @@ export default {
             password: state.password,
             name: file.name,
             comment: file.comment,
-            type: file._File.type
+            type: file._File.type,
+            username: kc.tokenParsed.name
+          },
+          headers: {
+            authorization: 'Bearer ' + kc.token
           },
           resume: true,
-          endpoint: "/files/",
+          endpoint: guest?"/guest/files/"+guestsid+"/"+guestkey:"/files/",
           fingerprint: (file) => {
             // include sid to prevent duplicate file detection on different session
             return ["tus", state.sid, file.name, file.type, file.size, file.lastModified].join("-");
@@ -187,6 +199,40 @@ export default {
         });
         tusUploader.start();
       });
+    },
+
+    addGuestAccess({commit, state}, files) {
+      commit('ERROR', '', {root:true});
+
+      var url = document.location.protocol + '//' + document.location.host + '/guest';
+
+      const meta = {
+        sid: state.sid,
+        retention: state.retention,
+        password: state.password,
+        name: 'Guest Access',
+        comment: 'Guest Access',
+        type: 'Guest Access',
+        username : kc.tokenParsed.name
+      };
+
+      var req = new XMLHttpRequest();
+
+      req.open('POST', url, true);
+      req.setRequestHeader('authorization', 'Bearer ' + kc.token);
+      req.setRequestHeader('metadata', JSON.stringify(meta));
+
+      req.onreadystatechange = function () {
+        if (req.readyState === 4) {
+          if (req.status === 200) {
+            commit('STATE', 'guestAccess', {root:true});
+          } else {
+            alert('xhr failed with status code: ' + req.status + '. you\'re probably not logged in')
+          }
+        }
+      }
+
+      req.send();
     }
   }
 

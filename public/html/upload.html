@@ -8,6 +8,7 @@
   <meta name="robots" content="noindex,nofollow">
   <meta http-equiv="x-ua-compatible" content="IE=edge">
   <link href="/assets/styles.css" rel="stylesheet">
+  <script src="/keycloak"></script>
   <script>
     // Add ployfills for stupid IE
     if (document.documentMode || /Edge/.test(navigator.userAgent)) {
@@ -45,7 +46,39 @@
 
   <script src="/app/common.js"></script>
   <script src="/app/upload.js"></script>
+  <script>
+    const pathnames = document.location.pathname.split('/');
+    const guest = pathnames[pathnames.length-2] == 'guest';
+    let guestkey = '';
+    var kc = {
+      token: '',
+      tokenParsed: { name: '' }
+    }
 
+    if (!guest)
+    {
+      if (typeof Keycloak === "function" ) {
+        kc = Keycloak();
+        kc.init()
+          .success(function(authenticated) {
+            console.log('keycloak initialised');
+            //kc.login();
+            if (kc.token) {
+              const tokenParsed = JSON.stringify(kc.tokenParsed, null, 2);
+              document.getElementById("SignOut").style.display = "block";
+              document.getElementById("GuestAccess").style.display = "block";
+              document.getElementById("username").innerHTML=kc.tokenParsed.name;
+            }
+            else {
+              kc.login();
+            }
+          })
+          .error(function() {
+            console.error('failed to initialize keycloak');
+          });
+      }
+    }
+  </script>  
 </body>
 
 </html>

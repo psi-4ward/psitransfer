@@ -67,6 +67,10 @@
         if (this.disabled) return;
         this.$store.commit('upload/PASSWORD', passGen.generate(10));
       }
+    },
+
+    beforeMount() {
+      this.generatePassword();
     }
   };
 </script>

@@ -7,6 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex,nofollow">
   <link href="/assets/styles.css" rel="stylesheet">
+  <script src="/keycloak"></script>
   <script>
     // Add ployfills for stupid IE
     if (document.documentMode || /Edge/.test(navigator.userAgent)) {
@@ -42,7 +43,27 @@
 
   <script src="/app/common.js"></script>
   <script src="/app/admin.js"></script>
-
+  <script>
+    var kc = {};
+    if (typeof Keycloak === "function" ) {
+      kc = Keycloak();
+      kc.init()
+        .success(function(authenticated) {
+          console.log('keycloak initialised');
+          if (kc.token) {
+            const tokenParsed = JSON.stringify(kc.tokenParsed, null, 2);
+            document.getElementById("SignOut").style.display = "block";
+            document.getElementById("username").innerHTML=kc.tokenParsed.name;
+          }
+          else {
+            kc.login();
+          }
+        })
+        .error(function() {
+          console.error('failed to initialize keycloak');
+        });
+    }
+  </script>
 </body>
 
 </html>

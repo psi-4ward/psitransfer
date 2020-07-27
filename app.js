@@ -16,6 +16,7 @@ if(config.port) {
   // HTTP Server
   server = app.listen(config.port, config.iface, () => {
     console.log(`PsiTransfer listening on http://${config.iface}:${config.port}`);
+    if (config.keycloak.front) console.log(`Keycloak activated`);
   });
 }
 
@@ -29,6 +30,7 @@ if(config.sslPort && config.sslKeyFile && config.sslCertFile) {
   httpsServer = https.createServer(sslOpts, app)
     .listen(config.sslPort, config.iface, () => {
       console.log(`PsiTransfer listening on https://${config.iface}:${config.sslPort}`);
+      if (config.keycloak.front) console.log(`Keycloak activated`);
     });
 }
 

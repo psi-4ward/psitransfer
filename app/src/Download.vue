@@ -1,8 +1,10 @@
 <template lang="pug">
   .download-app
-    a.btn.btn-sm.btn-info.btn-new-session(@click='newSession()', title='New Upload')
-      icon.fa-fw(name="cloud-upload-alt")
-      span.hidden-xs  new upload
+    .btn-group.btn-title
+      div.username#username
+      a.btn.btn-sm.btn-info.btn-new-session(@click='newSession()', title='New Upload')
+        icon.fa-fw(name="cloud-upload-alt")
+        span.hidden-xs  new upload
     .alert.alert-danger(v-show="error")
       strong
         icon.fa-fw(name="exclamation-triangle")
@@ -217,3 +219,18 @@
     }
   }
 </script>
+
+<style>
+  .btn-title {
+    position: absolute;
+    top: 15px;
+    right: 10px;
+  }
+  .btn-title a {
+    margin-right: 5px;
+  }
+  #username {
+    float: left;
+    margin: 5px 15px;
+  }
+</style>

@@ -1,5 +1,13 @@
 <template lang="pug">
   .download-app
+    .btn-group.btn-title
+      div.username#username      
+      a.btn.btn-sm.btn-info.btn-new-session#SignOut(@click='kcLogout()', title='Sign out')
+        icon.fa-fw(name="sign-out-alt")
+        span.hidden-xs  Sign Out
+      a.btn.btn-sm.btn-info.btn-new-session(@click='newSession()', title='New Upload')
+        icon.fa-fw(name="cloud-upload-alt")
+        span.hidden-xs  new upload
     a.btn.btn-sm.btn-info.btn-new-session(@click='login()', title='Refresh', v-if="loggedIn")
       icon(name="sync-alt")
 
@@ -24,6 +32,7 @@
           tr
             th SID
             th Created
+            th Owner
             th Downloaded
             th Expire
             th Size
@@ -33,7 +42,9 @@
               td
                 | {{ sid }}
                 icon.pull-right(name="key", v-if="sum[sid].password", title="Password protected")
+                icon.pull-right(name="user-plus", v-if="sum[sid].type === 'Guest Access'", title="Guest Access")
               td {{ sum[sid].created | date }}
+              td {{ sum[sid].username }}
               td
                 template(v-if="sum[sid].lastDownload") {{ sum[sid].lastDownload | date}}
                 template(v-else="") -
@@ -46,6 +57,7 @@
               tr.file
                 td {{ file.metadata.name }}
                 td {{+file.metadata.createdAt | date}}
+                td {{ file.metadata.username }}
                 td
                   template(v-if="file.metadata.lastDownload") {{ +file.metadata.lastDownload | date}}
                   template(v-else="") -
@@ -55,7 +67,7 @@
                 td.text-right {{ humanFileSize(file.size) }}
         tfoot
           tr
-            td(colspan="3")
+            td(colspan="4")
             td.text-right(colspan="2") Sum: {{ humanFileSize(sizeSum) }}
 
 </template>
@@ -66,8 +78,11 @@
   import 'vue-awesome/icons/sync-alt';
   import 'vue-awesome/icons/sign-in-alt';
   import 'vue-awesome/icons/key';
-
-
+  import 'vue-awesome/icons/cloud-upload-alt';
+  import 'vue-awesome/icons/sign-out-alt';
+  import 'vue-awesome/icons/user-plus';
+  
+  
   export default {
     name: 'app',
 
@@ -85,6 +100,15 @@
     },
 
     methods: {
+      newSession() {
+        //if (!confirm('Create a new upload session?')) return;
+        document.location.reload();
+      },
+
+      kcLogout() {
+        kc.logout();
+      },
+
       expandView(sid) {
         if(this.expand === sid) return this.expand = false;
         this.expand = sid;
@@ -94,6 +118,7 @@
         if(!this.password) return;
         const xhr = new XMLHttpRequest();
         xhr.open('GET', '/admin/data.json');
+        xhr.setRequestHeader("authorization", 'Bearer ' + kc.token);
         xhr.setRequestHeader("x-passwd", this.password);
         xhr.onload = () => {
           if(xhr.status === 200) {
@@ -127,6 +152,8 @@
           };
           this.db[sid].forEach(file => {
             bucketSum.size += file.size;
+            bucketSum.username = file.metadata.username;
+            bucketSum.type = file.metadata.type;
             if(file.metadata._password) {
               bucketSum.password = true;
             }
@@ -178,5 +205,20 @@
   }
   tfoot {
     font-weight: bold;
+  }
+  .btn-title {
+    position: absolute;
+    top: 15px;
+    right: 10px;
+  }
+  .btn-title a {
+    margin-right: 5px;
+  }
+  #SignOut {
+    display:none;
+  }
+  #username {
+    float: left;
+    margin: 5px 15px;
   }
 </style>

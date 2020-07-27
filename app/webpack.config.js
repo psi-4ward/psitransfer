@@ -18,6 +18,7 @@ module.exports = {
     upload: './src/upload.js',
     download: './src/download.js',
     admin: './src/admin.js',
+    keycloak: './src/keycloak.js',
   },
   output: {
     path: path.resolve(__dirname, '../public/app'),

@@ -21,19 +21,21 @@
     "express": "^4.17.1",
     "fs-promise": "^2.0.3",
     "http-errors": "^1.7.3",
+    "keycloak-connect": "^11.0.0",
     "morgan": "^1.9.1",
     "tus-metadata": "^1.0.2",
     "tusboy": "^1.1.1",
     "uuid": "^3.3.2"
   },
-  "bin":{
+  "bin": {
     "psitransfer": "cli.js"
   },
   "devDependencies": {},
   "scripts": {
     "start": "NODE_ENV=production node app.js",
     "dev": "NODE_ENV=dev DEBUG=psitransfer:* nodemon -i app -i dist -i data app.js",
-    "debug": "node --inspect app.js"
+    "debug": "node --inspect app.js",
+    "kc": "NODE_ENV=keycloak node app.js"
   },
   "engines": {
     "node": ">= 7.4.0",
