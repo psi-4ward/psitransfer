@@ -130,7 +130,8 @@ export default {
             name: file.name,
             comment: file.comment,
             type: file._File.type,
-            username: kc.tokenParsed.name
+            username: kc.tokenParsed.name,
+            email: kc.tokenParsed.email
           },
           headers: {
             authorization: 'Bearer ' + kc.token
@@ -213,7 +214,8 @@ export default {
         name: 'Guest Access',
         comment: 'Guest Access',
         type: 'Guest Access',
-        username : kc.tokenParsed.name
+        username : kc.tokenParsed.name,
+        email : kc.tokenParsed.email
       };
 
       var req = new XMLHttpRequest();

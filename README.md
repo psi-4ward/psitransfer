@@ -94,6 +94,74 @@ You can:
   See `config.dev.js`
 * Define environment Variables like `PSITRANSFER_UPLOAD_DIR`
 
+#### Keycloak support :
+- setup your Keycloak server
+- use PSITRANSFER_KEYCLOAK and define front and back parameters
+```
+{ 
+  "front": {
+    "realm": "PsiTransfer",
+    "auth-server-url": "https://iam.mydomain.com/auth",
+    "ssl-required": "external",
+    "resource": "PsiTransfer_FrontEnd",
+    "public-client": true,
+    "confidential-port": 0
+  },
+  "back": {
+    "realm": "PsiTransfer",
+    "bearer-only": true,
+    "auth-server-url": "https://iam.mydomain.com/auth",
+    "ssl-required": "external",
+    "resource": "PsiTransfer_BackEnd",
+    "confidential-port": 0
+  }
+}
+```
+
+#### Email notifications support :
+- Use Keycloak to authenticate user
+- use PSITRANSFER_MAIL_ON_USAGE and define your email parameters (using [nodemailer](https://nodemailer.com) transporter)
+```
+{
+  "transporter":{
+    "service": "gmail",
+    "auth": {
+      "user": "<user@gmail.com>",
+      "pass": "<password>"
+    }
+  },
+  "from":"user@gmail.com",
+  "subject":"PsiTransfer Usage - %%TYPE%%",
+  "body": {
+    "Access":"Your Shared link %%URL%% has been used",
+    "Guest Access":"Your Shared link %%URL%% has been used by your guest",
+    "Download":"Your Shared file \"%%FILENAME%%\" from %%URL%% has been downloaded",
+    "Download Compressed":"Your Shared files %%URL%% have been downloaded"
+  }
+}
+```
+Keywords `TYPE`, `URL` and `FILENAME` will be remplaced with relevant content<br>
+You can disabled specific notifications with `false` like this :
+```
+{
+  "transporter":{
+    "service": "gmail",
+    "auth": {
+      "user": "<user@gmail.com>",
+      "pass": "<password>"
+    }
+  },
+  "from":"user@gmail.com",
+  "subject":"PsiTransfer Usage - %%TYPE%%",
+  "body": {
+    "Access": false,
+    "Guest Access":"Your Shared link %%URL%% has been used by your guest",
+    "Download": false,
+    "Download Compressed":"Your Shared files %%URL%% have been downloaded"
+  }
+}
+```
+
 ### Customization
 
 `public/upload.html` and `download.html` are kept simple.  

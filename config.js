@@ -51,7 +51,8 @@ const config =  {
   // for more info, see the webhooks section of docs/configuration.md
   "fileDownloadedWebhook": null,
   "fileUploadedWebhook": null,
-  "keycloak": { front:null, back:{} }
+  "keycloak": { front:null, back:{} },
+  "mailOnUsage": false
 };
 
 
