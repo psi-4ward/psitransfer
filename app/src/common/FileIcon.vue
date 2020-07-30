@@ -13,6 +13,7 @@
   import 'vue-awesome/icons/regular/file-audio';
   import 'vue-awesome/icons/regular/file-archive';
   import 'vue-awesome/icons/regular/file';
+  import 'vue-awesome/icons/regular/file-pdf';
 
   export default {
     props: ['file'],

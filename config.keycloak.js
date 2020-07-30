@@ -19,7 +19,7 @@ module.exports = {
   "keycloak": { 
     "front": {
       "realm": "PsiTransfer",
-      "auth-server-url": "http://192.168.5.4:8080/auth",
+      "auth-server-url": "https://192.168.5.4:8443/auth",
       "ssl-required": "external",
       "resource": "PsiTransfer_FrontEnd",
       "public-client": true,
@@ -28,7 +28,7 @@ module.exports = {
     "back": {
       "realm": "PsiTransfer",
       "bearer-only": true,
-      "auth-server-url": "http://192.168.5.4:8080/auth",
+      "auth-server-url": "https://192.168.5.4:8443/auth",
       "ssl-required": "external",
       "resource": "PsiTransfer_BackEnd",
       "confidential-port": 0
