@@ -3,6 +3,7 @@ const config = require('./config');
 const app = require('./lib/endpoints');
 const https = require('https');
 const fs = require('fs');
+const Package = require('./package.json');
 
 /**
  * Naming:
@@ -15,8 +16,8 @@ let server;
 if(config.port) {
   // HTTP Server
   server = app.listen(config.port, config.iface, () => {
-    console.log(`PsiTransfer listening on http://${config.iface}:${config.port}`);
-    if (config.keycloak.front) console.log(`Keycloak activated`);
+    console.log(Package.name,Package.version,'build',Package.build,`listening on https://${config.iface}:${config.sslPort}`);
+    if (config.keycloak.front) console.log(`Keycloak activated on ${config.keycloak.back["auth-server-url"]}realms/${config.keycloak.back["realm"]}`);
   });
 }
 
@@ -29,8 +30,8 @@ if(config.sslPort && config.sslKeyFile && config.sslCertFile) {
   };
   httpsServer = https.createServer(sslOpts, app)
     .listen(config.sslPort, config.iface, () => {
-      console.log(`PsiTransfer listening on https://${config.iface}:${config.sslPort}`);
-      if (config.keycloak.front) console.log(`Keycloak activated`);
+      console.log(Package.name,Package.version,'build',Package.build,`listening on https://${config.iface}:${config.sslPort}`);
+      if (config.keycloak.front) console.log(`Keycloak activated on ${config.keycloak.back["auth-server-url"]}realms/${config.keycloak.back["realm"]}`);
     });
 }
 

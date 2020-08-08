@@ -58,24 +58,24 @@
     if (!guest)
     {
       if (typeof Keycloak === "function" ) {
-        kc = Keycloak();
-        kc.init()
-          .success(function(authenticated) {
-            console.log('keycloak initialised');
-            //kc.login();
-            if (kc.token) {
-              const tokenParsed = JSON.stringify(kc.tokenParsed, null, 2);
+        kc = new Keycloak('/keycloak.json');
+        kc.init({
+          onLoad: 'check-sso',
+          silentCheckSsoRedirectUri: window.location.origin + '/silent-check-sso.html'
+        })
+        .then(function(authenticated) {
+          console.log('keycloak initialised -',authenticated ? 'authenticated' : 'not authenticated');
+          if (!authenticated) {
+            kc.login();
+          }
+          else {
               document.getElementById("SignOut").style.display = "block";
               document.getElementById("GuestAccess").style.display = "block";
               document.getElementById("username").innerHTML=kc.tokenParsed.name;
-            }
-            else {
-              kc.login();
-            }
-          })
-          .error(function() {
-            console.error('failed to initialize keycloak');
-          });
+          }
+        }).catch(function() {
+          console.log('failed to initialize keycloak');
+        });
       }
     }
   </script>  

@@ -1,15 +1,14 @@
 # PsiTransfer
 
-[![Current Release](https://img.shields.io/github/release/psi-4ward/psitransfer.svg)](https://github.com/psi-4ward/psitransfer/releases)
-[![Dependencies](https://david-dm.org/psi-4ward/psitransfer.svg)](https://david-dm.org/psi-4ward/psitransfer)
-[![Known Vulnerabilities](https://snyk.io/test/github/psi-4ward/psitransfer/badge.svg)](https://snyk.io/test/github/psi-4ward/psitransfer)
+[![Latests Version](https://img.shields.io/github/package-json/v/SmartBlug/psitransfer?label=current%20version)](https://github.com/SmartBlug/psitransfer)
+[![Latests Build](https://img.shields.io/github/package-json/build/SmartBlug/psitransfer)](https://github.com/SmartBlug/psitransfer)
+[![Known Vulnerabilities](https://snyk.io/test/github/SmartBlug/psitransfer/badge.svg)](https://snyk.io/test/github/SmartBlug/psitransfer)
 [![Github Stars](https://img.shields.io/github/stars/psi-4ward/psitransfer.svg?style=social&label=Star)](https://github.com/psi-4ward/psitransfer)
-[![Docker Stars](https://img.shields.io/docker/stars/psitrax/psitransfer.svg)](https://hub.docker.com/r/psitrax/psitransfer/)
-[![Image Size](https://images.microbadger.com/badges/image/psitrax/psitransfer.svg)](https://microbadger.com/images/psitrax/psitransfer)
-[![Docker Pulls](https://img.shields.io/docker/pulls/psitrax/psitransfer.svg)](https://hub.docker.com/r/psitrax/psitransfer/)
-[![Docker Automated buil](https://img.shields.io/docker/automated/psitrax/psitransfer.svg)](https://hub.docker.com/r/psitrax/psitransfer/)
-[![BrowserStack Status](https://automate.browserstack.com/badge.svg?badge_key=Ym1VTEpTSzhYd3QwcU0xR2M5WEZHTklrZWxZZWlrUGpNcnFndlF6dHVadz0tLWU4U1NtNVdDTU5lRHNrSHlkZVJxNHc9PQ==--02d369ac39b0a9d00e89b8adf96d43d368d1dbf8)](https://automate.browserstack.com/public-build/Ym1VTEpTSzhYd3QwcU0xR2M5WEZHTklrZWxZZWlrUGpNcnFndlF6dHVadz0tLWU4U1NtNVdDTU5lRHNrSHlkZVJxNHc9PQ==--02d369ac39b0a9d00e89b8adf96d43d368d1dbf8)
-[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=RTWDCH74TJN54&item_name=psitransfer)
+[![Docker Stars](https://img.shields.io/docker/stars/smartblug/psitransfer.svg)](https://hub.docker.com/r/smartblug/psitransfer)
+[![Docker Pulls](https://img.shields.io/docker/pulls/smartblug/psitransfer.svg)](https://hub.docker.com/r/smartblug/psitransfer/)
+[![Docker Automated buil](https://img.shields.io/docker/automated/smartblug/psitransfer.svg)](https://hub.docker.com/r/smartblug/psitransfer/)
+[![Latest Release](https://img.shields.io/github/release/SmartBlug/psitransfer?label=latest%20release)](https://github.com/SmartBlug/psitransfer/releases)
+
 
 Simple open source self-hosted file sharing solution.  
 It's an alternative to paid services like Dropbox, WeTransfer.
@@ -39,9 +38,10 @@ It's an alternative to paid services like Dropbox, WeTransfer.
 
 ### Docker
 ```bash
-$ docker run -p 0.0.0.0:3000:3000 -e PSITRANSFER_ADMIN_PASS=secret -v $PWD/data:/data psitrax/psitransfer
 # data volume needs UID 1000
 $ sudo chown -R 1000 $PWD/data 
+
+$ docker run -p 0.0.0.0:3000:3000 -e PSITRANSFER_ADMIN_PASS=secret -v $PWD/data:/data psitrax/psitransfer
 ```
 
 Specify the version by using [image tags](https://hub.docker.com/r/psitrax/psitransfer/tags/) e.g.:
@@ -52,9 +52,10 @@ Specify the version by using [image tags](https://hub.docker.com/r/psitrax/psitr
 
 ### Docker with keycloak
 ```bash
-$ docker run -p 0.0.0.0:3000:3000 -e PSITRANSFER_ADMIN_PASS=secret -e PSITRANSFER_KEYCLOAK='{"front":{"realm":"PsiTransfer","auth-server-url":"http://192.168.5.4:8080/auth","ssl-required":"external","resource":"PsiTransfer_FrontEnd","public-client":true,"confidential-port":0},"back":{"realm":"PsiTransfer","bearer-only":true,"auth-server-url":"http://192.168.5.4:8080/auth","ssl-required":"external","resource":"PsiTransfer_BackEnd","confidential-port":0}}' -v $PWD/data:/data smartblug/psitransfer
 # data volume needs UID 1000
 $ sudo chown -R 1000 $PWD/data 
+
+$ docker run -p 0.0.0.0:3000:3000 -e PSITRANSFER_ADMIN_PASS=secret -e PSITRANSFER_KEYCLOAK='{"front":{"realm":"PsiTransfer","auth-server-url":"http://192.168.5.4:8080/auth","ssl-required":"external","resource":"PsiTransfer_FrontEnd","public-client":true,"confidential-port":0},"back":{"realm":"PsiTransfer","bearer-only":true,"auth-server-url":"http://192.168.5.4:8080/auth","ssl-required":"external","resource":"PsiTransfer_BackEnd","confidential-port":0}}' -v $PWD/data:/data smartblug/psitransfer
 ```
 ### Manual, precompiled
 
@@ -64,7 +65,7 @@ $ node -v
 v7.4.0
 
 # Download and extract latest release package from
-# https://github.com/psi-4ward/psitransfer/releases
+# https://github.com/SmartBlug/psitransfer/releases
 
 # Install dependencies and start the app
 $ NODE_ENV=production npm install
@@ -185,7 +186,7 @@ DEBUG=psitransfer:* npm start
 
 :star2: Contribution is highly welcome :metal:
 
-Want to say thanks and buy me a beer? [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=RTWDCH74TJN54&item_name=psitransfer)
+Want to say thanks and buy creator a beer? [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=RTWDCH74TJN54&item_name=psitransfer)
 
 
 ## License
