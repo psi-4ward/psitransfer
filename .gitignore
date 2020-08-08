@@ -5,3 +5,4 @@ node_modules
 npm-debug.log
 _releases
 config.keycloak.js
+docker.params

@@ -16,8 +16,9 @@ let server;
 if(config.port) {
   // HTTP Server
   server = app.listen(config.port, config.iface, () => {
-    console.log(Package.name,Package.version,'build',Package.build,`listening on https://${config.iface}:${config.sslPort}`);
+    console.log(Package.name,Package.version,'build',Package.build,`listening on https://${config.iface}:${config.port}`);
     if (config.keycloak.front) console.log(`Keycloak activated on ${config.keycloak.back["auth-server-url"]}realms/${config.keycloak.back["realm"]}`);
+    if (config.mailOnUsage.transporter) console.log("mailOnUsages activated");    
   });
 }
 
@@ -32,6 +33,7 @@ if(config.sslPort && config.sslKeyFile && config.sslCertFile) {
     .listen(config.sslPort, config.iface, () => {
       console.log(Package.name,Package.version,'build',Package.build,`listening on https://${config.iface}:${config.sslPort}`);
       if (config.keycloak.front) console.log(`Keycloak activated on ${config.keycloak.back["auth-server-url"]}realms/${config.keycloak.back["realm"]}`);
+      if (config.mailOnUsage.transporter) console.log("mailOnUsages activated");    
     });
 }
 
