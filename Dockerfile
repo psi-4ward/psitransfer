@@ -3,9 +3,9 @@ FROM node:12-alpine
 ENV PSITRANSFER_UPLOAD_DIR=/data \
     NODE_ENV=production
 
-MAINTAINER Christoph Wiechert <wio@psitrax.de>
+LABEL MAINTAINER = 'Patrick Bouffel <patrick@bouffel.com>'
 
-RUN apk add --no-cache tzdata
+RUN apk add --no-cache tzdata python3 make
 
 WORKDIR /app
 

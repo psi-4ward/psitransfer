@@ -52,7 +52,7 @@ const config =  {
   "fileDownloadedWebhook": null,
   "fileUploadedWebhook": null,
   "keycloak": { front:null, back:{} },
-  "mailOnUsage": false
+  "mailOnUsage": { transporter:false }
 };
 
 
