@@ -1,5 +1,5 @@
 import tus from "tus-js-client";
-import uuid from 'uuid/v4';
+import { v4 as uuid } from 'uuid';
 import md5 from 'crypto-js/md5';
 
 function humanFileSize(fileSizeInBytes) {
