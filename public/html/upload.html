@@ -69,9 +69,13 @@
             kc.login();
           }
           else {
-              document.getElementById("SignOut").style.display = "block";
-              document.getElementById("GuestAccess").style.display = "block";
-              document.getElementById("username").innerHTML=kc.tokenParsed.name;
+            document.getElementById("SignOut").style.display = "block";
+            document.getElementById("GuestAccess").style.display = "block";
+            document.getElementById("username").innerHTML=kc.tokenParsed.name;
+            // Check if Token need to be refreshed every 10s
+            setInterval(function(){
+              kc.updateToken(10);              
+            }, 10*1000);
           }
         }).catch(function() {
           console.log('failed to initialize keycloak');
