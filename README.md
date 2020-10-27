@@ -3,13 +3,11 @@
 [![Current Release](https://img.shields.io/github/release/psi-4ward/psitransfer.svg)](https://github.com/psi-4ward/psitransfer/releases)
 [![Dependencies](https://david-dm.org/psi-4ward/psitransfer.svg)](https://david-dm.org/psi-4ward/psitransfer)
 [![Known Vulnerabilities](https://snyk.io/test/github/psi-4ward/psitransfer/badge.svg)](https://snyk.io/test/github/psi-4ward/psitransfer)
-[![BrowserStack Status](https://automate.browserstack.com/badge.svg?badge_key=aUJvWHBEbXh3NmJMRmptb1p1SEdJclFMbFNUZDVTSDRwbVhINlZJcWg1ST0tLTBKc0N5ZFlldSsyVXFEWmJxR2FwOHc9PQ==--000796d7b849d3bd9fdd77a875d168e2b3e71c73)](https://automate.browserstack.com/public-build/aUJvWHBEbXh3NmJMRmptb1p1SEdJclFMbFNUZDVTSDRwbVhINlZJcWg1ST0tLTBKc0N5ZFlldSsyVXFEWmJxR2FwOHc9PQ==--000796d7b849d3bd9fdd77a875d168e2b3e71c73)
 [![Github Stars](https://img.shields.io/github/stars/psi-4ward/psitransfer.svg?style=social&label=Star)](https://github.com/psi-4ward/psitransfer)
 [![Docker Stars](https://img.shields.io/docker/stars/psitrax/psitransfer.svg)](https://hub.docker.com/r/psitrax/psitransfer/)
 [![Image Size](https://images.microbadger.com/badges/image/psitrax/psitransfer.svg)](https://microbadger.com/images/psitrax/psitransfer)
 [![Docker Pulls](https://img.shields.io/docker/pulls/psitrax/psitransfer.svg)](https://hub.docker.com/r/psitrax/psitransfer/)
 [![Docker Automated buil](https://img.shields.io/docker/automated/psitrax/psitransfer.svg)](https://hub.docker.com/r/psitrax/psitransfer/)
-[![BrowserStack Status](https://automate.browserstack.com/badge.svg?badge_key=Ym1VTEpTSzhYd3QwcU0xR2M5WEZHTklrZWxZZWlrUGpNcnFndlF6dHVadz0tLWU4U1NtNVdDTU5lRHNrSHlkZVJxNHc9PQ==--02d369ac39b0a9d00e89b8adf96d43d368d1dbf8)](https://automate.browserstack.com/public-build/Ym1VTEpTSzhYd3QwcU0xR2M5WEZHTklrZWxZZWlrUGpNcnFndlF6dHVadz0tLWU4U1NtNVdDTU5lRHNrSHlkZVJxNHc9PQ==--02d369ac39b0a9d00e89b8adf96d43d368d1dbf8)
 [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=RTWDCH74TJN54&item_name=psitransfer)
 
 Simple open source self-hosted file sharing solution.
@@ -26,7 +24,7 @@ It's an alternative to paid services like Dropbox, WeTransfer.
 * Requires Node >=7.4 or use `--harmony-async-await` flag
 * Password protected download list ([AES](https://en.wikipedia.org/wiki/Advanced_Encryption_Standard))
 * `/admin` Page lists bucket information, [Screenshot](https://raw.githubusercontent.com/psi-4ward/psitransfer/master/docs/PsiTransfer-Admin.png) (_disabled until you set `adminPass` config value_)
-* Lightweight [Vue](https://vuejs.org) based frontend apps. Gzipped (on by default) less than 65k
+* Lightweight [Vue](https://vuejs.org) based frontend apps. Gzipped (on by default) less than 100k
 * Explicit named bucket IDs with query param `sid=<myBucketID>`
 
 **See the blog posts about PsiTransfer: https://psi.cx/tags/PsiTransfer/ and checkout the
@@ -34,7 +32,6 @@ It's an alternative to paid services like Dropbox, WeTransfer.
 
 ![Screenshot](https://raw.githubusercontent.com/psi-4ward/psitransfer/master/docs/psitransfer.gif)
 
-**Demo**: https://transfer.psi.cx
 
 ## Quickstart
 
@@ -47,16 +44,16 @@ $ sudo chown -R 1000 $PWD/data
 
 Specify the version by using [image tags](https://hub.docker.com/r/psitrax/psitransfer/tags/) e.g.:
 * `latest`: corresponds to master branch
-* `1`: latest stable `1.x.x`
+* `2`: latest stable `2.x.x`
 * `1.1`: latest stable `1.1.x`
 * `1.0.0`: exact version
 
 ### Manual, precompiled
 
 ```bash
-# Be sure to have NodeJS >= 7.4
+# Be sure to have NodeJS >= 12
 $ node -v
-v7.4.0
+v12.4.0
 
 # Download and extract latest release package from
 # https://github.com/psi-4ward/psitransfer/releases
@@ -107,7 +104,7 @@ DEBUG=psitransfer:* npm start
 
 ## Side notes
 
-* There is no (end-to-end) payload encryption (yet).
+* **There is no (end-to-end) payload encryption (yet)**.
 * `Download all as ZIP` does not support resuming the download.
 
 :star2: Contribution is highly welcome :metal:

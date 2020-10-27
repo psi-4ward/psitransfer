@@ -43,7 +43,7 @@
     "debug": "node --inspect app.js"
   },
   "engines": {
-    "node": ">= 7.4.0",
+    "node": ">= 10",
     "npm": ">= 3"
   },
   "author": "Christoph Wiechert <wio@psitrax.de>",
