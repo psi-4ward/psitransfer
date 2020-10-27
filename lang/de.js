@@ -31,6 +31,7 @@ module.exports = {
   oneTimeDownloadExpired: "Einmal-Download: Datei ist nicht mehr verfügbar.",
   fileSizeExceed: "Dateigröße %% überschreitet das Maximum von %%",
   bucketSizeExceed: "Uploadgröße %% überschreitet das Maximum von %%",
+  mailInvalid: "Das Format der E-Mail Adresse ist ungültig",
   mailTo: "Senden an",
   mailToPlaceholder: "E-Mail Adressen",
   mailFrom: "Meine E-Mail Adresse",

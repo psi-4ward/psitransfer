@@ -129,7 +129,7 @@
 
       downloadAll(format) {
         document.location.href = this.$root.baseURI
-          + '/files/' + this.sid + '++'
+          + 'files/' + this.sid + '++'
           + MD5(
             this.files
               .filter(f => !f.downloaded || f.metadata.retention !== 'one-time')

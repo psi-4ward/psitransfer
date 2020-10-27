@@ -19,11 +19,11 @@
         |  {{ $root.lang.login }}
     div(v-else-if="$root.configFetched")
       .well(v-show="state === 'uploaded'")
-        .pull-right.btn-group
+        .pull-right.btn-group.upload-success-btns
           a.btn.btn-primary(@click.prevent="showQrCode" href="#" :title="$root.lang.showQrCode")
             icon.fa-fw(name="qrcode")
             | QR-Code
-          a.btn.btn-primary(@click="sendMail = !sendMail" :title="$root.lang.sendViaMail")
+          a.btn.btn-primary(:href="mailLnk" :title="$root.lang.sendViaMail")
             icon.fa-fw(name="envelope")
             |  {{ $root.lang.email }}
           clipboard.btn.btn-primary(:value='shareUrl' :title="$root.lang.copyToClipboard")
@@ -45,7 +45,6 @@
         .col-sm-7
           files
         .col-sm-5
-          send-mail(v-if="sendMail" style="margin-bottom: 20px")
           settings
           .text-right(v-show='showUploadBtn')
             button#uploadBtn.btn.btn-lg.btn-success(@click="$store.dispatch('upload/upload')")
@@ -63,7 +62,6 @@
 
   import Settings from './Upload/Settings.vue';
   import Files from './Upload/Files.vue';
-  import SendMail from "./Upload/SendMail.vue";
   import Clipboard from './common/Clipboard.vue'
   import 'vue-awesome/icons/cloud-upload-alt';
   import 'vue-awesome/icons/upload';
@@ -78,7 +76,6 @@
   export default {
     name: 'Upload',
     components: {
-      SendMail,
       Settings,
       Files,
       Clipboard,
@@ -88,7 +85,6 @@
       return {
         uploadPassword: '',
         uploadPasswordWrong: null,
-        sendMail: false,
       }
     },
 
@@ -164,3 +160,20 @@
 
   }
 </script>
+
+<style>
+  @media all and (max-width: 500px) {
+    .well {
+      padding: 19px 8px;
+    }
+    .upload-success-btns {
+      width: 100%;
+      margin-bottom: 10px;
+    }
+
+    .upload-success-btns .btn {
+      padding: 7px 5px;
+      font-size: 12px;
+    }
+  }
+</style>
