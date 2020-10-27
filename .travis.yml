@@ -1,12 +1,12 @@
 language: node_js
-node_js: 12
+node_js: 14
 
 script:
   - (cd app && npm ci && npm run build)
   - npm ci
 
 before_deploy:
-  - if [ -n "$TRAVIS_TAG" ] ; then npm version $TRAVIS_TAG ; fi
+  - if [ -n "$TRAVIS_TAG" ] ; then npm version ${TRAVIS_TAG//v/} ; fi
   - >
     tar -czf psitransfer-$TRAVIS_TAG.tar.gz \
       LICENSE \
