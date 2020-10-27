@@ -1,9 +1,0 @@
-*Datei-Upload*
-
-Ihr Upload ist vollständig.
-
-Freigabe-Link: ${this.shareLink}
-
-Der Link ist bis zum ${this.validUntilDate} gültig.
-
-> ${this.message.replace(/\r?\n/g, "\n> ")}

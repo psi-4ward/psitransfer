@@ -1,4 +1,4 @@
-FROM node:12-alpine
+FROM node:14-alpine
 
 ENV PSITRANSFER_UPLOAD_DIR=/data \
     NODE_ENV=production
@@ -13,6 +13,7 @@ ADD *.js package.json package-lock.json README.md /app/
 ADD lib /app/lib
 ADD app /app/app
 ADD lang /app/lang
+ADD plugins /app/plugins
 ADD public /app/public
 
 # Rebuild the frontend apps

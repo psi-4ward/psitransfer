@@ -1,9 +1,0 @@
-*Fileupload completed*
-
-Your upload is completed.
-
-Share-Link: ${this.shareLink}
-
-The link is valid until ${this.validUntilDate}.
-
-> ${this.message.replace(/\r?\n/g, "\n> ")}
