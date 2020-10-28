@@ -33,6 +33,8 @@ tar -czf _releases/psitransfer-$NAME.tar.gz --transform "s~^~psitransfer-$NAME/~
   package-lock.json \
   docs \
   lib \
+  lang \
+  plugins \
   public
 
 

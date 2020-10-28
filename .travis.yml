@@ -20,6 +20,8 @@ before_deploy:
       package-lock.json \
       docs \
       lib \
+      lang \
+      plugins \
       public
   # npm deploy
   - >
