@@ -6,7 +6,7 @@ script:
   - npm ci
 
 before_deploy:
-  - if [ -n "$TRAVIS_TAG" ] ; then npm version ${TRAVIS_TAG//v/} ; fi
+  - if [ -n "$TRAVIS_TAG" ] ; then npm version --git-tag-version=false ${TRAVIS_TAG//v/} ; fi
   - >
     tar -czf psitransfer-$TRAVIS_TAG.tar.gz \
       LICENSE \
