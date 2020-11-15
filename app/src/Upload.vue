@@ -10,7 +10,7 @@
     form.well.upload-uploadPassword(v-if='showLogin', @submit.prevent='setUploadPass()')
       h3 uploadPassword
       .form-group
-        input.form-control(type='uploadPassword', v-model='uploadPassword', autofocus)
+        input.form-control(type='password', v-model='uploadPassword', autofocus)
       p.text-danger(v-show='uploadPasswordWrong')
         strong {{ $root.lang.accessDenied }}
       |
