@@ -84,7 +84,8 @@ You can:
 * Edit the `config.js` **(not recommend)**
 * Add a `config.production.js` where `production` is the value from `NODE_ENV`
   See `config.dev.js`
-* Define environment Variables like `PSITRANSFER_UPLOAD_DIR`
+* Define environment Variables like `PSITRANSFER_UPLOAD_DIR` to set the upload directory
+* To secure your PsiTransfer if exposed to the internet from unwanted, non authorized uploads use the `PSITRANSFER_UPLOAD_PASS` environment variable
 
 ### Customization
 
