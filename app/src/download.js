@@ -17,7 +17,7 @@ Vue.component('icon', Icon);
 new Vue({
   el: '#download',
   data: {
-    baseURI: document.head.getElementsByTagName('base')[0].href,
+    baseURI: document.head.getElementsByTagName('base')[0].href.replace(/\/$/,''),
     lang: {},
   },
   async beforeCreate() {
