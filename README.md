@@ -89,10 +89,8 @@ You can:
 
 ### Customization
 
-`public/upload.html` and `download.html` are kept simple.
+`public/pug/upload.pug` and `download.pug` are kept simple.
 You can alter these files and add your logo and styles.
-The following elements are mandatory:
-`common.js` and respectively `upload.js`, `download.js` as well as `<div id="upload">`, `<div id="download">`
 Please keep a footnote like *Powered by PsiTransfer* :)
 
 ### Debug
