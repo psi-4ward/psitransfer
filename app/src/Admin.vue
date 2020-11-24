@@ -38,7 +38,8 @@
                 template(v-if="sum[sid].lastDownload") {{ sum[sid].lastDownload | date}}
                 template(v-else="") -
               td
-                template(v-if="typeof sum[sid].firstExpire === 'number'") {{ sum[sid].firstExpire | date }}
+                template(v-if="typeof sum[sid].firstExpire === 'number'")
+                  input.form-control(type='text', v-bind:value="sum[sid].firstExpire | date", @change="changeExpiration(sid, db[sid], $event.target.value)")
                 template(v-else)  {{ sum[sid].firstExpire }}
               td.text-right {{ humanFileSize(sum[sid].size) }}
           tbody.expanded(v-if="expand === sid")
@@ -66,7 +67,9 @@
   import 'vue-awesome/icons/sync-alt';
   import 'vue-awesome/icons/sign-in-alt';
   import 'vue-awesome/icons/key';
-
+  
+  import { httpPost } from "./common/util";
+  import regeneratorRuntime from "regenerator-runtime";
 
   export default {
     name: 'app',
@@ -160,10 +163,16 @@
         return Math.max(fileSizeInBytes, 0.00).toFixed(2) + byteUnits[i];
       },
 
-    },
-
-
-  }
+      changeExpiration(sid, bucket, expirationDate) {
+        expirationDate = new Date(expirationDate).getTime();
+        console.log(bucket);
+        bucket.forEach(async file => {
+          await httpPost('admin/update_expiration_date/', {sid: sid, key: file.key, expirationDate: expirationDate});
+        });
+        this.login();
+      }
+    }
+  };
 </script>
 
 <style>
