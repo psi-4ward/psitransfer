@@ -165,7 +165,6 @@
 
       changeExpiration(sid, bucket, expirationDate) {
         expirationDate = new Date(expirationDate).getTime();
-        console.log(bucket);
         bucket.forEach(async file => {
           await httpPost('admin/update_expiration_date/', {sid: sid, key: file.key, expirationDate: expirationDate});
         });
