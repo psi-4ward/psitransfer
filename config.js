@@ -88,6 +88,11 @@ for (let k in config) {
 if(!config.baseUrl.endsWith('/')) config.baseUrl = config.baseUrl + '/';
 if(!config.uploadAppPath.endsWith('/')) config.uploadAppPath = config.uploadAppPath + '/';
 
+// Use baseUrl as uploadAppPath if it's not explicitly set
+if(config.uploadAppPath === '/' && config.baseUrl !== '/') {
+  config.uploadAppPath = config.baseUrl;
+}
+
 // Load language files
 config.languages = {
   [config.defaultLanguage]: require(`./lang/${config.defaultLanguage}`) // default language
