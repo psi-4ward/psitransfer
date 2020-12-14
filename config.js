@@ -1,12 +1,16 @@
-'use strict';
 const path = require('path');
+const fs = require('fs');
 const fsp = require('fs-promise');
 
 // Default Config
 // Do not edit this, generate a config.<ENV>.js for your NODE_ENV
 // or use ENV-VARS like PSITRANSFER_PORT=8000
-const config =  {
+const config = {
   "uploadDir": path.resolve(__dirname + '/data'),
+  // set to serve PsiTransfer from a sub-path
+  "baseUrl": '/',
+  // use to set custom upload url (subfolder to baseUrl)
+  "uploadAppPath": '/',
   "iface": '0.0.0.0',
   // set to false to disable HTTP
   "port": 3000,
@@ -20,48 +24,60 @@ const config =  {
   "forceHttps": '',
   // retention options in seconds:label
   "retentions": {
-    "one-time": "un seul téléchargement",
-    "3600": "1 heure",
-    "21600": "6 heures",
-    "86400": "1 jour",
-    "259200": "3 jours",
-    "604800": "1 semaine",
-    "1209600": "2 semaines",
-    "2419200": "4 semaines",
-    "4838400": "8 semaines"
+    "one-time": "one time download",
+    "3600": "1 hour",
+    "21600": "6 hours",
+    "86400": "1 day",
+    "259200": "3 days",
+    "604800": "1 week",
+    "1209600": "2 weeks",
+    "2419200": "4 weeks",
+    "4838400": "8 weeks"
   },
   // admin password, set to false to disable /admin page
   "adminPass": false,
+  // upload password, set to false to disable
+  "uploadPass": false,
+  // make the bucket-password field mandatory
+  "requireBucketPassword": false,
   "defaultRetention": "604800",
   // expire every file after maxAge (eg never downloaded one-time files)
-  "maxAge": 3600*24*75, // 75 days
+  "maxAge": 3600 * 24 * 75, // 75 days
   // maximum file-size for previews in byte
-  "maxPreviewSize": Math.pow(2,20) * 2, // 2MB
-  "mailTemplate": 'mailto:?subject=Transfert de fichiers&body=Vous pouvez télécharger les fichiers ici : %%URL%%',
+  "maxPreviewSize": Math.pow(2, 20) * 2, // 2MB
+  "mailTemplate": 'mailto:?subject=File Transfer&body=You can download the files here: %%URL%%',
+
   // see https://github.com/expressjs/morgan
   // set to false to disable logging
   "accessLog": ':date[iso] :method :url :status :response-time :remote-addr',
-  //use to set custom  upload url
-  "uploadAppPath": '/',
-  // download notification webhook
-  // invokes an HTTP POST to this url whenever a file was downloaded
-  "fileDownloadedWebhook": null
+  // event webhooks
+  // invokes an HTTP POST to a url whenever a file is downloaded
+  // for more info, see the webhooks section of docs/configuration.md
+  "fileDownloadedWebhook": null,
+  "fileUploadedWebhook": null,
+  // Fallback language
+  "defaultLanguage": "en",
+  // Limit upload size
+  "maxFileSize": null, // Math.pow(2, 30) * 2, // 2GB
+  "maxBucketSize": null, // Math.pow(2, 30) * 2, // 10GB
+  "plugins": ['file-downloaded-webhook', 'file-uploaded-webhook'],
 };
 
-
 // Load NODE_ENV specific config
-const envConfFile = path.resolve(__dirname, `config.${process.env.NODE_ENV}.js`);
-if(process.env.NODE_ENV && fsp.existsSync(envConfFile)) {
+const envConfFile = path.resolve(__dirname, `config.${ process.env.NODE_ENV }.js`);
+if (process.env.NODE_ENV && fsp.existsSync(envConfFile)) {
   Object.assign(config, require(envConfFile));
 }
 
 // Load config from ENV VARS
 let envName;
 for (let k in config) {
-  envName = 'PSITRANSFER_'+ k.replace(/([A-Z])/g, $1 => "_" + $1).toUpperCase();
-  if(process.env[envName]) {
-    if(typeof config[k] === 'number') {
+  envName = 'PSITRANSFER_' + k.replace(/([A-Z])/g, $1 => "_" + $1).toUpperCase();
+  if (process.env[envName]) {
+    if (typeof config[k] === 'number') {
       config[k] = parseInt(process.env[envName], 10);
+    } else if (Array.isArray(config[k])) {
+      config[k] = process.env[envName].split(',');
     } else if (typeof config[k] === 'object') {
       config[k] = JSON.parse(process.env[envName]);
     } else {
@@ -69,5 +85,23 @@ for (let k in config) {
     }
   }
 }
+
+if (!config.baseUrl.endsWith('/')) config.baseUrl = config.baseUrl + '/';
+if (!config.uploadAppPath.endsWith('/')) config.uploadAppPath = config.uploadAppPath + '/';
+
+config.uploadAppPath = config.baseUrl.substr(0, config.baseUrl.length - 1) + config.uploadAppPath;
+
+// Load language files
+config.languages = {
+  [config.defaultLanguage]: require(`./lang/${ config.defaultLanguage }`) // default language
+};
+fs.readdirSync(path.resolve(__dirname, 'lang')).forEach(lang => {
+  lang = lang.replace('.js', '');
+  if (lang === config.defaultLanguage) return;
+  config.languages[lang] = {
+    ...config.languages[config.defaultLanguage],
+    ...require(`./lang/${ lang }`)
+  };
+});
 
 module.exports = config;

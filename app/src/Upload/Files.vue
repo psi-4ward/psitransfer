@@ -1,15 +1,17 @@
 <template lang="pug">
   div.upload-files
     .panel.panel-default(:class="{'panel-primary': !disabled}")
-      .panel-heading Files
+      .panel-heading
+        span.pull-right(v-show="bucketSize > 0") {{ humanFileSize(bucketSize) }}
+        strong {{ $root.lang.files }}
       .panel-body
         .empty-files-big-plus(:style="{cursor: disabled ? 'default' : 'pointer'}",
-                  onclick="document.getElementById('fileInput').click();",
-                  v-show="files.length === 0")
+          onclick="document.getElementById('fileInput').click();",
+          v-show="files.length === 0")
           a
             icon(name="plus", scale="4")
             br
-            |  Drop your files here
+            |  {{ $root.lang.dropFilesHere }}
         table.table.table-striped
           tbody
             tr(v-for="file in files")
@@ -20,14 +22,17 @@
                   strong  {{ file.name }}
                   small  ({{ file.humanSize }})
                 p
-                  input.form-control.input-sm(type="text", placeholder="comment...", v-model="file.comment", :disabled="disabled")
+                  input.form-control.input-sm(type="text", :placeholder="$root.lang.comment", v-model="file.comment", :disabled="disabled")
                 .alert.alert-danger(v-if="file.error")
                   icon.fa-fw(name="exclamation-triangle")
                   |  {{ file.error }}
                 .progress(v-show="!file.error && (state === 'uploading' || state === 'uploaded')")
-                  .progress-bar.progress-bar-success.progress-bar-striped(:style="{width: file.progress.percentage+'%'}",:class="{active:!file.uploaded}")
+                  .progress-bar.progress-bar-success.progress-bar-striped(:style="{width: file.progress.percentage+'%'}", :class="{active:!file.uploaded}")
               td.btns
-                a(style="cursor:pointer", @click="!disabled && $store.commit('upload/REMOVE_FILE', file)", :disabled="disabled")
+                a(style="cursor:pointer"
+                  @click="$store.dispatch('upload/removeFile', file)"
+                  v-show="!disabled || bucketSizeError"
+                )
                   icon(name="times")
 
         input#fileInput(type="file", @change="$store.dispatch('upload/addFiles', $event.target.files)", multiple="", :disabled="disabled", style="display: none")
@@ -38,29 +43,34 @@
 
 
 <script type="text/babel">
-  "use strict";
-  import {mapState} from 'vuex';
   import dragDrop from 'drag-drop';
-  import FileIcon from '../common/FileIcon.vue';
+  import 'vue-awesome/icons/exclamation-triangle'
   import 'vue-awesome/icons/plus'
   import 'vue-awesome/icons/plus-circle'
   import 'vue-awesome/icons/times'
-  import 'vue-awesome/icons/exclamation-triangle'
+  import { mapGetters, mapState } from 'vuex';
+  import FileIcon from '../common/FileIcon.vue';
+  import { humanFileSize } from "./store/upload";
 
   export default {
     name: 'Files',
 
     components: { FileIcon },
 
-    computed: mapState({
-      disabled: 'disabled',
-      state: 'state',
-      files: state => state.upload.files
-    }),
+    computed: {
+      ...mapState('upload', ['files']),
+      ...mapState(['state',]),
+      ...mapGetters('upload', ['bucketSize', 'bucketSizeError']),
+      ...mapGetters(['disabled']),
+    },
 
     mounted() {
       // init drop files support on <body>
       dragDrop('body', files => this.$store.dispatch('upload/addFiles', files));
+    },
+
+    methods: {
+      humanFileSize
     }
   };
 </script>

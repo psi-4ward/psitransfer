@@ -1,8 +1,8 @@
 <template lang="pug">
   .download-app
-    a.btn.btn-sm.btn-info.btn-new-session(@click='newSession()', title='New Upload')
+    a.btn.btn-sm.btn-info.btn-new-session(@click='newSession()', :title='$root.lang.newUpload')
       icon.fa-fw(name="cloud-upload-alt")
-      span.hidden-xs  new upload
+      span.hidden-xs  {{ $root.lang.newUpload }}
     .alert.alert-danger(v-show="error")
       strong
         icon.fa-fw(name="exclamation-triangle")
@@ -12,33 +12,33 @@
       .form-group
         input.form-control(type='password', v-model='password')
       p.text-danger(v-show='passwordWrong')
-        strong Access denied!
+        strong {{ $root.lang.accessDenied }}
       |
-      button.btn.btn-primary(:disabled='password.length<1', @click='decrypt()')
+      button.decrypt.btn.btn-primary(:disabled='password.length<1', @click='decrypt()')
         icon.fa-fw(name="key")
-        |  decrypt
+        |  {{ $root.lang.decrypt }}
     .panel.panel-primary(v-if='!needsPassword')
       .panel-heading
-        strong Files
+        strong {{ $root.lang.files }}
         div.pull-right.btn-group.btn-download-archive(v-if="downloadsAvailable")
-          a.btn.btn-sm.btn-default(@click="downloadAll('zip')", title="Archive download is not resumeable!")
+          a.btn.btn-sm.btn-default(@click="downloadAll('zip')", :title="$root.lang.zipDownload")
             icon.fa-fw(name="download")
             |  zip
-          a.btn.btn-sm.btn-default(@click="downloadAll('tar.gz')", title="Archive download is not resumeable!")
+          a.btn.btn-sm.btn-default(@click="downloadAll('tar.gz')", :title="$root.lang.tarGzDownload")
             icon.fa-fw(name="download")
             |  tar.gz
       .panel-body
-        table.table.table-hover.table-striped
+        table.table.table-hover.table-striped.files
           tbody
             tr(v-for='file in files', style='cursor: pointer', @click='download(file)')
               td.file-icon
                 file-icon(:file='file')
               td
                 div.pull-right.btn-group
-                  clipboard.btn.btn-sm.btn-default(:value='host + file.url', @change='copied(file, $event)', title='Copy to clipboard')
+                  clipboard.btn.btn-sm.btn-default(:value='baseURI + file.url', @change='copied(file, $event)', :title='$root.lang.copyToClipboard')
                     a
                       icon(name="copy")
-                  a.btn.btn-sm.btn-default(title="Preview", @click.prevent.stop="preview=file", v-if="file.previewType")
+                  a.btn.btn-sm.btn-default(:title="$root.lang.preview", @click.prevent.stop="preview=file", v-if="file.previewType")
                     icon(name="eye")
                 i.pull-right.fa.fa-check.text-success.downloaded(v-show='file.downloaded')
                 p
@@ -89,13 +89,13 @@
     data () {
       return {
         files: [],
-        sid: document.location.pathname.substr(1),
+        sid: document.location.href.substr(this.$root.baseURI.length + 1),
+        baseURI: this.$root.baseURI,
         passwordWrong: false,
         needsPassword: false,
         password: '',
         content: '',
         error: '',
-        host: document.location.protocol + '//' + document.location.host,
         config: {},
         preview: false
       }
@@ -114,7 +114,7 @@
     methods: {
       download(file) {
         if(file.downloaded && file.metadata.retention === 'one-time') {
-          alert('One-Time Download: File is not available anymore.');
+          alert(this.$root.lang.oneTimeDownloadExpired);
           return;
         }
         const aEl = document.createElement('a');
@@ -128,7 +128,7 @@
       },
 
       downloadAll(format) {
-        document.location.href = document.location.protocol + '//' + document.location.host
+        document.location.href = this.$root.baseURI
           + '/files/' + this.sid + '++'
           + MD5(
             this.files
@@ -179,7 +179,7 @@
       },
 
       newSession() {
-        document.location.href = '/';
+        document.location.href = this.$root.baseURI;
       },
 
       isFinite(value) {
@@ -190,7 +190,7 @@
 
     beforeMount() {
       const xhr = new XMLHttpRequest();
-      xhr.open('GET', '/' + this.sid + '.json');
+      xhr.open('GET', this.sid + '.json');
       xhr.onload = () => {
         if(xhr.status === 200) {
           try {

@@ -1,27 +1,39 @@
 <template lang="pug">
   div(v-if="config && config.retentions")
     .panel.panel-default(:class="{'panel-info': !disabled}")
-      .panel-heading Settings
+      .panel-heading
+        strong {{ $root.lang.settings }}
       .panel-body
         .form-group
-          label(for='retention') Retention
+          label(for='retention') {{ $root.lang.retention }}
           |
           select#retention.form-control(:value='retention', :disabled='disabled',
           @change="$store.commit('upload/RETENTION', $event.target.value)")
-            option(v-for='(label, seconds, index) in config.retentions',
-            :value="seconds", :selected="seconds === retention") {{ label }}
+            option(
+              v-for='(label, seconds) in config.retentions'
+              :value="seconds"
+              :selected="seconds === retention"
+            ) {{ $root.lang.retentions[seconds] || label }}
         div
-          label(for='password') Password
-          .input-group
-            input#password.form-control(type='text', :value='password',
-            @input="$store.commit('upload/PASSWORD', $event.target.value)",
-            :disabled='disabled', placeholder='optional')
-            span.input-group-addon(style='cursor: pointer', title='generate password', @click='generatePassword()')
+          label(for='password') {{ $root.lang.password }}
+          .input-group(:class="{'has-error': config.requireBucketPassword && !password}")
+            input#password.form-control(
+              type='text'
+              :value='password'
+              @input="$store.commit('upload/PASSWORD', $event.target.value)"
+              :disabled='disabled'
+              :placeholder="config.requireBucketPassword ? $root.lang.required : $root.lang.optional"
+              required="config.requireBucketPassword"
+            )
+            span.input-group-addon(
+              style='cursor: pointer'
+              :title='$root.lang.generateRandomPassword'
+              @click='generatePassword()'
+            )
               icon(name="key")
 </template>
 
 <script type="text/babel">
-  "use strict";
   import { mapState } from 'vuex';
   import 'vue-awesome/icons/key';
 

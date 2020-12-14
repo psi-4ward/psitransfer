@@ -1,0 +1,42 @@
+language: node_js
+node_js: 14
+
+script:
+  - (cd app && npm ci && npm run build)
+  - npm ci
+
+before_deploy:
+  - if [ -n "$TRAVIS_TAG" ] ; then npm version --git-tag-version=false ${TRAVIS_TAG//v/} ; fi
+  - >
+    tar -czf psitransfer-$TRAVIS_TAG.tar.gz \
+      LICENSE \
+      README.md \
+      Dockerfile \
+      .dockerignore \
+      app.js \
+      cli.js \
+      config.js \
+      package.json \
+      package-lock.json \
+      docs \
+      lib \
+      lang \
+      plugins \
+      public
+  # npm deploy
+  - >
+    if [ -n "$TRAVIS_TAG" ] ; then
+      mkdir _pkg; cd _pkg; tar xzf ../psitransfer-$TRAVIS_TAG.tar.gz ;
+      npm set //registry.npmjs.org/:_authToken $NPM_API_TOKEN ;
+      npm publish;
+      cd .. ;
+    fi
+
+deploy:
+  provider: releases
+  token: $GH_TOKEN
+  overwrite: true
+  file: $TRAVIS_BUILD_DIR/psitransfer-$TRAVIS_TAG.tar.gz
+  skip_cleanup: true
+  on:
+    tags: true

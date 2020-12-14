@@ -10,7 +10,7 @@
 [![Docker Automated buil](https://img.shields.io/docker/automated/psitrax/psitransfer.svg)](https://hub.docker.com/r/psitrax/psitransfer/)
 [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=RTWDCH74TJN54&item_name=psitransfer)
 
-Simple open source self-hosted file sharing solution.  
+Simple open source self-hosted file sharing solution.
 It's an alternative to paid services like Dropbox, WeTransfer.
 
 * No accounts, no logins
@@ -24,15 +24,14 @@ It's an alternative to paid services like Dropbox, WeTransfer.
 * Requires Node >=7.4 or use `--harmony-async-await` flag
 * Password protected download list ([AES](https://en.wikipedia.org/wiki/Advanced_Encryption_Standard))
 * `/admin` Page lists bucket information, [Screenshot](https://raw.githubusercontent.com/psi-4ward/psitransfer/master/docs/PsiTransfer-Admin.png) (_disabled until you set `adminPass` config value_)
-* Lightweight [Vue](https://vuejs.org) based frontend apps. Gzipped (on by default) less than 65k
+* Lightweight [Vue](https://vuejs.org) based frontend apps. Gzipped (on by default) less than 100k
 * Explicit named bucket IDs with query param `sid=<myBucketID>`
 
-**See the blog posts about PsiTransfer: https://psi.cx/tags/PsiTransfer/ and checkout the 
+**See the blog posts about PsiTransfer: https://psi.cx/tags/PsiTransfer/ and checkout the
 [Documentation](https://github.com/psi-4ward/psitransfer/tree/master/docs)**
 
 ![Screenshot](https://raw.githubusercontent.com/psi-4ward/psitransfer/master/docs/psitransfer.gif)
 
-**Demo**: https://transfer.psi.cx
 
 ## Quickstart
 
@@ -40,21 +39,21 @@ It's an alternative to paid services like Dropbox, WeTransfer.
 ```bash
 $ docker run -p 0.0.0.0:3000:3000 -e PSITRANSFER_ADMIN_PASS=secret -v $PWD/data:/data psitrax/psitransfer
 # data volume needs UID 1000
-$ sudo chown -R 1000 $PWD/data 
+$ sudo chown -R 1000 $PWD/data
 ```
 
 Specify the version by using [image tags](https://hub.docker.com/r/psitrax/psitransfer/tags/) e.g.:
 * `latest`: corresponds to master branch
-* `1`: latest stable `1.x.x`
+* `2`: latest stable `2.x.x`
 * `1.1`: latest stable `1.1.x`
 * `1.0.0`: exact version
 
 ### Manual, precompiled
 
 ```bash
-# Be sure to have NodeJS >= 7.4
+# Be sure to have NodeJS >= 12
 $ node -v
-v7.4.0
+v12.4.0
 
 # Download and extract latest release package from
 # https://github.com/psi-4ward/psitransfer/releases
@@ -80,19 +79,18 @@ $ npm start
 
 ### Configuration
 
-There are some configs in `config.js` like port and data-dir.  
+There are some configs in `config.js` like port and data-dir.
 You can:
 * Edit the `config.js` **(not recommend)**
-* Add a `config.production.js` where `production` is the value from `NODE_ENV`  
+* Add a `config.production.js` where `production` is the value from `NODE_ENV`
   See `config.dev.js`
-* Define environment Variables like `PSITRANSFER_UPLOAD_DIR`
+* Define environment Variables like `PSITRANSFER_UPLOAD_DIR` to set the upload directory
+* To secure your PsiTransfer if exposed to the internet from unwanted, non authorized uploads use the `PSITRANSFER_UPLOAD_PASS` environment variable
 
 ### Customization
 
-`public/upload.html` and `download.html` are kept simple.  
-You can alter these files and add your logo and styles.  
-The following elements are mandatory:  
-`common.js` and respectively `upload.js`, `download.js` as well as `<div id="upload">`, `<div id="download">`  
+`public/pug/upload.pug` and `download.pug` are kept simple.
+You can alter these files and add your logo and styles.
 Please keep a footnote like *Powered by PsiTransfer* :)
 
 ### Debug
@@ -105,7 +103,7 @@ DEBUG=psitransfer:* npm start
 
 ## Side notes
 
-* There is no (end-to-end) payload encryption (yet).
+* **There is no (end-to-end) payload encryption (yet)**.
 * `Download all as ZIP` does not support resuming the download.
 
 :star2: Contribution is highly welcome :metal:

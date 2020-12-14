@@ -47,3 +47,44 @@ For native SSL support provide `sslPort`, `sslKeyFile`, `sslCertFile` options. T
 a _snake oil_ certificate use `openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout cert.key -out cert.pem`.
 
 To disable HTTP set the `port` config value to `false`.
+
+## WebHooks
+
+For the sake of integrating PsiTransfer with other systems, PsiTransfer can notify a webhook with a POST request on the following events:
+
+### fileUploaded
+
+On completion of a file upload, if `fileUploadedWebhook` is set in `config.<NODE_ENV>.js`, PsiTransfer will make a POST request to that url.
+
+At the time of writing, the POST body will contain a data structure resembling this (serialized as json):
+```json
+{
+  "metadata": {
+    "sid": "6055ab792b6c",
+    "retention": 3600,
+    "password": "file password is in plaintext here",
+    "name": "test.png",
+    "comment": "User individual file comment goes here",
+    "type": "image/png",
+    "key": "135a3814-df46-4e23-b061-03bdda13425c",
+    "createdAt": 1589276618052
+  },
+  "date": 1589276619385
+}
+```
+
+* Note: this event will fire many times if a user uploads multiple files in a single session (`sid`), as each individual file is uploaded separately. You'll notice that the `sid` will remain the same, but the `key` will change for each file. 
+  * For file sync purposes (e.g. syncing client uploads to another service or long-term storage), you can reassemble a file fetch url with `https://<PSITRANSFER_HOST>/${sid}++${key}`
+
+### fileDownloaded
+
+When a user attempts to download a file, if `fileDownloadedWebhook` is set in `config.<NODE_ENV>.js`, PsiTransfer will make a POST request to that url.
+
+At the time of writing, the POST body will contain a data structure resembling this (serialized as json):
+```json
+{
+   "sid": "6055ab792b6c",
+   "name": "test.png",
+   "date": 1589276619415
+}
+```

@@ -29,6 +29,9 @@ Vue.component('icon', Icon);
 
 new Vue({
   el: '#admin',
+  data: {
+    baseURI: document.head.getElementsByTagName('base')[0].href
+  },
   render: h => h(Admin)
 });
 

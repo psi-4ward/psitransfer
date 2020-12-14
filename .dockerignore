@@ -1,5 +1,7 @@
 .idea
 data
+.travis.yml
+screenshots
 tmp
 temp
 node_modules

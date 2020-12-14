@@ -18,7 +18,7 @@
       div(v-if="current.previewType === 'text'")
         pre(:style="{'white-space':lineWrap?'pre-wrap':'pre'}") {{ previewText }}
       p(v-if="current.previewType === false", style="text-align:center")
-        strong.text-danger No preview available
+        strong.text-danger {{ $root.lang.noPreviewAvailable }}
 </template>
 
 
@@ -69,7 +69,7 @@
       getPreviewText() {
         this.previewText = '';
         const xhr = new XMLHttpRequest();
-        xhr.open('GET', '//' + document.location.host + this.current.url);
+        xhr.open('GET', this.current.url);
         xhr.onload = () => {
           if(xhr.status === 200) {
             this.previewText = xhr.responseText

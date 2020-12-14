@@ -1,8 +1,8 @@
-'use strict';
-const config = require('./config');
-const app = require('./lib/endpoints');
 const https = require('https');
 const fs = require('fs');
+const config = require('./config');
+const app = require('./lib/endpoints');
+const eventBus = require('./lib/eventBus');
 
 /**
  * Naming:
@@ -16,6 +16,7 @@ if(config.port) {
   // HTTP Server
   server = app.listen(config.port, config.iface, () => {
     console.log(`PsiTransfer listening on http://${config.iface}:${config.port}`);
+    eventBus.emit('listen', server);
   });
 }
 
@@ -29,6 +30,7 @@ if(config.sslPort && config.sslKeyFile && config.sslCertFile) {
   httpsServer = https.createServer(sslOpts, app)
     .listen(config.sslPort, config.iface, () => {
       console.log(`PsiTransfer listening on https://${config.iface}:${config.sslPort}`);
+      eventBus.emit('listen', httpsServer);
     });
 }
 
@@ -36,6 +38,7 @@ if(config.sslPort && config.sslKeyFile && config.sslCertFile) {
 // graceful shutdown
 function shutdown() {
   console.log('PsiTransfer shutting down...');
+  eventBus.emit('shutdown', server || httpsServer);
   if(server) {
     server.close(() => {
       server = false;
@@ -51,7 +54,7 @@ function shutdown() {
   setTimeout(function() {
     console.log('Could not close connections in time, forcefully shutting down');
     process.exit(1);
-  }, 60 * 1000);
+  }, 15 * 1000);
 }
 process.on('SIGTERM', shutdown);
 process.on('SIGINT', shutdown);
