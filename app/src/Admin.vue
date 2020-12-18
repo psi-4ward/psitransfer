@@ -1,6 +1,6 @@
 <template lang="pug">
   .download-app
-    a.btn.btn-sm.btn-info.btn-new-session(@click='login()', title='Refresh', v-if="loggedIn")
+    a.btn.btn-sm.btn-info.btn-admin-refresh(@click='login()', title='Refresh', v-if="loggedIn")
       icon(name="sync-alt")
 
     .alert.alert-danger(v-show="error")
