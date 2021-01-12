@@ -34,7 +34,6 @@
   },
   "devDependencies": {
     "filecompare": "^1.0.4",
-    "nodemon": "^2.0.7",
     "testcafe": "^1.9.4",
     "testcafe-browser-provider-browserstack": "^1.13.1"
   },
