@@ -35,7 +35,7 @@
                 file-icon(:file='file')
               td
                 div.pull-right.btn-group
-                  clipboard.btn.btn-sm.btn-default(:value='baseURI + file.url', @change='copied(file, $event)', :title='$root.lang.copyToClipboard')
+                  clipboard.btn.btn-sm.btn-default(:value='baseURI + file.url', @change='copied(file, $event)', :title='$root.lang.copyToClipboard',v-if="file.previewType")
                     a
                       icon(name="copy")
                   a.btn.btn-sm.btn-default(:title="$root.lang.preview", @click.prevent.stop="preview=file", v-if="file.previewType")
