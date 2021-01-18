@@ -58,7 +58,7 @@ body > .container {
   height: 40px;
   line-height: 40px;
 }
-.btn-new-session {
+.btn-new-session, .btn-admin-refresh {
   position: absolute;
   top: 15px;
   right: 15px;
