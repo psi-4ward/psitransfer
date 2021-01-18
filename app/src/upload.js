@@ -11,7 +11,7 @@ Vue.component('icon', Icon);
 new Vue({
   el: '#upload',
   data: {
-    baseURI: document.head.getElementsByTagName('base')[0].href,
+    baseURI: document.head.getElementsByTagName('base')[0].href.replace(/\/$/),
     configFetched: false,
     lang: {},
   },
