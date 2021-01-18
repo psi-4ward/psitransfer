@@ -89,7 +89,7 @@
     data () {
       return {
         files: [],
-        sid: document.location.href.substr(this.$root.baseURI.length),
+        sid: document.location.href.substr(this.$root.baseURI.length + 1),
         baseURI: this.$root.baseURI,
         passwordWrong: false,
         needsPassword: false,
@@ -129,7 +129,7 @@
 
       downloadAll(format) {
         document.location.href = this.$root.baseURI
-          + 'files/' + this.sid + '++'
+          + '/files/' + this.sid + '++'
           + MD5(
             this.files
               .filter(f => !f.downloaded || f.metadata.retention !== 'one-time')
