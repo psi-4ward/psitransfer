@@ -34,7 +34,6 @@ export default {
     password: '',
     files: [],
     sid: getSid(),
-    uploadURI: (window.PSITRANSFER_UPLOAD_PATH || '/') + 'files',
   },
 
   getters: {
@@ -153,7 +152,7 @@ export default {
             },
             parallelUploads: 1,
             chunkSize: 5000000,
-            endpoint: state.uploadURI,
+            endpoint: "files/",
             storeFingerprintForResuming: false,
             retryDelays: null,
             onAfterResponse: function(req, res) {
