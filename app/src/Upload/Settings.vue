@@ -18,7 +18,7 @@
           label(for='password') {{ $root.lang.password }}
           .input-group(:class="{'has-error': config.requireBucketPassword && !password}")
             input#password.form-control(
-              type='text'
+              type='password'
               :value='password'
               @input="$store.commit('upload/PASSWORD', $event.target.value)"
               :disabled='disabled'
