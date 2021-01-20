@@ -1,4 +1,15 @@
+script.
+  //Add ployfills for stupid IE
+  if (document.documentMode || /Edge/.test(navigator.userAgent)) {
+    (function(d, script) {
+      script = d.createElement('script');
+      script.type = 'text/javascript';
+      script.async = false;
+      script.src = 'assets/babel-polyfill.js';
+      d.getElementsByTagName('head')[0].appendChild(script);
+    }(document));
+  }
 footer.footer
   .container.text-right
     span.text-muted
-      a(href='https://github.com/psi-4ward/psitransfer' target='_blank') Powered by PsiTransfer
+      a(href='https://www.focal.com' target='_blank') Focal JMlab 2020
