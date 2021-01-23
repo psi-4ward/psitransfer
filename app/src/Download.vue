@@ -89,7 +89,7 @@
     data () {
       return {
         files: [],
-        sid: document.location.href.substr(this.$root.baseURI.length + 1),
+        sid: document.location.pathname,
         baseURI: this.$root.baseURI,
         passwordWrong: false,
         needsPassword: false,
