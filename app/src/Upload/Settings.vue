@@ -78,6 +78,8 @@
       generatePassword() {
         if (this.disabled) return;
         this.$store.commit('upload/PASSWORD', passGen.generate(10));
+        navigator.clipboard.writeText(this.$store.state.upload.password);
+        alert(this.$root.lang.copiedPassword);
       }
     }
   };

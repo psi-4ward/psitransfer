@@ -21,10 +21,10 @@ module.exports = {
   showQrCode: "Afficher le QR-Code",
   uploadCompleted: "Téléversement terminé",
   downloadLink: "Lien de téléchargement",
-  upload: "téléverser",
-  retry: "réessayer",
+  upload: "Téléverser",
+  retry: "Réessayer",
   createNewUploadSession: "Créer un nouveau transfert ?",
-  decrypt: "déchiffrer",
+  decrypt: "Déchiffrer",
   files: "Fichiers",
   zipDownload: "Télécharger comme archive Zip (ne peut être repris)",
   tarGzDownload: "Télécharger comme archive tar.gz (ne peut être repris)",
@@ -44,7 +44,7 @@ module.exports = {
   mailSubjectDownloader: "PsiTransfer - Téléchargement de fichiers",
   mailSubjectFileDownloaded: "Le fichier a été téléchargé",
   retentions: {
-    "one-time": "téléchargement unique",
+    "one-time": "Téléchargement unique",
     "3600": "1 heure",
     "21600": "6 heures",
     "86400": "1 jour",
@@ -52,6 +52,11 @@ module.exports = {
     "604800": "1 semaine",
     "1209600": "2 semaines",
     "2419200": "4 semaines",
-    "4838400": "8 semaines"
+    "4838400": "8 semaines",
+    "2678400": "1 mois",
+    "7889400": "3 mois",
+    "15778800": "6 mois",
+    "31557600": "1 an"
   },
+  copiedPassword: "Mot de passe généré copié dans le presse-papier!",
 }

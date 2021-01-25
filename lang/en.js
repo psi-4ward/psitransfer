@@ -54,4 +54,5 @@ module.exports = {
     "2419200": "4 Weeks",
     "4838400": "8 Weeks"
   },
+  copiedPassword: "Generated password copied to clipboard!",
 }
