@@ -89,7 +89,7 @@
     data () {
       return {
         files: [],
-        sid: document.location.pathname,
+        sid: document.location.pathname.match(/^.*\/([^\/?#]+)/)[1],
         baseURI: this.$root.baseURI,
         passwordWrong: false,
         needsPassword: false,
