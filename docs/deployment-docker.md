@@ -22,7 +22,7 @@ by adding `-e` flags to the `docker run` command.
 ```bash
 docker run -v $PWD/data:/data -p 3000:8080 \
   -e PSITRANSFER_PORT=8080 \
-  -e PSITRANSFER_DEFAULTRETENTION=3600 \
+  -e PSITRANSFER_DEFAULT_RETENTION=3600 \
   psitrax/psitransfer
 ```
 
