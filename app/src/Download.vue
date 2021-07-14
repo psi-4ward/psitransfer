@@ -8,7 +8,7 @@
         icon.fa-fw(name="exclamation-triangle")
         |  {{ error }}
     .well(v-if='needsPassword')
-      h3 Password
+      h3 {{ $root.lang.password }}
       .form-group
         input.form-control(type='password', v-model='password')
       p.text-danger(v-show='passwordWrong')
