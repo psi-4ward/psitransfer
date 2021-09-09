@@ -14,7 +14,7 @@
   "main": "app.js",
   "dependencies": {
     "archiver": "^4.0.1",
-    "axios": "^0.21.0",
+    "axios": "^0.21.3",
     "common-streams": "^1.4.0",
     "compression": "^1.7.4",
     "cors": "^2.8.5",
