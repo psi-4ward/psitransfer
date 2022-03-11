@@ -1,62 +1,73 @@
 <template lang="pug">
-  .download-app
-    a.btn.btn-sm.btn-info.btn-admin-refresh(@click='login()', title='Refresh', v-if="loggedIn")
-      icon(name="sync-alt")
+.download-app
+  a.btn.btn-sm.btn-info.btn-admin-refresh(@click='login()', title='Refresh', v-if="loggedIn")
+    icon(name="sync-alt")
 
-    .alert.alert-danger(v-show="error")
-      strong
-        icon.fa-fw(name="exclamation-triangle")
-        |  {{ error }}
-    form.well(v-if='!loggedIn', @submit.stop.prevent="login")
-      h3 Password
-      .form-group
-        input.form-control(type='password', v-model='password', autofocus="")
-      p.text-danger(v-show='passwordWrong')
-        strong Access denied!
-      |
-      button.btn.btn-primary(type="submit", :disabled="!password")
-        icon.fa-fw(name="sign-in-alt")
-        |  login
+  .alert.alert-danger(v-show="error")
+    strong
+      icon.fa-fw(name="exclamation-triangle")
+      |  {{ error }}
+  form.well(v-if='!loggedIn', @submit.stop.prevent="login")
+    h3 Password
+    .form-group
+      input.form-control(type='password', v-model='password', autofocus="")
+    p.text-danger(v-show='passwordWrong')
+      strong Access denied!
+    |
+    button.btn.btn-primary(type="submit", :disabled="!password")
+      icon.fa-fw(name="sign-in-alt")
+      |  Login
 
-    div(v-if="loggedIn")
-      table.table.table-hover
-        thead
-          tr
-            th SID
-            th Created
-            th Downloaded
-            th Expire
-            th Size
-        template(v-for="(bucket, sid) in db")
-          tbody(:class="{expanded: expand===sid}")
-            tr.bucket(@click="expandView(sid)")
+  div(v-if="loggedIn")
+    table.table.table-hover
+      thead
+        tr
+          th SID
+          th Created
+          th Downloaded
+          th Expire
+          th Size
+          th Actions
+      template(v-for="(bucket, sid) in db")
+        tbody(:class="{expanded: expand===sid}")
+          tr.bucket(@click="expandView(sid)")
+            td
+              | {{ sid }}
+              icon.pull-right(name="key", v-if="sum[sid].password", title="Password protected")
+            td {{ sum[sid].created | date }}
+            td
+              template(v-if="sum[sid].lastDownload") {{ sum[sid].lastDownload | date}}
+              template(v-else="") -
+            td
+              template(v-if="typeof sum[sid].firstExpire === 'number'") {{ sum[sid].firstExpire | date }}
+              template(v-else)  {{ sum[sid].firstExpire }}
+            td.text-right {{ humanFileSize(sum[sid].size) }}
+            td
+              a(:href="baseURI + sid", title="Open bucket", target="_blank")
+                icon(name="folder-open")
+              |    
+              a.text-danger(@click="deleteFile(sid, '', true)", title="Delete bucket")
+                icon(name="trash")
+        tbody.expanded(v-if="expand === sid")
+          template(v-for="file in bucket")
+            tr.file
+              td {{ file.metadata.name }}
+              td {{+file.metadata.createdAt | date}}
               td
-                | {{ sid }}
-                icon.pull-right(name="key", v-if="sum[sid].password", title="Password protected")
-              td {{ sum[sid].created | date }}
-              td
-                template(v-if="sum[sid].lastDownload") {{ sum[sid].lastDownload | date}}
+                template(v-if="file.metadata.lastDownload") {{ +file.metadata.lastDownload | date}}
                 template(v-else="") -
               td
-                template(v-if="typeof sum[sid].firstExpire === 'number'") {{ sum[sid].firstExpire | date }}
-                template(v-else)  {{ sum[sid].firstExpire }}
-              td.text-right {{ humanFileSize(sum[sid].size) }}
-          tbody.expanded(v-if="expand === sid")
-            template(v-for="file in bucket")
-              tr.file
-                td {{ file.metadata.name }}
-                td {{+file.metadata.createdAt | date}}
-                td
-                  template(v-if="file.metadata.lastDownload") {{ +file.metadata.lastDownload | date}}
-                  template(v-else="") -
-                td
-                  template(v-if="typeof file.expireDate === 'number'") {{ file.expireDate | date }}
-                  template(v-else) {{ file.expireDate }}
-                td.text-right {{ humanFileSize(file.size) }}
-        tfoot
-          tr
-            td(colspan="3")
-            td.text-right(colspan="2") Sum: {{ humanFileSize(sizeSum) }}
+                template(v-if="typeof file.expireDate === 'number'") {{ file.expireDate | date }}
+                template(v-else) {{ file.expireDate }}
+              td.text-right {{ humanFileSize(file.size) }}
+              td
+                a.text-danger(@click="deleteFile(file.metadata.sid, file.metadata.key)", title="Delete file")
+                  icon(name="trash")
+      tfoot
+        tr
+          td(colspan="3")
+          td.text-right(colspan="2") Sum: {{ humanFileSize(sizeSum) }}
+          td
 
 </template>
 
@@ -66,13 +77,15 @@
   import 'vue-awesome/icons/sync-alt';
   import 'vue-awesome/icons/sign-in-alt';
   import 'vue-awesome/icons/key';
-
+  import 'vue-awesome/icons/folder-open';
+  import 'vue-awesome/icons/trash';
 
   export default {
     name: 'app',
 
     data () {
       return {
+        baseURI: this.$root.baseURI,
         db: {},
         sum: {},
         loggedIn: false,
@@ -160,9 +173,25 @@
         return Math.max(fileSizeInBytes, 0.00).toFixed(2) + byteUnits[i];
       },
 
+      deleteFile(sid, key, bucketDelete = false) {
+        const xhr = new XMLHttpRequest();
+        xhr.open('DELETE', this.$root.baseURI + 'delete');
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.setRequestHeader('x-passwd', this.password);
+        xhr.send(JSON.stringify({'sid': sid, 'key': key, 'bucketDelete': bucketDelete}));
+        xhr.onload = () => {
+          if(xhr.status === 200) {
+            try {
+              this.login();
+            } catch(e) {
+              this.error = e.toString();
+            }
+          } else {
+            this.error = `${xhr.status} ${xhr.statusText}: ${xhr.responseText}`;
+          }
+        };
+      },
     },
-
-
   }
 </script>
 
