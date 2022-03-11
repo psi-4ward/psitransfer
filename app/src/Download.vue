@@ -1,52 +1,57 @@
 <template lang="pug">
-  .download-app
-    a.btn.btn-sm.btn-info.btn-new-session(@click='newSession()', :title='$root.lang.newUpload')
-      icon.fa-fw(name="cloud-upload-alt")
-      span.hidden-xs  {{ $root.lang.newUpload }}
-    .alert.alert-danger(v-show="error")
-      strong
-        icon.fa-fw(name="exclamation-triangle")
-        |  {{ error }}
-    .well(v-if='needsPassword')
-      h3 Password
-      .form-group
-        input.form-control(type='password', v-model='password')
-      p.text-danger(v-show='passwordWrong')
-        strong {{ $root.lang.accessDenied }}
-      |
-      button.decrypt.btn.btn-primary(:disabled='password.length<1', @click='decrypt()')
-        icon.fa-fw(name="key")
-        |  {{ $root.lang.decrypt }}
-    .panel.panel-primary(v-if='!needsPassword')
-      .panel-heading
-        strong {{ $root.lang.files }}
-        div.pull-right.btn-group.btn-download-archive(v-if="downloadsAvailable")
-          a.btn.btn-sm.btn-default(@click="downloadAll('zip')", :title="$root.lang.zipDownload")
-            icon.fa-fw(name="download")
-            |  zip
-          a.btn.btn-sm.btn-default(@click="downloadAll('tar.gz')", :title="$root.lang.tarGzDownload")
-            icon.fa-fw(name="download")
-            |  tar.gz
-      .panel-body
-        table.table.table-hover.table-striped.files
-          tbody
-            tr(v-for='file in files', style='cursor: pointer', @click='download(file)')
-              td.file-icon
-                file-icon(:file='file')
-              td
-                div.pull-right.btn-group
-                  clipboard.btn.btn-sm.btn-default(:value='baseURI + file.url', @change='copied(file, $event)', :title='$root.lang.copyToClipboard')
-                    a
-                      icon(name="copy")
-                  a.btn.btn-sm.btn-default(:title="$root.lang.preview", @click.prevent.stop="preview=file", v-if="file.previewType")
+.download-app
+  a.btn.btn-sm.btn-info.btn-new-session(@click='newSession()', :title='$root.lang.newUpload')
+    icon.fa-fw(name="cloud-upload-alt")
+    span.hidden-xs  {{ $root.lang.newUpload }}
+  .alert.alert-danger(v-show="error")
+    strong
+      icon.fa-fw(name="exclamation-triangle")
+      |  {{ error }}
+  .well(v-if='needsPassword')
+    h3 {{ $root.lang.password }}
+    .form-group
+      input.form-control(type='password', v-model='password')
+    p.text-danger(v-show='passwordWrong')
+      strong {{ $root.lang.accessDenied }}
+    |
+    button.decrypt.btn.btn-primary(:disabled='password.length<1', @click='decrypt()')
+      icon.fa-fw(name="key")
+      |  {{ $root.lang.decrypt }}
+  .panel.panel-primary(v-if='!needsPassword')
+    .panel-heading
+      strong {{ $root.lang.files }}
+      div.pull-right.btn-group.btn-download-archive(v-if="downloadsAvailable")
+        a.btn.btn-sm.btn-default(@click="downloadAll('zip')", :title="$root.lang.zipDownload")
+          icon.fa-fw(name="file-archive")
+          |  zip
+        a.btn.btn-sm.btn-default(@click="downloadAll('tar.gz')", :title="$root.lang.tarGzDownload")
+          icon.fa-fw(name="file-archive")
+          |  tar.gz
+    .panel-body
+      table.table.table-hover.table-striped.files
+        tbody
+          tr(v-for='file in files', style='cursor: pointer', @click='download(file)')
+            td.file-icon
+              file-icon(:file='file')
+            td
+              div.pull-right.btn-group
+                clipboard.btn.btn-sm.btn-default(:value='baseURI + file.url', @change='copied(file, $event)', :title='$root.lang.copyToClipboard')
+                  a
+                    icon(name="copy")
+                span.btn.btn-sm.btn-default(:title="$root.lang.preview", @click.prevent.stop="preview=file", v-if="file.previewType")
+                  a
                     icon(name="eye")
-                i.pull-right.fa.fa-check.text-success.downloaded(v-show='file.downloaded')
-                p
-                  strong {{ file.metadata.name }}
-                  small.file-size(v-if="isFinite(file.size)") ({{ humanFileSize(file.size) }})
-                p {{ file.metadata.comment }}
+                span.btn.btn-sm.btn-default(:title="$root.lang.download")
+                  a
+                    icon(name="download")
+              i.pull-right.fa.fa-check.text-success.downloaded(v-show='file.downloaded')
+                icon(name="check")
+              p
+                strong {{ file.metadata.name }}
+                small.file-size(v-if="isFinite(file.size)") ({{ humanFileSize(file.size) }})
+              p {{ file.metadata.comment }}
 
-    preview-modal(:preview="preview", :files="previewFiles", :max-size="config.maxPreviewSize", @close="preview=false")
+  preview-modal(:preview="preview", :files="previewFiles", :max-size="config.maxPreviewSize", @close="preview=false")
 
 </template>
 
@@ -68,6 +73,7 @@
   import 'vue-awesome/icons/download';
   import 'vue-awesome/icons/key';
   import 'vue-awesome/icons/eye';
+  import 'vue-awesome/icons/file-archive';
 
   function getPreviewType(file, maxSize) {
     if(!file || !file.metadata) return false;
@@ -103,7 +109,7 @@
 
     computed: {
       downloadsAvailable: function() {
-        return this.files.filter(f => !f.downloaded || f.metadata.retention !== 'one-time').length > 0
+        return this.files.filter(f => !f.downloaded || f.metadata.retention !== 'one-time').length > 0 && this.files.length > 1;
       },
       previewFiles: function() {
         return this.files.filter(f => !!f.previewType);

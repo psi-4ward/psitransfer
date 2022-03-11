@@ -75,12 +75,14 @@ h1 .fa-icon {
   vertical-align: middle;
 }
 .btn .fa-icon.fa-fw {
-  width: 25px;
+  width: 24px;
 }
 .btn .fa-icon {
   vertical-align: middle;
 }
-
+.fa-icon {
+  fill: currentColor;
+}
 
 /* FileIcon Component */
 .file-icon img {
