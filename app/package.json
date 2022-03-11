@@ -6,34 +6,34 @@
   "private": true,
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack-dev-server",
-    "build": "cross-env NODE_ENV=production webpack --hide-modules",
+    "build": "cross-env NODE_ENV=production webpack",
     "analyze": "cross-env ANALYZE=true npm run build"
   },
   "dependencies": {
-    "@nuintun/qrcode": "^2.1.1",
-    "crypto-js": "^3.3.0",
-    "drag-drop": "^6.0.2",
+    "@nuintun/qrcode": "^3.1.1",
+    "crypto-js": "^4.1.1",
+    "drag-drop": "^7.2.0",
     "regenerator-runtime": "^0.13.5",
-    "tus-js-client": "^2.1.1",
-    "uuid": "^8.2.0",
-    "vue": "^2.6.11",
-    "vue-awesome": "^4.0.2",
-    "vuex": "^3.5.1"
+    "tus-js-client": "^2.3.1",
+    "uuid": "^8.3.2",
+    "vue": "^2.6.14",
+    "vue-awesome": "^4.5.0",
+    "vuex": "^3.6.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.10.4",
-    "@babel/preset-env": "^7.10.4",
-    "babel-loader": "^8.1.0",
-    "cross-env": "^7.0.2",
-    "css-loader": "^3.6.0",
-    "file-loader": "^6.0.0",
-    "pug": "^3.0.0",
-    "pug-plain-loader": "^1.0.0",
-    "vue-loader": "^15.9.3",
-    "vue-template-compiler": "^2.6.11",
-    "webpack": "^4.43.0",
-    "webpack-bundle-analyzer": "^3.8.0",
-    "webpack-cli": "^3.3.12",
-    "webpack-dev-server": "^3.11.0"
+    "@babel/core": "^7.17.5",
+    "@babel/preset-env": "^7.16.11",
+    "babel-loader": "^8.2.3",
+    "cross-env": "^7.0.3",
+    "css-loader": "^5.2.7",
+    "file-loader": "^6.2.0",
+    "pug": "^3.0.2",
+    "pug-plain-loader": "^1.1.0",
+    "vue-loader": "^15.9.8",
+    "vue-template-compiler": "^2.6.14",
+    "webpack": "^5.70.0",
+    "webpack-bundle-analyzer": "^3.9.0",
+    "webpack-cli": "^4.7.2",
+    "webpack-dev-server": "^4.7.4"
   }
 }
