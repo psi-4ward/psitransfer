@@ -154,3 +154,53 @@ h1 .fa-icon {
 .preview-modal .header .btn-group {
   margin-left: 15px;
 }
+
+/* Dark Mode */
+@media (prefers-color-scheme: dark) {
+  body {
+    color: #fff;
+    background-color: #121212;
+  }
+
+  .panel {
+    background-color: #242424;
+  }
+
+  .well {
+    background-color: #242424;
+  }
+
+  a:hover, a:focus {
+    color: #549ddd;
+  }
+
+  .form-control {
+    color: #fff;
+    background-color: #222;
+  }
+
+  .table-hover > tbody > tr:hover {
+    background-color: #2b2b2b;
+  }
+
+  .expanded {
+    background: #242424 !important;
+  }
+
+  .table-striped > tbody > tr:nth-of-type(2n+1) {
+    background-color: #242424;
+  }
+
+  .modal-content {
+    background-color: #282828;
+  }
+
+  pre {
+    color: #fff;
+    background-color: #151515;
+  }
+
+  h1 small, h2 small, h3 small, h4 small, h5 small, h6 small, .h1 small, .h2 small, .h3 small, .h4 small, .h5 small, .h6 small, h1 .small, h2 .small, h3 .small, h4 .small, h5 .small, h6 .small, .h1 .small, .h2 .small, .h3 .small, .h4 .small, .h5 .small, .h6 .small {
+    color: #fff;
+  }
+}
