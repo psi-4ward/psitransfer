@@ -27,7 +27,7 @@
     "cross-env": "^7.0.2",
     "css-loader": "^3.6.0",
     "file-loader": "^6.0.0",
-    "pug": "^3.0.0",
+    "pug": "^3.0.1",
     "pug-plain-loader": "^1.0.0",
     "vue-loader": "^15.9.3",
     "vue-template-compiler": "^2.6.11",
