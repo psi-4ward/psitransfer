@@ -13,29 +13,30 @@
   "bugs": "https://github.com/psi-4ward/psitransfer/issues",
   "main": "app.js",
   "dependencies": {
-    "archiver": "^4.0.1",
-    "axios": "^0.21.0",
+    "archiver": "^5.3.1",
+    "axios": "^0.27.2",
     "common-streams": "^1.4.0",
     "compression": "^1.7.4",
     "cors": "^2.8.5",
-    "crypto-js": "^4.0.0",
-    "debug": "^4.1.1",
-    "express": "^4.17.1",
+    "crypto-js": "^4.1.1",
+    "debug": "^4.3.4",
+    "express": "^4.18.1",
     "fs-promise": "^2.0.3",
-    "http-errors": "^1.8.0",
+    "http-errors": "^2.0.0",
     "method-override": "^3.0.0",
     "morgan": "^1.10.0",
-    "pug": "^3.0.0",
+    "pug": "^3.0.2",
+    "tar-stream": "^2.2.0",
     "to-object-reducer": "^1.0.1",
-    "uuid": "^8.2.0"
+    "uuid": "^8.3.2"
   },
   "bin": {
     "psitransfer": "cli.js"
   },
   "devDependencies": {
     "filecompare": "^1.0.4",
-    "testcafe": "^1.9.4",
-    "testcafe-browser-provider-browserstack": "^1.13.1"
+    "testcafe": "^1.18.6",
+    "testcafe-browser-provider-browserstack": "^1.13.2"
   },
   "scripts": {
     "start": "NODE_ENV=production node app.js",
