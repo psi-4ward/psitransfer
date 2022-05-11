@@ -37,7 +37,7 @@ module.exports = {
   mailFrom: "My E-Mail address",
   mailFromPlaceholder: "E-Mail address",
   mailMessage: "My message",
-  mailDownloadNotification: "Notify me when a file hase been downloaded.",
+  mailDownloadNotification: "Notify me when a file has been downloaded.",
   mailSendBtn: "Send E-Mail",
   mailsSent: "The e-mails have been sent.",
   mailSubjectUploader: "PsiTransfer File-Upload",
