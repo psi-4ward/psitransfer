@@ -99,8 +99,6 @@ module.exports = {
   ],
   devServer: {
     historyApiFallback: true,
-    noInfo: false,
-    disableHostCheck: true,
     host: '0.0.0.0',
     proxy: [
       // Proxy requests to BE in DEV mode

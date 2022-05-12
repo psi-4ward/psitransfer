@@ -10,7 +10,7 @@ if(!String.prototype.startsWith) {
 import Vue from 'vue';
 import { httpGet } from "./common/util";
 import Download from './Download.vue';
-import Icon from 'vue-awesome/components/Icon.vue'
+import Icon from 'vue-awesome/components/Icon'
 
 Vue.component('icon', Icon);
 

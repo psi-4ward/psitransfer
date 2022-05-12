@@ -3,7 +3,7 @@ import "regenerator-runtime/runtime.js";
 import Vue from 'vue';
 import Upload from './Upload.vue';
 import store from './Upload/store.js';
-import Icon from 'vue-awesome/components/Icon.vue'
+import Icon from 'vue-awesome/components/Icon'
 import {httpGet} from "./common/util";
 
 Vue.component('icon', Icon);

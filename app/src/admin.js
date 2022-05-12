@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Admin from './Admin.vue';
-import Icon from 'vue-awesome/components/Icon.vue'
+import Icon from 'vue-awesome/components/Icon'
 
 function parseDate(str) {
   if(!str) return str;
