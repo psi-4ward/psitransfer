@@ -154,3 +154,91 @@ h1 .fa-icon {
 .preview-modal .header .btn-group {
   margin-left: 15px;
 }
+
+
+/* Dark Mode */
+@media (prefers-color-scheme: dark) {
+  body {
+    color: #e6e6e6;
+    background-color: #1B1E20;
+  }
+
+  .panel {
+    background-color: #2A2E32;
+  }
+
+  .panel-primary > .panel-heading {
+    background-color: #1d4c74;
+    color: inherit;
+  }
+
+  .panel-info > .panel-heading {
+    background-color: #2e758a;
+    color: inherit;
+  }
+
+  .panel-default > .panel-heading {
+    background-color: #3e3e3e;
+    color: inherit;
+  }
+
+  .form-control[disabled], .form-control[readonly], fieldset[disabled] .form-control {
+    background-color: #585858;
+  }
+
+  .btn-info {
+    background-color: #2e758a;
+  }
+
+  .btn-success {
+    background-color: #1f761f;
+  }
+
+  .text-success {
+    color: #4dd050;
+  }
+
+  .well {
+    background-color: #2A2E32;
+  }
+
+  a, a:hover, a:focus {
+    color: #48aaff;
+  }
+
+  .close {
+    color: #fff;
+    opacity: 0.7;
+  }
+
+  .form-control {
+    color: #fff;
+    background-color: #222;
+  }
+
+  .table-hover > tbody > tr:hover {
+    background-color: #2b2b2b;
+  }
+
+  .expanded {
+    background: #2A2E32 !important;
+  }
+
+  .table-striped > tbody > tr:nth-of-type(2n+1) {
+    background-color: #2A2E32;
+  }
+
+  .modal-content {
+    background-color: #282828;
+  }
+
+  pre {
+    color: #fff;
+    background-color: #151515;
+  }
+
+  .table > tbody > tr > td {
+    border-top: 1px solid #5F6265;
+  }
+
+}
