@@ -39,10 +39,10 @@ tar -czf _releases/psitransfer-$NAME.tar.gz --transform "s~^~psitransfer-$NAME/~
 
 
 cd $DIR/..
-if [ -d .git ]; then
-  LAST_TAG=$(git tag | head -n 2 | tail -n 1)
-  echo
-  echo "### Changelog $LAST_TAG..HEAD"
-  echo "======================================================"
-  [ -z "$LAST_TAG" ] &&  git log --oneline || git log $LAST_TAG..HEAD --oneline
-fi
+#if [ -d .git ]; then
+#  LAST_TAG=$(git tag | head -n 2 | tail -n 1)
+#  echo
+#  echo "### Changelog $LAST_TAG..HEAD"
+#  echo "======================================================"
+#  [ -z "$LAST_TAG" ] &&  git log --oneline || git log $LAST_TAG..HEAD --oneline
+#fi
