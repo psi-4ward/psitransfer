@@ -27,6 +27,9 @@ jobs:
           node-version: 18
           registry-url: 'https://registry.npmjs.org'
 
+      - name: Check out Git repository
+        uses: actions/checkout@v2
+
       - name: Update version in package.json
         run: |
           npm version ${GITHUB_REF_NAME:1} --allow-same-version --git-tag-version=false
