@@ -44,7 +44,7 @@ jobs:
           cd _releases
           mkdir _pkg
           cd _pkg
-          tar xzf ../psitransfer-$GITHUB_REF_NAME.tar.gz
+          tar xzf ../psitransfer-$GITHUB_REF_NAME.tar.gz --strip 1
           npm publish
           cd ../..
 
