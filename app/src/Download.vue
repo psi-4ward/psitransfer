@@ -14,10 +14,10 @@
       p.text-danger(v-show='passwordWrong')
         strong {{ $root.lang.accessDenied }}
       |
-      button.decrypt.btn.btn-primary(:disabled='password.length<1', @click='decrypt()')
+      button.decrypt.btn.btn-primary(:disabled='password.length<1', @click='fetchBucket()')
         icon.fa-fw(name="key")
         |  {{ $root.lang.decrypt }}
-    .panel.panel-primary(v-if='!needsPassword')
+    .panel.panel-primary(v-if='!needsPassword && !loading')
       .panel-heading
         strong {{ $root.lang.files }}
         div.pull-right.btn-group.btn-download-archive(v-if="downloadsAvailable")
@@ -53,8 +53,6 @@
 
 <script>
   "use strict";
-  import AES from 'crypto-js/aes';
-  import encUtf8 from 'crypto-js/enc-utf8';
   import MD5 from 'crypto-js/md5';
 
   import FileIcon from './common/FileIcon.vue';
@@ -93,6 +91,7 @@
         baseURI: this.$root.baseURI,
         passwordWrong: false,
         needsPassword: false,
+        loading: true,
         password: '',
         content: '',
         error: '',
@@ -145,28 +144,6 @@
         file.downloaded = $event === 'copied';
       },
 
-      decrypt() {
-        this.passwordWrong = false;
-        this.files = this.files.map(item => {
-          if(typeof item === 'object') return item;
-          let f = AES.decrypt(item, this.password);
-          try {
-            f = JSON.parse(f.toString(encUtf8));
-            return Object.assign(f, {
-              downloaded: false,
-              previewType: getPreviewType(f, this.config.maxPreviewSize)
-            });
-          } catch(e) {
-            this.passwordWrong = true;
-            return item;
-          }
-        });
-        if(!this.passwordWrong) {
-          this.needsPassword = false;
-          this.password = '';
-        }
-      },
-
       humanFileSize(fileSizeInBytes) {
         let i = -1;
         const byteUnits = [' kB', ' MB', ' GB', ' TB', 'PB', 'EB', 'ZB', 'YB'];
@@ -185,35 +162,44 @@
       isFinite(value) {
         if(typeof value !== 'number') return false;
         return !(value !== value || value === Infinity || value === -Infinity);
-      }
+      },
+
+      fetchBucket() {
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', this.sid + '.json');
+        if(this.password) {
+          xhr.setRequestHeader('x-download-pass', this.password);
+        }
+        xhr.onload = () => {
+          if (xhr.status === 200) {
+            try {
+              let data = JSON.parse(xhr.responseText);
+              this.config = data.config;
+              this.files = data.items.map(f => {
+                return Object.assign(f, {
+                  downloaded: false,
+                  previewType: getPreviewType(f, this.config.maxPreviewSize)
+                });
+              });
+              this.loading = false;
+              this.needsPassword = false;
+            }
+            catch (e) {
+              this.error = e.toString();
+            }
+          } else if (xhr.status === 401) {
+            this.needsPassword = true;
+            this.loading = false;
+          } else {
+            this.error = `${ xhr.status } ${ xhr.statusText }: ${ xhr.responseText }`;
+          }
+        };
+        xhr.send();
+      },
     },
 
     beforeMount() {
-      const xhr = new XMLHttpRequest();
-      xhr.open('GET', this.sid + '.json');
-      xhr.onload = () => {
-        if(xhr.status === 200) {
-          try {
-            let data = JSON.parse(xhr.responseText);
-            this.config = data.config;
-            this.files = data.items.map(f => {
-              if(typeof f !== 'object') {
-                this.needsPassword = true;
-                return f;
-              }
-              return Object.assign(f, {
-                downloaded: false,
-                previewType: getPreviewType(f, this.config.maxPreviewSize)
-              });
-            });
-          } catch(e) {
-            this.error = e.toString();
-          }
-        } else {
-          this.error = `${xhr.status} ${xhr.statusText}: ${xhr.responseText}`;
-        }
-      };
-      xhr.send();
+      this.fetchBucket();
     }
   }
 </script>
