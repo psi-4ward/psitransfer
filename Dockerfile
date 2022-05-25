@@ -1,4 +1,4 @@
-FROM node:14-alpine
+FROM node:18-alpine
 
 ENV PSITRANSFER_UPLOAD_DIR=/data \
     NODE_ENV=production
@@ -19,7 +19,7 @@ ADD public /app/public
 # Rebuild the frontend apps
 RUN cd app && \
     NODE_ENV=dev npm ci && \
-    npm run build -- --no-info && \
+    npm run build && \
     cd .. && \
     mkdir /data && \
     chown node /data && \
