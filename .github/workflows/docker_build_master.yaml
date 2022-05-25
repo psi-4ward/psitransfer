@@ -42,4 +42,4 @@ jobs:
           push: true
           tags: |
             psitrax/psitransfer:latest
-            ghcr.io/psi-4ward/psitransferxs:latest
+            ghcr.io/psi-4ward/psitransfer:latest
