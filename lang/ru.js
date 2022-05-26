@@ -1,7 +1,7 @@
 module.exports = {
   langCode: "ru",
   oldBrowserError: "Ваш браузер устарел и больше не поддерживается",
-  dropFilesHere: "Перетяните сюда файлы для загрузки",
+  dropFilesHere: "Перетащите сюда файлы для загрузки",
   noPreviewAvailable: "Предпросмотр недоступен",
   preview: "Предпросмотр",
   comment: "Комментарий",
