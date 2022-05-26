@@ -44,7 +44,7 @@ module.exports = {
   mailSubjectDownloader: "Файл скачан",
   mailSubjectFileDownloaded: "Файл был скачан",
   retentions: {
-    "одноразовый": "Одноразовая загрузка",
+    "one-time": "Одноразовая загрузка",
     "3600": "1 час",
     "21600": "6 часов",
     "86400": "1 день",
