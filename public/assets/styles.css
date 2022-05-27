@@ -250,18 +250,18 @@ h1 .fa-icon {
   .btn-primary:focus, .btn-primary.focus {
     color: #fff;
     background-color: #4752c4;
-    border-color: #122b40
+    border-color: #7983f5;
   }
   
   .btn-primary:hover {
-    background-color: #3ba55d;
-    border-color: #2d7d46;
+    background-color: #4752c4;
+    border-color: #7983f5;
   }
   
   .btn-primary:active, .btn-primary.active, .open>.dropdown-toggle.btn-primary {
     color: #fff;
-    background-color: #3ba55d;
-    border-color: #2d7d46;
+    background-color: #4752c4;
+    border-color: #7983f5;
   }
   
   .btn-default {
@@ -297,11 +297,15 @@ h1 .fa-icon {
     border: 1px solid rgba(79,84,92,0.48);
   }
 
-  .share-link > a, a:hover, a:focus {
+  .share-link > a {
     color: #00aff4;
   }
-
-  a, a:hover, a:focus {
+  
+  .share-link >  a:hover, a:focus {
+    color: #00aff4;
+  }
+  
+  .empty-files-big-plus > a, a:hover, a:focus {
     color: #96989D;
   }
 
