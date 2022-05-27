@@ -246,6 +246,24 @@ h1 .fa-icon {
     background-color: #4752c4;
     border-color:#204d74
   }
+  
+  .btn-default {
+    color: #fff;
+    background-color: #3ba55d;
+    border-color: #2d7d46
+  }
+  
+  .btn-default:focus, .btn-primary.focus {
+    color: #fff;
+    background-color: #2d7d46;
+    border-color: #2d7d46
+  }
+  
+  .btn-default:hover {
+    color: #fff;
+    background-color: #2d7d46;
+    border-color: #2d7d46
+  }
 
   .text-success {
     color: #3ba55d;
