@@ -188,7 +188,11 @@
               this.error = e.toString();
             }
           } else if (xhr.status === 401) {
-            this.needsPassword = true;
+            if(this.needsPassword) {
+              this.passwordWrong = true;
+            } else {
+              this.needsPassword = true;
+            }
             this.loading = false;
           } else {
             this.error = `${ xhr.status } ${ xhr.statusText }: ${ xhr.responseText }`;

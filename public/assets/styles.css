@@ -345,4 +345,8 @@ h1 .fa-icon {
   .table > tbody > tr > td {
     border-top: 1px solid rgba(79,84,92,0.48);
   }
+
+  .text-danger {
+    color: #ff4c49;
+  }
 }
