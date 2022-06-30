@@ -8,7 +8,7 @@
         icon.fa-fw(name="exclamation-triangle")
         |  {{ error }}
     form.well.upload-uploadPassword(v-if='showLogin', @submit.prevent='setUploadPass()')
-      h3 uploadPassword
+      h3 {{ $root.lang.uploadPassword }}
       .form-group
         input.form-control(type='password', v-model='uploadPassword', autofocus)
       p.text-danger(v-show='uploadPasswordWrong')
