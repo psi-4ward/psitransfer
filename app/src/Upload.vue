@@ -37,6 +37,10 @@
       .row.overall-process(v-show="state === 'uploading'")
         .col-xs-12
           icon.pull-left(name="spinner", scale="2", spin="", style="margin-right: 10px")
+          div.share-link
+          span.title {{ $root.lang.downloadLink }}:
+          |
+          a(:href='shareUrl') {{ shareUrl }}
           .progress
             .progress-bar.progress-bar-success.progress-bar-striped.active(:style="{width: percentUploaded+'%'}")
               span(v-show='percentUploaded>8') {{ percentUploaded }}%
