@@ -1,0 +1,11 @@
+version: "3.4"
+
+services:
+  psitransfer:
+    image: psitrax/psitransfer
+    container_name: psiTest
+    ports:
+      - 3000:3000
+    volumes:
+      - ./data:/data
+      - ./config.js:/app/config.js
