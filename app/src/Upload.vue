@@ -35,8 +35,7 @@
           |
           a(:href='shareUrl') {{ shareUrl }}
       .row.overall-process(v-show="state === 'uploading'")
-        span(v-show='percentUploaded<100')
-          {{ $root.lang.downloadLink }}:
+        span.title(v-show='percentUploaded<100') {{ $root.lang.downloadLink }}:
           |
           a(:href='shareUrl') {{ shareUrl }}
         .col-xs-12
