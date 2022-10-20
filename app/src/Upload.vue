@@ -35,7 +35,10 @@
           |
           a(:href='shareUrl') {{ shareUrl }}
       .row.overall-process(v-show="state === 'uploading'")
-        span(v-show='percentUploaded<100') {{ $root.lang.downloadLink }}: a(:href='shareUrl') {{ shareUrl }}
+        span(v-show='percentUploaded<100')
+          {{ $root.lang.downloadLink }}:
+          |
+          a(:href='shareUrl') {{ shareUrl }}
         .col-xs-12
           icon.pull-left(name="spinner", scale="2", spin="", style="margin-right: 10px")
           .progress
