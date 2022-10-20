@@ -43,6 +43,7 @@ module.exports = {
   mailSubjectUploader: "PsiTransfer - Téléversement de fichiers",
   mailSubjectDownloader: "PsiTransfer - Téléchargement de fichiers",
   mailSubjectFileDownloaded: "Le fichier a été téléchargé",
+  ongoingDownload : "Upload du fichier en cours. Merci de patienter",
   retentions: {
     "one-time": "téléchargement unique",
     "3600": "1 heure",

@@ -43,6 +43,7 @@ module.exports = {
   mailSubjectUploader: "PsiTransfer File-Upload",
   mailSubjectDownloader: "PsiTransfer File-Download",
   mailSubjectFileDownloaded: "File has been downloaded",
+  ongoingDownload: "The file is currently uploading. Please wait",
   retentions: {
     "one-time": "one time download",
     "3600": "1 Hour",
