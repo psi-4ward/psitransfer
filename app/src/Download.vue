@@ -22,14 +22,14 @@
         strong {{ $root.lang.files }}
         div.pull-right.btn-group.btn-download-archive
           if percentUploaded<100
-          h3 {{ $root.lang.ongoingDownload }}
+            h3 {{ $root.lang.ongoingDownload }}
           else        
-          a.btn.btn-sm.btn-default(@click="downloadAll('zip')", :title="$root.lang.zipDownload")
-            icon.fa-fw(name="download")
-            |  zip
-          a.btn.btn-sm.btn-default(@click="downloadAll('tar.gz')", :title="$root.lang.tarGzDownload")
-            icon.fa-fw(name="download")
-            |  tar.gz
+            a.btn.btn-sm.btn-default(@click="downloadAll('zip')", :title="$root.lang.zipDownload")
+              icon.fa-fw(name="download")
+              |  zip
+            a.btn.btn-sm.btn-default(@click="downloadAll('tar.gz')", :title="$root.lang.tarGzDownload")
+              icon.fa-fw(name="download")
+              |  tar.gz
       .panel-body
         table.table.table-hover.table-striped.files
           tbody
