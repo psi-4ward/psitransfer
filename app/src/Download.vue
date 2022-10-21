@@ -20,7 +20,8 @@
     .panel.panel-primary
       .panel-heading
         strong {{ $root.lang.files }}
-            if loading
+          <?php
+            if (loading)?>
               h3 {{ $root.lang.ongoingDownload }}
 </template>
 
