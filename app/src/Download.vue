@@ -17,7 +17,8 @@
       button.decrypt.btn.btn-primary(:disabled='password.length<1', @click='fetchBucket()')
         icon.fa-fw(name="key")
         |  {{ $root.lang.decrypt }}
-    .panel.panel-primary(v-if='!needsPassword && loading')
+    .panel.panel-primary
+     .well(v-if='!needPassword && loading')
       .panel-heading
         strong {{ $root.lang.files }}
           div.h3 {{ $root.lang.ongoingDownload }}
