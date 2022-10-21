@@ -18,16 +18,19 @@
         icon.fa-fw(name="key")
         |  {{ $root.lang.decrypt }}
     .panel.panel-primary(v-if='!needsPassword && loading')
-      h3 {{ $root.lang.ongoingDownload }}
       .panel-heading
         strong {{ $root.lang.files }}
-        div.pull-right.btn-group.btn-download-archive
-          a.btn.btn-sm.btn-default(@click="downloadAll('zip')", :title="$root.lang.zipDownload")
-            icon.fa-fw(name="download")
-            |  zip
-          a.btn.btn-sm.btn-default(@click="downloadAll('tar.gz')", :title="$root.lang.tarGzDownload")
-            icon.fa-fw(name="download")
-            |  tar.gz
+          h3 {{ $root.lang.ongoingDownload }}
+    .panel.panel-primary(v-if='!needspassword && !loading')
+      .panel-heading
+        strong {{ $root.lang.files }}
+          div.pull-right.btn-group.btn-download-archive
+            a.btn.btn-sm.btn-default(@click="downloadAll('zip')", :title="$root.lang.zipDownload")
+              icon.fa-fw(name="download")
+              |  zip
+            a.btn.btn-sm.btn-default(@click="downloadAll('tar.gz')", :title="$root.lang.tarGzDownload")
+              icon.fa-fw(name="download")
+              |  tar.gz
       .panel-body
         table.table.table-hover.table-striped.files
           tbody
