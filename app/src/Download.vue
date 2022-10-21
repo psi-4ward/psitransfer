@@ -20,8 +20,7 @@
     .panel.panel-primary
       .panel-heading
         strong {{ $root.lang.files }}
-          .row.overall-process(v-show='loading')
-            span.h3 {{ $root.lang.ongoingDownload }}
+          .h3(v-show='loading') {{ $root.lang.ongoingDownload }}
 </template>
 
 
