@@ -20,7 +20,6 @@
     .panel.panel-primary
       .panel-heading
         strong {{ $root.lang.files }}
-         .well(v-if='!needPassword && loading')
           h3 {{ $root.lang.ongoingDownload }}
       .panel-body
         table.table.table-hover.table-striped.files
