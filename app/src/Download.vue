@@ -22,7 +22,7 @@
         strong {{ $root.lang.files }}
         div.pull-right.btn-group.btn-download-archive(v-if='loading')
             h3 {{ $root.lang.ongoingDownload }}
-          div.pull-right.btn-group.btn-download-archive(v-else)        
+        div.pull-right.btn-group.btn-download-archive(v-else)        
             a.btn.btn-sm.btn-default(@click="downloadAll('zip')", :title="$root.lang.zipDownload")
               icon.fa-fw(name="download")
               |  zip
