@@ -20,10 +20,11 @@
     .panel.panel-primary(v-if='!needsPassword && !loading')
       .panel-heading
         strong {{ $root.lang.files }}
-        div.pull-right.btn-group.btn-download-archive(v-if="percentUploaded<100")
-          h3 {{ $root.lang.ongoingDownload }}
-        div.pull-right.btn-group.btn-download-archive(v-else="percentUploaded==100")
-          a.btn.btn-sm.btn-default(@click="downloadAll('zip')", :title="$root.lang.zipDownload")
+        div.pull-right.btn-group.btn-download-archive
+          if percentUploaded<100
+          .h3 {{ $root.lang.ongoingDownload }}
+          else        
+          .a.btn.btn-sm.btn-default(@click="downloadAll('zip')", :title="$root.lang.zipDownload")
             icon.fa-fw(name="download")
             |  zip
           a.btn.btn-sm.btn-default(@click="downloadAll('tar.gz')", :title="$root.lang.tarGzDownload")
