@@ -21,7 +21,7 @@
       .panel-heading
         strong {{ $root.lang.files }}
           div.h3 {{ $root.lang.ongoingDownload }}
-    .panel.panel-primary(v-if='!needspassword && !loading')
+    .panel.panel-primary(v-else='!needspassword && !loading')
       .panel-heading
         strong {{ $root.lang.files }}
           div.pull-right.btn-group.btn-download-archive
