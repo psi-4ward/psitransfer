@@ -20,7 +20,7 @@
     .panel.panel-primary
       .panel-heading
         strong {{ $root.lang.files }}
-          .row.overall-process(v-show="state === 'uploading'")
+          .row.overall-process(v-show="state === 'loading'")
             span.h3(v-show='percentUploaded<100') {{ $root.lang.ongoingDownload }}
 </template>
 
