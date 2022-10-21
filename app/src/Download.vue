@@ -18,10 +18,10 @@
         icon.fa-fw(name="key")
         |  {{ $root.lang.decrypt }}
     .panel.panel-primary
-     .well(v-if='!needPassword && loading')
       .panel-heading
         strong {{ $root.lang.files }}
-          div.h3 {{ $root.lang.ongoingDownload }}
+         .well(v-if='!needPassword && loading')
+          h3 {{ $root.lang.ongoingDownload }}
       .panel-body
         table.table.table-hover.table-striped.files
           tbody
