@@ -20,8 +20,8 @@
     .panel.panel-primary
       .panel-heading
         strong {{ $root.lang.files }}
-          .well(v-if ='loading')
-            h3 {{ $root.lang.ongoingDownload }}
+            if loading
+              h3 {{ $root.lang.ongoingDownload }}
 </template>
 
 
