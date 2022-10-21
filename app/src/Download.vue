@@ -18,7 +18,7 @@
         icon.fa-fw(name="key")
         |  {{ $root.lang.decrypt }}
     .panel.panel-primary(v-if='!needsPassword && loading')
-       h3 {{ $root.lang.ongoingDownload }}
+      h3 {{ $root.lang.ongoingDownload }}
       .panel-heading
         strong {{ $root.lang.files }}
         div.pull-right.btn-group.btn-download-archive
