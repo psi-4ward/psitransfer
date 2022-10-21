@@ -16,16 +16,15 @@
       |
       button.decrypt.btn.btn-primary(:disabled='password.length<1', @click='fetchBucket()' )
      icon.fa-fw(name="key" )
-     | {{ $root.lang.decrypt }}
-     .panel.panel-primary
-     .panel-heading
-     strong {{ $root.lang.files }}
-          <?php
-            if (loading)
-            {
-            echo $root.lang.ongoingDownload;
-            } ?>
-
+      | {{ $root.lang.decrypt }}
+        .panel.panel-primary
+          .panel-heading
+            strong {{ $root.lang.files }}
+              <?php
+                if (loading)
+                {
+                echo $root.lang.ongoingDownload;
+                } ?>
 </template>
 
 
