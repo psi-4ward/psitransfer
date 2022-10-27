@@ -20,7 +20,7 @@
     .panel.panel-primary
       .panel-heading
         strong {{ $root.lang.files }}
-          .h3(v-show='loading') {{ $root.lang.ongoingDownload }}
+          h3(v-show='loading') {{ $root.lang.ongoingDownload }}
 </template>
 
 
