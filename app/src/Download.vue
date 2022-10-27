@@ -20,13 +20,16 @@
     .panel.panel-primary
       .panel-heading
         strong {{ $root.lang.files }}
-          h3(v-show='loading') {{ $root.lang.ongoingDownload }}
+          h3(v-show="state === 'uploading'") {{ $root.lang.ongoingDownload }}
 </template>
 
 
 <script>
   "use strict";
   import MD5 from 'crypto-js/md5';
+
+  import Settings from './Upload/Settings.vue';
+  import Files from './Upload/Files.vue';
 
   import FileIcon from './common/FileIcon.vue';
   import Clipboard from './common/Clipboard.vue';
@@ -79,8 +82,12 @@
       },
       previewFiles: function() {
         return this.files.filter(f => !!f.previewType);
-      }
-
+      },
+      ...mapState(['state']),
+      ...mapState('config', ['uploadPassRequired', 'uploadPass', 'requireBucketPassword']),
+      ...mapState('upload', ['sid', 'files', 'password']),
+      ...mapGetters(['error', 'disabled']),
+      ...mapGetters('upload', ['percentUploaded', 'shareUrl', 'bucketSize', 'bytesUploaded']),
     },
 
     methods: {
