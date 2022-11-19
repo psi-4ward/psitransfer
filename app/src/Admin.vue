@@ -1,73 +1,73 @@
 <template lang="pug">
-.download-app
-  a.btn.btn-sm.btn-info.btn-admin-refresh(@click='login()', title='Refresh', v-if="loggedIn")
-    icon(name="sync-alt")
+  .download-app
+    a.btn.btn-sm.btn-info.btn-admin-refresh(@click='login()', title='Refresh', v-if="loggedIn")
+      icon(name="sync-alt")
 
-  .alert.alert-danger(v-show="error")
-    strong
-      icon.fa-fw(name="exclamation-triangle")
-      |  {{ error }}
-  form.well(v-if='!loggedIn', @submit.stop.prevent="login")
-    h3 Password
-    .form-group
-      input.form-control(type='password', v-model='password', autofocus="")
-    p.text-danger(v-show='passwordWrong')
-      strong Access denied!
-    |
-    button.btn.btn-primary(type="submit", :disabled="!password")
-      icon.fa-fw(name="sign-in-alt")
-      |  Login
+    .alert.alert-danger(v-show="error")
+      strong
+        icon.fa-fw(name="exclamation-triangle")
+        |  {{ error }}
+    form.well(v-if='!loggedIn', @submit.stop.prevent="login")
+      h3 Password
+      .form-group
+        input.form-control(type='password', v-model='password', autofocus="")
+      p.text-danger(v-show='passwordWrong')
+        strong Access denied!
+      |
+      button.btn.btn-primary(type="submit", :disabled="!password")
+        icon.fa-fw(name="sign-in-alt")
+        |  Login
 
-  div(v-if="loggedIn")
-    table.table.table-hover
-      thead
-        tr
-          th SID
-          th Created
-          th Downloaded
-          th Expire
-          th Size
-          th Actions
-      template(v-for="(bucket, sid) in db")
-        tbody(:class="{expanded: expand===sid}")
-          tr.bucket(@click="expandView(sid)")
-            td
-              | {{ sid }}
-              icon.pull-right(name="key", v-if="sum[sid].password", title="Password protected")
-            td {{ sum[sid].created | date }}
-            td
-              template(v-if="sum[sid].lastDownload") {{ sum[sid].lastDownload | date}}
-              template(v-else="") -
-            td
-              template(v-if="typeof sum[sid].firstExpire === 'number'") {{ sum[sid].firstExpire | date }}
-              template(v-else)  {{ sum[sid].firstExpire }}
-            td.text-right {{ humanFileSize(sum[sid].size) }}
-            td
-              a(:href="baseURI + sid", title="Open bucket", target="_blank")
-                icon(name="folder-open")
-              |    
-              a.text-danger(@click="deleteFile(sid, '', true)", title="Delete bucket")
-                icon(name="trash")
-        tbody.expanded(v-if="expand === sid")
-          template(v-for="file in bucket")
-            tr.file
-              td {{ file.metadata.name }}
-              td {{+file.metadata.createdAt | date}}
+    div(v-if="loggedIn")
+      table.table.table-hover
+        thead
+          tr
+            th SID
+            th Created
+            th Downloaded
+            th Expire
+            th Size
+            th Actions
+        template(v-for="(bucket, sid) in db")
+          tbody(:class="{expanded: expand===sid}")
+            tr.bucket(@click="expandView(sid)")
               td
-                template(v-if="file.metadata.lastDownload") {{ +file.metadata.lastDownload | date}}
+                | {{ sid }}
+                icon.pull-right(name="key", v-if="sum[sid].password", title="Password protected")
+              td {{ sum[sid].created | date }}
+              td
+                template(v-if="sum[sid].lastDownload") {{ sum[sid].lastDownload | date}}
                 template(v-else="") -
               td
-                template(v-if="typeof file.expireDate === 'number'") {{ file.expireDate | date }}
-                template(v-else) {{ file.expireDate }}
-              td.text-right {{ humanFileSize(file.size) }}
+                template(v-if="typeof sum[sid].firstExpire === 'number'") {{ sum[sid].firstExpire | date }}
+                template(v-else)  {{ sum[sid].firstExpire }}
+              td.text-right {{ humanFileSize(sum[sid].size) }}
               td
-                a.text-danger(@click="deleteFile(file.metadata.sid, file.metadata.key)", title="Delete file")
+                a(:href="baseURI + sid", title="Open bucket", target="_blank")
+                  icon(name="folder-open")
+                |    
+                a.text-danger(@click="deleteFile(sid, '', true)", title="Delete bucket")
                   icon(name="trash")
-      tfoot
-        tr
-          td(colspan="3")
-          td.text-right(colspan="2") Sum: {{ humanFileSize(sizeSum) }}
-          td
+          tbody.expanded(v-if="expand === sid")
+            template(v-for="file in bucket")
+              tr.file
+                td {{ file.metadata.name }}
+                td {{+file.metadata.createdAt | date}}
+                td
+                  template(v-if="file.metadata.lastDownload") {{ +file.metadata.lastDownload | date}}
+                  template(v-else="") -
+                td
+                  template(v-if="typeof file.expireDate === 'number'") {{ file.expireDate | date }}
+                  template(v-else) {{ file.expireDate }}
+                td.text-right {{ humanFileSize(file.size) }}
+                td
+                  a.text-danger(@click="deleteFile(file.metadata.sid, file.metadata.key)", title="Delete file")
+                    icon(name="trash")
+        tfoot
+          tr
+            td(colspan="3")
+            td.text-right(colspan="2") Sum: {{ humanFileSize(sizeSum) }}
+            td
 
 </template>
 
