@@ -66,11 +66,19 @@
 
     mounted() {
       // init drop files support on <body>
-      dragDrop('body', files => this.$store.dispatch('upload/addFiles', files));
+      this.dragDropCleanup = dragDrop('body', files => this.$store.dispatch('upload/addFiles', files));
+    },
+
+    watch: {
+      state: function(state) {
+        if(state === 'uploading') {
+          this.dragDropCleanup();
+        }
+      }
     },
 
     methods: {
-      humanFileSize
+      humanFileSize,
     }
   };
 </script>
