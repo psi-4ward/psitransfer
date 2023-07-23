@@ -86,6 +86,8 @@ You can:
   See `config.dev.js`
 * Define environment Variables like `PSITRANSFER_UPLOAD_DIR` to set the upload directory
 * To secure your PsiTransfer if exposed to the internet from unwanted, non authorized uploads use the `PSITRANSFER_UPLOAD_PASS` environment variable
+* Use PSITRANSFER_RANDOM_DOWNLOAD_SID_LENGTH to define the length of the downloadlink 
+Beware, shorten the link can result in adding files to an existing bucket
 
 ### Customization
 
