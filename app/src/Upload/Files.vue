@@ -23,6 +23,7 @@
                   small  ({{ file.humanSize }})
                 p
                   input.form-control.input-sm(type="text", :placeholder="$root.lang.comment", v-model="file.comment", :disabled="disabled")
+                  div.text-end(v-show="file.comment.length > $store.state.config.fileCommentMaxLength") {{ file.comment.length }} / {{ $store.state.config.fileCommentMaxLength }}
                 .alert.alert-danger(v-if="file.error")
                   icon.fa-fw(name="exclamation-triangle")
                   |  {{ file.error }}
