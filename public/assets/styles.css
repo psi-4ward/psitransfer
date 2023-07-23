@@ -155,6 +155,9 @@ h1 .fa-icon {
   margin-left: 15px;
 }
 
+.text-end{
+  text-align: end;
+}
 
 /* Dark Mode */
 @media (prefers-color-scheme: dark) {
