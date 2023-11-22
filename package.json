@@ -18,9 +18,9 @@
     "common-streams": "^1.4.0",
     "compression": "^1.7.4",
     "cors": "^2.8.5",
-    "crypto-js": "^4.1.1",
+    "crypto-js": "^4.2.0",
     "debug": "^4.3.4",
-    "express": "^4.18.1",
+    "express": "^4.18.2",
     "fs-promise": "^2.0.3",
     "http-errors": "^2.0.0",
     "method-override": "^3.0.0",
@@ -28,7 +28,7 @@
     "pug": "^3.0.2",
     "tar-stream": "^2.2.0",
     "to-object-reducer": "^1.0.1",
-    "uuid": "^8.3.2"
+    "uuid": "^9.0.1"
   },
   "bin": {
     "psitransfer": "cli.js"
