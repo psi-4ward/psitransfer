@@ -58,7 +58,7 @@
                 td.text-right {{ humanFileSize(file.size) }}
         tfoot
           tr
-            td(colspan="3")
+            td(colspan="4")
             td.text-right(colspan="2") Sum: {{ humanFileSize(sizeSum) }}
 
 </template>
