@@ -20,7 +20,7 @@
     div(v-else-if="$root.configFetched")
       .well(v-show="state === 'uploaded'")
         .pull-right.btn-group.upload-success-btns
-          a.btn.btn-primary(@click.prevent="showQrCode" href="#" :title="$root.lang.showQrCode")
+          a.btn.btn-primary(v-if="!disableQrCode", @click.prevent="showQrCode" href="#" :title="$root.lang.showQrCode")
             icon.fa-fw(name="qrcode")
             | QR-Code
           a.btn.btn-primary(:href="mailLnk" :title="$root.lang.sendViaMail")
@@ -90,7 +90,7 @@
 
     computed: {
       ...mapState(['state']),
-      ...mapState('config', ['uploadPassRequired', 'uploadPass', 'requireBucketPassword', "fileCommentMaxLength"]),
+      ...mapState('config', ['uploadPassRequired', 'uploadPass', 'requireBucketPassword', 'disableQrCode', 'fileCommentMaxLength']),
       ...mapState('upload', ['sid', 'files', 'password']),
       ...mapGetters(['error', 'disabled']),
       ...mapGetters('upload', ['percentUploaded', 'shareUrl', 'bucketSize', 'bytesUploaded']),

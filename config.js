@@ -60,6 +60,8 @@ const config = {
   "maxFileSize": null, // Math.pow(2, 30) * 2, // 2GB
   "maxBucketSize": null, // Math.pow(2, 30) * 2, // 10GB
   "plugins": ['file-downloaded-webhook', 'file-uploaded-webhook'],
+  // Disable the QR code button for download url sharing, set to true to disable
+  "disableQrCode": false,
   "fileCommentMaxLength": 200,
 };
 
