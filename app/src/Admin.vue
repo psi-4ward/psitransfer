@@ -25,6 +25,7 @@
             th SID
             th Created
             th Downloaded
+            th Download Count
             th Expire
             th Size
         template(v-for="(bucket, sid) in db")
@@ -37,6 +38,7 @@
               td
                 template(v-if="sum[sid].lastDownload") {{ sum[sid].lastDownload | date}}
                 template(v-else="") -
+              td {{ sum[sid].downloadCount }}             
               td
                 template(v-if="typeof sum[sid].firstExpire === 'number'") {{ sum[sid].firstExpire | date }}
                 template(v-else)  {{ sum[sid].firstExpire }}
@@ -123,10 +125,12 @@
             lastDownload: 0,
             created: Number.MAX_SAFE_INTEGER,
             password: false,
-            size: 0
+            size: 0,
+            downloadCount:0,
           };
           this.db[sid].forEach(file => {
             bucketSum.size += file.size;
+            bucketSum.downloadCount = isNaN(file.metadata.downloadCount) ? "-" : file.metadata.downloadCount;
             if(file.metadata._password) {
               bucketSum.password = true;
             }
