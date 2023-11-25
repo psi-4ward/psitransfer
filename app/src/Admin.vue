@@ -38,7 +38,7 @@
               td
                 template(v-if="sum[sid].lastDownload") {{ sum[sid].lastDownload | date}}
                 template(v-else="") -
-              td {{ sum[sid].downloadCount }}             
+              td {{ sum[sid].downloadCountPre }}  {{ sum[sid].downloadCount }} 
               td
                 template(v-if="typeof sum[sid].firstExpire === 'number'") {{ sum[sid].firstExpire | date }}
                 template(v-else)  {{ sum[sid].firstExpire }}
@@ -51,6 +51,7 @@
                 td
                   template(v-if="file.metadata.lastDownload") {{ +file.metadata.lastDownload | date}}
                   template(v-else="") -
+                td {{ file.metadata.downloadCount }}             
                 td
                   template(v-if="typeof file.expireDate === 'number'") {{ file.expireDate | date }}
                   template(v-else) {{ file.expireDate }}
@@ -127,10 +128,17 @@
             password: false,
             size: 0,
             downloadCount:0,
+            downloadCountPre: "",
           };
           this.db[sid].forEach(file => {
             bucketSum.size += file.size;
-            bucketSum.downloadCount = isNaN(file.metadata.downloadCount) ? "-" : file.metadata.downloadCount;
+
+            if(bucketSum.downloadCount == undefined) {
+              bucketSum.downloadCount = isNaN(file.metadata.downloadCount) ? "-" : file.metadata.downloadCount;
+            } else if(bucketSum.downloadCount != file.metadata.downloadCount ) {
+              bucketSum.downloadCountPre =  bucketSum.downloadCount != 0 ? "~" : "";
+              bucketSum.downloadCount = bucketSum.downloadCount < file.metadata.downloadCount ? file.metadata.downloadCount : bucketSum.downloadCount; 
+            }
             if(file.metadata._password) {
               bucketSum.password = true;
             }
