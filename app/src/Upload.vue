@@ -90,7 +90,7 @@
 
     computed: {
       ...mapState(['state']),
-      ...mapState('config', ['uploadPassRequired', 'uploadPass', 'requireBucketPassword', 'disableQrCode']),
+      ...mapState('config', ['uploadPassRequired', 'uploadPass', 'requireBucketPassword', 'disableQrCode', 'fileCommentMaxLength']),
       ...mapState('upload', ['sid', 'files', 'password']),
       ...mapGetters(['error', 'disabled']),
       ...mapGetters('upload', ['percentUploaded', 'shareUrl', 'bucketSize', 'bytesUploaded']),
@@ -105,7 +105,15 @@
       showUploadBtn() {
         return this.files.length
           && !this.disabled
+          && !this.isUploadBtnDisabled
           && (this.requireBucketPassword && this.password || !this.requireBucketPassword)
+      },
+      isUploadBtnDisabled(){
+        let error = false;
+        this.files.forEach(file => {
+          if(file.comment.length > this.fileCommentMaxLength) error = true;
+        })
+        return error;
       }
     },
 

@@ -34,6 +34,11 @@ if(config.sslPort && config.sslKeyFile && config.sslCertFile) {
     });
 }
 
+if(config['fileCommentMaxLength'] > 255 ) {
+  console.error("fileCommentMaxLength must be lower than 256. Please update your config file!");
+  shutdown();
+}
+
 
 // graceful shutdown
 function shutdown() {
