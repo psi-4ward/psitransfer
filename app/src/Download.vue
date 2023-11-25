@@ -43,7 +43,10 @@
                 i.pull-right.fa.fa-check.text-success.downloaded(v-show='file.downloaded')
                 p
                   strong {{ file.metadata.name }}
-                  small.file-size(v-if="isFinite(file.size)") ({{ humanFileSize(file.size) }})
+                  small.file-size(v-if="isFinite(file.size)") ({{ humanFileSize(file.size) }})              
+                  small(v-if="!isNaN(file.metadata.downloadCount)" style="padding-left:10px;")
+                    icon.fa-fw(name="download")
+                    strong(style="padding-left:5px;") {{file.metadata.downloadCount}}
                 p {{ file.metadata.comment }}
 
     preview-modal(:preview="preview", :files="previewFiles", :max-size="config.maxPreviewSize", @close="preview=false")
@@ -124,6 +127,7 @@
         aEl.click();
         document.body.removeChild(aEl);
         file.downloaded = true;
+        file.metadata.downloadCount = isNaN(file.metadata.downloadCount) ? 1 : ++file.metadata.downloadCount;
       },
 
       downloadAll(format) {
@@ -137,6 +141,7 @@
 
         this.files.forEach(f => {
           f.downloaded = true;
+          f.metadata.downloadCount = isNaN(f.metadata.downloadCount) ? 1 : ++f.metadata.downloadCount;
         });
       },
 
