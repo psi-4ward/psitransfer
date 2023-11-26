@@ -27,6 +27,7 @@
             th Downloaded
             th Expire
             th Size
+            th Actions
         template(v-for="(bucket, sid) in db")
           tbody(:class="{expanded: expand===sid}")
             tr.bucket(@click="expandView(sid)")
@@ -41,6 +42,9 @@
                 template(v-if="typeof sum[sid].firstExpire === 'number'") {{ sum[sid].firstExpire | date }}
                 template(v-else)  {{ sum[sid].firstExpire }}
               td.text-right {{ humanFileSize(sum[sid].size) }}
+              td
+                a(:href="baseURI + sid", title='Open bucket')
+                  icon(name="folder-open")
           tbody.expanded(v-if="expand === sid")
             template(v-for="file in bucket")
               tr.file
@@ -53,10 +57,14 @@
                   template(v-if="typeof file.expireDate === 'number'") {{ file.expireDate | date }}
                   template(v-else) {{ file.expireDate }}
                 td.text-right {{ humanFileSize(file.size) }}
+                td
+                  a.text-danger(@click='deleteFile(file.metadata.sid, file.metadata.key)', title='Delete file')
+                    icon(name="trash")
         tfoot
           tr
             td(colspan="3")
             td.text-right(colspan="2") Sum: {{ humanFileSize(sizeSum) }}
+            td
 
 </template>
 
@@ -66,6 +74,8 @@
   import 'vue-awesome/icons/sync-alt';
   import 'vue-awesome/icons/sign-in-alt';
   import 'vue-awesome/icons/key';
+  import 'vue-awesome/icons/folder-open';
+  import 'vue-awesome/icons/trash';
 
 
   export default {
@@ -73,6 +83,7 @@
 
     data () {
       return {
+        baseURI: this.$root.baseURI,
         db: {},
         sum: {},
         loggedIn: false,
@@ -160,8 +171,27 @@
         return Math.max(fileSizeInBytes, 0.00).toFixed(2) + byteUnits[i];
       },
 
-    },
+      deleteFile(sid, key) {
+        const xhr = new XMLHttpRequest();
+        xhr.open('DELETE', this.$root.baseURI + 'files');
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.setRequestHeader('x-passwd', this.password);
+        xhr.send(JSON.stringify({'sid': sid, 'key': key}));
+        xhr.onload = () => {
+          if(xhr.status === 200) {
+            try {
+              this.login();
+            } catch(e) {
+              this.error = e.toString();
+            }
+          } else {
+            this.error = `${xhr.status} ${xhr.statusText}: ${xhr.responseText}`;
+          }
+        };
+        xhr.send();
+      },
 
+    },
 
   }
 </script>
