@@ -24,7 +24,7 @@
           a.btn.btn-sm.btn-default(@click="downloadAll('zip')", :title="$root.lang.zipDownload")
             icon.fa-fw(name="download")
             |  zip
-          a.btn.btn-sm.btn-default(@click="downloadAll('tar.gz')", :title="$root.lang.tarGzDownload")
+          a.btn.btn-sm.btn-default(v-if="!config.disableTarGz", @click="downloadAll('tar.gz')", :title="$root.lang.tarGzDownload")
             icon.fa-fw(name="download")
             |  tar.gz
       .panel-body
