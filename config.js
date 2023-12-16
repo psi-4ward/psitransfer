@@ -62,6 +62,8 @@ const config = {
   "plugins": ['file-downloaded-webhook', 'file-uploaded-webhook'],
   // Disable the QR code button for download url sharing, set to true to disable
   "disableQrCode": false,
+  // Disable the .tar.gz download button, set to true to disable
+  "disableTarGz": false,
 };
 
 // Load NODE_ENV specific config
