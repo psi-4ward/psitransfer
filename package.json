@@ -13,7 +13,7 @@
   "bugs": "https://github.com/psi-4ward/psitransfer/issues",
   "main": "app.js",
   "dependencies": {
-    "archiver": "^5.3.1",
+    "archiver": "^7.0.0",
     "axios": "^0.27.2",
     "common-streams": "^1.4.0",
     "compression": "^1.7.4",
