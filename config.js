@@ -35,6 +35,8 @@ const config = {
     "4838400": "8 Weeks"
   },
   // admin password, set to false to disable /admin page
+  // to enable /admin page set your password like this:
+  // "adminPass": "YourSecurePassword",
   "adminPass": false,
   // upload password, set to false to disable
   "uploadPass": false,
