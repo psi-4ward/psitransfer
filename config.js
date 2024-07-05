@@ -35,6 +35,8 @@ const config = {
     "4838400": "8 Weeks"
   },
   // admin password, set to false to disable /admin page
+  // to enable /admin page set your password like this:
+  // "adminPass": "YourSecurePassword",
   "adminPass": false,
   // upload password, set to false to disable
   "uploadPass": false,
@@ -60,6 +62,8 @@ const config = {
   "maxFileSize": null, // Math.pow(2, 30) * 2, // 2GB
   "maxBucketSize": null, // Math.pow(2, 30) * 2, // 10GB
   "plugins": ['file-downloaded-webhook', 'file-uploaded-webhook'],
+  // Disable the QR code button for download url sharing, set to true to disable
+  "disableQrCode": false,
   "randomDownloadSidLength": 12,
 };
 
