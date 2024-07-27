@@ -231,7 +231,10 @@ export default {
                   progress: { percentage: 100, humanFileSize: file.humanSize, bytesUploaded: file._File.size }
                 }
               });
-              if (state.files.every(f => f.uploaded)) commit('STATE', 'uploaded', { root: true });
+              if (state.files.every(f => f.uploaded)) {
+                fetch(state.uploadURI + '/' + state.sid + '?lock=yes', { method: 'PATCH' });
+                commit('STATE', 'uploaded', { root: true });
+              }
             }
           }).start();
         }
