@@ -23,7 +23,7 @@ const config = {
   // keep empty to disable
   "forceHttps": '',
   // Use trust proxy to show real IP on logs when reverse proxy are used
-  // set to true to enable
+  // see https://expressjs.com/en/guide/behind-proxies.html for options
   "trustProxy": '',
   // retention options in seconds:label
   "retentions": {
