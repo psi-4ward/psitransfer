@@ -22,6 +22,9 @@ const config = {
   // can be true or a specific url like https://example.com:8443
   // keep empty to disable
   "forceHttps": '',
+  // Use trust proxy to show real IP on logs when reverse proxy are used
+  // set to true to enable
+  "trustProxy": '',
   // retention options in seconds:label
   "retentions": {
     "one-time": "one time download",
