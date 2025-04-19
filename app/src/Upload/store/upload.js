@@ -1,6 +1,7 @@
 import md5 from 'crypto-js/md5';
 import * as tus from "tus-js-client";
 import { v4 as uuid } from 'uuid';
+import { bytesToBase64 } from '../../common/util';
 
 export function humanFileSize(fileSizeInBytes) {
   let i = -1;
@@ -143,7 +144,7 @@ export default {
             metadata: {
               sid: state.sid,
               retention: state.retention,
-              password: state.password,
+              password: bytesToBase64(new TextEncoder().encode(state.password)),
               name: file.name,
               comment: file.comment,
               type: file._File.type
