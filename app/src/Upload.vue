@@ -82,7 +82,7 @@
 </template>
 
 <script type="text/babel">
-  import { Encoder, ErrorCorrectionLevel, QRByte } from "@nuintun/qrcode";
+  import { Encoder, Byte } from "@nuintun/qrcode";
   import { mapState, mapGetters } from 'vuex';
 
   import Settings from './Upload/Settings.vue';
@@ -164,11 +164,7 @@
         }
       },
       showQrCode() {
-        const qrcode = new Encoder();
-        qrcode.setEncodingHint(true);
-        qrcode.setErrorCorrectionLevel(ErrorCorrectionLevel.H);
-        qrcode.write(new QRByte(this.shareUrl));
-        qrcode.make();
+        const qrcode = new Encoder({level: 'H'}).encode(new Byte(this.shareUrl));
         const imgSrc = qrcode.toDataURL(7, 10);
         const data = imgSrc.substr(imgSrc.indexOf(',') + 1);
         const byteCharacters = atob(data);
