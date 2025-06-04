@@ -10,7 +10,7 @@
     .well(v-if='needsPassword')
       h3 {{ $root.lang.password }}
       .form-group
-        input.form-control(type='password', v-model='password', @keyup.enter='password.length && fetchBucket()')
+        input.form-control(type='password', v-model='password', @keyup.enter='password.length && fetchBucket()' autofocus)
       p.text-danger(v-show='passwordWrong')
         strong {{ $root.lang.accessDenied }}
       |
@@ -21,16 +21,38 @@
       .panel-heading
         strong {{ $root.lang.files }}
         div.pull-right.btn-group.btn-download-archive(v-if="downloadsAvailable")
-          a.btn.btn-sm.btn-default(@click="downloadAll('zip')", :title="$root.lang.zipDownload")
+          a.btn.btn-sm.btn-default(
+            @click="downloadAll('zip')"
+            @keydown.enter.prevent="downloadAll('zip')"
+            @keydown.space.prevent="downloadAll('zip')"
+            :title="$root.lang.zipDownload"
+            tabindex="0"
+            role="button"
+          )
             icon.fa-fw(name="download")
             |  zip
-          a.btn.btn-sm.btn-default(@click="downloadAll('tar.gz')", :title="$root.lang.tarGzDownload")
+          a.btn.btn-sm.btn-default(
+            @click="downloadAll('tar.gz')"
+            @keydown.enter.prevent="downloadAll('tar.gz')"
+            @keydown.space.prevent="downloadAll('tar.gz')"
+            :title="$root.lang.tarGzDownload"
+            tabindex="0"
+            role="button"
+          )
             icon.fa-fw(name="download")
             |  tar.gz
       .panel-body
         table.table.table-hover.table-striped.files
           tbody
-            tr(v-for='file in files', style='cursor: pointer', @click='download(file)')
+            tr(
+              v-for='file in files',
+              style='cursor: pointer',
+              @click='download(file)',
+              @keydown.enter.prevent='download(file)',
+              @keydown.space.prevent='download(file)',
+              tabindex="0",
+              role="button"
+            )
               td.file-icon
                 file-icon(:file='file')
               td
