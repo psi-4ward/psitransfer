@@ -169,12 +169,13 @@
       humanFileSize(fileSizeInBytes) {
         let i = -1;
         const byteUnits = [' kB', ' MB', ' GB', ' TB', 'PB', 'EB', 'ZB', 'YB'];
+        let size = fileSizeInBytes;
         do {
-          fileSizeInBytes = fileSizeInBytes / 1024;
+          size = size / 1024;
           i++;
         }
-        while(fileSizeInBytes > 1024);
-        return Math.max(fileSizeInBytes, 0.01).toFixed(2) + byteUnits[i];
+        while(size > 1024);
+        return Math.max(size, 0.01).toFixed(2) + byteUnits[i];
       },
 
       newSession() {
@@ -195,7 +196,7 @@
         xhr.onload = () => {
           if (xhr.status === 200) {
             try {
-              let data = JSON.parse(xhr.responseText);
+              const data = JSON.parse(xhr.responseText);
               this.config = data.config;
               this.files = data.items.map(f => {
                 return Object.assign(f, {
