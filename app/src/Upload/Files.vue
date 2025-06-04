@@ -5,9 +5,15 @@
         span.pull-right(v-show="bucketSize > 0") {{ humanFileSize(bucketSize) }}
         strong {{ $root.lang.files }}
       .panel-body
-        .empty-files-big-plus(:style="{cursor: disabled ? 'default' : 'pointer'}",
-          onclick="document.getElementById('fileInput').click();",
-          v-show="files.length === 0")
+        .empty-files-big-plus(
+          :style="{cursor: disabled ? 'default' : 'pointer'}",
+          v-show="files.length === 0",
+          tabindex="0",
+          role="button",
+          @click="triggerFileInput()",
+          @keydown.enter.prevent="triggerFileInput()",
+          @keydown.space.prevent="triggerFileInput()"
+        )
           a
             icon(name="plus", scale="4")
             br
@@ -29,15 +35,28 @@
                 .progress(v-show="!file.error && (state === 'uploading' || state === 'uploaded')")
                   .progress-bar.progress-bar-success.progress-bar-striped(:style="{width: file.progress.percentage+'%'}", :class="{active:!file.uploaded}")
               td.btns
-                a(style="cursor:pointer"
-                  @click="$store.dispatch('upload/removeFile', file)"
-                  v-show="!disabled || bucketSizeError"
+                a(
+                  style="cursor:pointer",
+                  @click="$store.dispatch('upload/removeFile', file)",
+                  @keydown.enter.prevent="$store.dispatch('upload/removeFile', file)",
+                  @keydown.space.prevent="$store.dispatch('upload/removeFile', file)",
+                  v-show="!disabled || bucketSizeError",
+                  tabindex="0",
+                  role="button"
                 )
                   icon(name="times")
 
         input#fileInput(type="file", @change="$store.dispatch('upload/addFiles', $event.target.files)", multiple="", :disabled="disabled", style="display: none")
         .text-right
-          a.btn.btn-success.btn-sm(onclick="document.getElementById('fileInput').click();", :disabled="disabled", v-show="files.length>0")
+          a.btn.btn-success.btn-sm(
+            @click="triggerFileInput()",
+            @keydown.enter.prevent="triggerFileInput()",
+            @keydown.space.prevent="triggerFileInput()",
+            :disabled="disabled",
+            v-show="files.length>0",
+            tabindex="0",
+            role="button"
+          )
             icon(name="plus-circle")
 </template>
 
@@ -79,6 +98,11 @@
 
     methods: {
       humanFileSize,
+      triggerFileInput() {
+        if (this.disabled) return;
+        const input = document.getElementById('fileInput');
+        if (input) input.click();
+      },
     }
   };
 </script>

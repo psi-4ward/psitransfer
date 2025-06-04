@@ -29,6 +29,10 @@
               style='cursor: pointer'
               :title='$root.lang.generateRandomPassword'
               @click='generatePassword()'
+              tabindex="0"
+              role="button"
+              @keydown.enter.prevent='generatePassword()'
+              @keydown.space.prevent='generatePassword()'
             )
               icon(name="key")
 </template>
