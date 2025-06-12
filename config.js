@@ -67,10 +67,11 @@ const config = {
   "plugins": ['file-downloaded-webhook', 'file-uploaded-webhook'],
   // Disable the QR code button for download url sharing, set to true to disable
   "disableQrCode": false,
+  "randomDownloadSidLength": 12,
 };
 
 // Load NODE_ENV specific config
-const envConfFile = path.resolve(__dirname, `config.${ process.env.NODE_ENV }.js`);
+const envConfFile = path.resolve(__dirname, `config.${process.env.NODE_ENV}.js`);
 if (process.env.NODE_ENV && fsp.existsSync(envConfFile)) {
   Object.assign(config, require(envConfFile));
 }
@@ -99,14 +100,14 @@ config.uploadAppPath = config.baseUrl.substr(0, config.baseUrl.length - 1) + con
 
 // Load language files
 config.languages = {
-  [config.defaultLanguage]: require(`./lang/${ config.defaultLanguage }`) // default language
+  [config.defaultLanguage]: require(`./lang/${config.defaultLanguage}`) // default language
 };
 fs.readdirSync(path.resolve(__dirname, 'lang')).forEach(lang => {
   lang = lang.replace('.js', '');
   if (lang === config.defaultLanguage) return;
   config.languages[lang] = {
     ...config.languages[config.defaultLanguage],
-    ...require(`./lang/${ lang }`)
+    ...require(`./lang/${lang}`)
   };
 });
 
