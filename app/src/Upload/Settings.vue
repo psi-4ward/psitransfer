@@ -35,11 +35,21 @@
               @keydown.space.prevent='generatePassword()'
             )
               icon(name="key")
+          div(style='margin-top: 6px')
+            a.btn.btn-sm.btn-info.btn-logout(
+              @click='logoutUpload()'
+              :title="$root.lang.logout || 'Logout'",
+              tabindex="0",
+              role="button"
+            )
+              icon(name="sign-out-alt")
+              |  Logout
 </template>
 
 <script type="text/babel">
   import { mapState } from 'vuex';
   import 'vue-awesome/icons/key';
+  import 'vue-awesome/icons/sign-out-alt';
 
   const passGen = {
     _pattern: /[A-Z0-9_\-+!]/,
@@ -82,6 +92,10 @@
       generatePassword() {
         if (this.disabled) return;
         this.$store.commit('upload/PASSWORD', passGen.generate(10));
+      },
+      logoutUpload() {
+        try { window.localStorage.removeItem('psitransfer.uploadPass'); } catch(e) {}
+        this.$store.commit('config/SET', { uploadPass: null, uploadPassRequired: true });
       }
     }
   };

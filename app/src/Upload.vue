@@ -11,6 +11,7 @@
     )
       icon.fa-fw(name="cloud-upload-alt")
       span.hidden-xs  {{ $root.lang.newUpload }}
+    
     .alert.alert-danger(v-show="error")
       strong
         icon.fa-fw(name="exclamation-triangle")
@@ -95,6 +96,7 @@
   import 'vue-awesome/icons/envelope';
   import 'vue-awesome/icons/qrcode';
   import 'vue-awesome/icons/exclamation-triangle';
+  import 'vue-awesome/icons/sign-out-alt';
   import { humanFileSize } from "./Upload/store/upload";
 
 
@@ -149,6 +151,12 @@
         if (!confirm(this.$root.lang.createNewUploadSession)) return;
         document.location.reload();
       },
+      logoutUpload() {
+        try { window.localStorage.removeItem('psitransfer.uploadPass'); } catch(e) {}
+        this.uploadPassword = '';
+        this.uploadPasswordWrong = null;
+        this.$store.commit('config/SET', { uploadPass: null, uploadPassRequired: true });
+      },
       async setUploadPass() {
         try {
           this.$store.commit('config/SET', {uploadPass: this.uploadPassword});
@@ -197,4 +205,6 @@
       font-size: 12px;
     }
   }
+
+  
 </style>

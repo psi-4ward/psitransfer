@@ -22,6 +22,14 @@ export default {
       return new Promise((resolve, reject) => {
         const xhr = new XMLHttpRequest();
         xhr.open('GET', 'config.json');
+        // lazily read from localStorage if not yet in state
+        try {
+          if (!state.uploadPass) {
+            const saved = window.localStorage.getItem('psitransfer.uploadPass');
+            if (saved) commit('SET', { uploadPass: saved });
+          }
+        } catch(e) {}
+
         state.uploadPass && xhr.setRequestHeader('x-passwd', state.uploadPass);
         xhr.onload = () => {
           if(xhr.status === 200) {
@@ -29,6 +37,8 @@ export default {
               const conf = JSON.parse(xhr.responseText);
               commit('SET', conf);
               commit('upload/RETENTION', conf.defaultRetention, {root:true});
+              // persist success
+              try { window.localStorage.setItem('psitransfer.uploadPass', state.uploadPass || ''); } catch(e) {}
             }
             catch(e) {
               commit('ERROR', `Config parse Error: ${e.message}`, {root: true});
@@ -36,6 +46,8 @@ export default {
           }
           else if (xhr.status === 401 || xhr.status === 403) {
             commit('SET', {uploadPassRequired: true, uploadPass: null});
+            // clear persisted value on auth failure
+            try { window.localStorage.removeItem('psitransfer.uploadPass'); } catch(e) {}
             const e = new Error('Password required');
             e.code = "PWDREQ";
             reject(e);

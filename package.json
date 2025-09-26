@@ -44,5 +44,8 @@
   },
   "author": "Christoph Wiechert <wio@psitrax.de>",
   "contributors": [],
-  "license": "BSD-2-Clause"
+  "license": "BSD-2-Clause",
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
 }

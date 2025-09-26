@@ -2,6 +2,8 @@
   .download-app
     a.btn.btn-sm.btn-info.btn-admin-refresh(@click='login()', title='Refresh', v-if="loggedIn")
       icon(name="sync-alt")
+    a.btn.btn-sm.btn-default.btn-admin-logout(@click='logout()', title='Logout', v-if="loggedIn")
+      icon(name="sign-out-alt")
 
     .alert.alert-danger(v-show="error")
       strong
@@ -66,6 +68,7 @@
   import 'vue-awesome/icons/sync-alt';
   import 'vue-awesome/icons/sign-in-alt';
   import 'vue-awesome/icons/key';
+  import 'vue-awesome/icons/sign-out-alt';
 
 
   export default {
@@ -82,6 +85,16 @@
         expand: false,
         sizeSum: 0
       }
+    },
+
+    mounted() {
+      try {
+        const saved = window.localStorage.getItem('psitransfer.adminPass');
+        if (saved) {
+          this.password = saved;
+          this.login();
+        }
+      } catch(e) {}
     },
 
     methods: {
@@ -103,16 +116,31 @@
               this.error = '';
               this.passwordWrong = false;
               this.expandDb();
+              try { window.localStorage.setItem('psitransfer.adminPass', this.password); } catch(e) {}
             }
             catch(e) {
               this.error = e.toString();
             }
           } else {
-            if(xhr.status === 403) this.passwordWrong = true;
+            if(xhr.status === 403) {
+              this.passwordWrong = true;
+              try { window.localStorage.removeItem('psitransfer.adminPass'); } catch(e) {}
+            }
             else this.error = `${xhr.status} ${xhr.statusText}: ${xhr.responseText}`;
           }
         };
         xhr.send();
+      },
+
+      logout() {
+        try { window.localStorage.removeItem('psitransfer.adminPass'); } catch(e) {}
+        this.password = '';
+        this.loggedIn = false;
+        this.passwordWrong = false;
+        this.db = {};
+        this.sum = {};
+        this.expand = false;
+        this.sizeSum = 0;
       },
 
       expandDb() {
