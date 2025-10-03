@@ -7,18 +7,17 @@ if(!String.prototype.startsWith) {
   };
 }
 
-import Vue from 'vue';
+import { createApp } from 'vue';
 import { httpGet } from "./common/util";
 import Download from './Download.vue';
-import Icon from 'vue-awesome/components/Icon'
+import Icon from './common/Icon.vue'
 
-Vue.component('icon', Icon);
-
-new Vue({
-  el: '#download',
-  data: {
-    baseURI: document.head.getElementsByTagName('base')[0].href.replace(/\/$/,''),
-    lang: {},
+const app = createApp({
+  data() {
+    return {
+      baseURI: document.head.getElementsByTagName('base')[0].href.replace(/\/$/,''),
+      lang: {},
+    };
   },
   async beforeCreate() {
     // Fetch translations
@@ -31,5 +30,8 @@ new Vue({
   },
   render: h => h(Download)
 });
+
+app.component('icon', Icon);
+app.mount('#download');
 
 window.PSITRANSFER_VERSION = PSITRANSFER_VERSION;

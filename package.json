@@ -13,29 +13,29 @@
   "bugs": "https://github.com/psi-4ward/psitransfer/issues",
   "main": "app.js",
   "dependencies": {
-    "archiver": "^5.3.1",
+    "archiver": "^7.0.1",
     "axios": "^1.9.0",
     "common-streams": "^1.4.0",
     "compression": "^1.7.4",
     "cors": "^2.8.5",
     "crypto-js": "^4.2.0",
     "debug": "^4.3.4",
-    "express": "^4.18.2",
-    "fs-promise": "^2.0.3",
+    "express": "^5.1.0",
+    "fs-extra": "^11.2.0",
     "http-errors": "^2.0.0",
     "method-override": "^3.0.0",
     "morgan": "^1.10.0",
     "pug": "^3.0.2",
-    "tar-stream": "^2.2.0",
+    "tar-stream": "^3.1.7",
     "to-object-reducer": "^1.0.1",
-    "uuid": "^9.0.1"
+    "uuid": "^13.0.0"
   },
   "bin": {
     "psitransfer": "cli.js"
   },
   "scripts": {
-    "start": "NODE_ENV=production node app.js",
-    "dev": "NODE_ENV=dev DEBUG=psitransfer:* nodemon -i app -i dist -i data app.js",
+    "start": "cross-env NODE_ENV=production node app.js",
+    "dev": "cross-env NODE_ENV=dev DEBUG=psitransfer:* nodemon -i app -i dist -i data app.js",
     "debug": "node --inspect app.js"
   },
   "engines": {
@@ -46,6 +46,8 @@
   "contributors": [],
   "license": "BSD-2-Clause",
   "devDependencies": {
-    "nodemon": "^3.1.10"
-  }
+    "nodemon": "^3.1.10",
+    "cross-env": "^10.1.0"
+  },
+  "packageManager": "pnpm@10.18.0+sha512.e804f889f1cecc40d572db084eec3e4881739f8dec69c0ff10d2d1beff9a4e309383ba27b5b750059d7f4c149535b6cd0d2cb1ed3aeb739239a4284a68f40cfa"
 }

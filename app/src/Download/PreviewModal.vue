@@ -24,9 +24,7 @@
 
 <script type="text/babel">
   import Modal from '../common/Modal.vue';
-  import 'vue-awesome/icons/arrow-left';
-  import 'vue-awesome/icons/arrow-right';
-  import 'vue-awesome/icons/undo-alt';
+  // Icons werden nun via Iconify geladen (siehe common/Icon.vue)
 
   export default {
     components: { Modal },

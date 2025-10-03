@@ -64,11 +64,7 @@
 
 
 <script>
-  import 'vue-awesome/icons/exclamation-triangle';
-  import 'vue-awesome/icons/sync-alt';
-  import 'vue-awesome/icons/sign-in-alt';
-  import 'vue-awesome/icons/key';
-  import 'vue-awesome/icons/sign-out-alt';
+  // Icons werden nun via Iconify geladen (siehe common/Icon.vue)
 
 
   export default {

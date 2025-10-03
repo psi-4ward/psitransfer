@@ -21,10 +21,6 @@ Copies a string into the clipboard
 
 
 <script type="text/babel">
-  import 'vue-awesome/icons/check';
-  import 'vue-awesome/icons/copy';
-  import 'vue-awesome/icons/exclamation-triangle';
-
   export default {
     name: "Clipboard",
     props: {

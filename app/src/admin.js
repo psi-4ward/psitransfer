@@ -1,6 +1,6 @@
-import Vue from 'vue';
+import { createApp } from 'vue';
 import Admin from './Admin.vue';
-import Icon from 'vue-awesome/components/Icon'
+import Icon from './common/Icon.vue'
 
 function parseDate(str) {
   if(!str) return str;
@@ -18,21 +18,24 @@ function isDate(d) {
   return Object.prototype.toString.call(d) === '[object Date]';
 }
 
-Vue.filter('date', function(val, format) {
+function dateFilter(val, format) {
   if(!isDate(val)) {
     val = parseDate(val);
   }
   return isDate(val) ? formatDate(val, format) : val;
-});
+}
 
-Vue.component('icon', Icon);
-
-new Vue({
-  el: '#admin',
-  data: {
-    baseURI: document.head.getElementsByTagName('base')[0].href
+const app = createApp({
+  data() {
+    return {
+      baseURI: document.head.getElementsByTagName('base')[0].href
+    };
   },
   render: h => h(Admin)
 });
+
+app.config.globalProperties.$filters = { date: dateFilter };
+app.component('icon', Icon);
+app.mount('#admin');
 
 window.PSITRANSFER_VERSION = PSITRANSFER_VERSION;

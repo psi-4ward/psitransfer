@@ -48,8 +48,7 @@
 
 <script type="text/babel">
   import { mapState } from 'vuex';
-  import 'vue-awesome/icons/key';
-  import 'vue-awesome/icons/sign-out-alt';
+  // Icons werden nun via Iconify geladen (siehe common/Icon.vue)
 
   const passGen = {
     _pattern: /[A-Z0-9_\-+!]/,
