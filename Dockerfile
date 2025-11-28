@@ -3,27 +3,27 @@ FROM node:22-alpine
 ENV PSITRANSFER_UPLOAD_DIR=/data \
     NODE_ENV=production
 
-MAINTAINER Christoph Wiechert <wio@psitrax.de>
+LABEL maintainer="Markus F.J.Busche <elpatron@mailbox.org>"
 
 RUN apk add --no-cache tzdata
 
 WORKDIR /app
 
-ADD *.js package.json package-lock.json README.md /app/
+ADD *.js package.json pnpm-lock.yaml README.md /app/
 ADD lib /app/lib
 ADD app /app/app
 ADD lang /app/lang
 ADD plugins /app/plugins
 ADD public /app/public
 
-# Rebuild the frontend apps
-RUN cd app && \
-    NODE_ENV=dev npm ci && \
-    npm run build && \
-    cd .. && \
+# Rebuild the frontend apps using pnpm
+RUN corepack enable && corepack prepare pnpm@latest --activate && \
+    pnpm install --no-frozen-lockfile && \
+    pnpm install -C app --no-frozen-lockfile && \
+    pnpm run -C app build && \
     mkdir /data && \
     chown node /data && \
-    npm ci && \
+    rm -rf app/node_modules && \
     rm -rf app
 
 EXPOSE 3000

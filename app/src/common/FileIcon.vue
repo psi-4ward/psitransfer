@@ -7,13 +7,7 @@
 
 
 <script type="text/babel">
-  import 'vue-awesome/icons/regular/file';
-  import 'vue-awesome/icons/regular/file-image';
-  import 'vue-awesome/icons/regular/file-alt';
-  import 'vue-awesome/icons/regular/file-video';
-  import 'vue-awesome/icons/regular/file-audio';
-  import 'vue-awesome/icons/regular/file-archive';
-  import 'vue-awesome/icons/regular/file-pdf';
+  // Icons werden nun via Iconify geladen (siehe common/Icon.vue)
 
   export default {
     props: ['file'],

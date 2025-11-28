@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  psitransfer:
+    build: .
+    container_name: psitransfer
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PSITRANSFER_UPLOAD_DIR=/data
+    volumes:
+      - ./data:/data
+    restart: unless-stopped
+

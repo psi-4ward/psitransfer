@@ -81,13 +81,7 @@
   import Clipboard from './common/Clipboard.vue';
   import PreviewModal from './Download/PreviewModal.vue';
 
-  import 'vue-awesome/icons/cloud-upload-alt';
-  import 'vue-awesome/icons/exclamation-triangle';
-  import 'vue-awesome/icons/copy';
-  import 'vue-awesome/icons/check';
-  import 'vue-awesome/icons/download';
-  import 'vue-awesome/icons/key';
-  import 'vue-awesome/icons/eye';
+  // Icons werden nun via Iconify geladen (siehe common/Icon.vue)
 
   function getPreviewType(file, maxSize) {
     if(!file || !file.metadata) return false;

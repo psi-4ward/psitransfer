@@ -1,6 +1,6 @@
 const path = require('path');
 const fs = require('fs');
-const fsp = require('fs-promise');
+const fsp = require('fs-extra');
 
 // Default Config
 // Do not edit this, generate a config.<ENV>.js for your NODE_ENV
@@ -71,7 +71,7 @@ const config = {
 
 // Load NODE_ENV specific config
 const envConfFile = path.resolve(__dirname, `config.${ process.env.NODE_ENV }.js`);
-if (process.env.NODE_ENV && fsp.existsSync(envConfFile)) {
+if (process.env.NODE_ENV && fs.existsSync(envConfFile)) {
   Object.assign(config, require(envConfFile));
 }
 

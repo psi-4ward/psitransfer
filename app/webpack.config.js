@@ -43,7 +43,7 @@ module.exports = {
       },
       {
         test: /\.js$/,
-        exclude: /node_modules\/(?!(vue-awesome|drag-drop)\/).*/,
+        exclude: /node_modules\/(?!(drag-drop)\/).*/,
         use: {
           loader: 'babel-loader',
           options: {
@@ -87,13 +87,15 @@ module.exports = {
   },
   resolve: {
     alias: {
-      'vue$': mode !== 'development' ? 'vue/dist/vue.runtime.min.js' : 'vue/dist/vue.runtime.js'
+      'vue': '@vue/compat'
     }
   },
   plugins: [
     new VueLoaderPlugin(),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify(mode),
+      __VUE_OPTIONS_API__: JSON.stringify(true),
+      __VUE_PROD_DEVTOOLS__: JSON.stringify(false),
       PSITRANSFER_VERSION: JSON.stringify(process.env.PSITRANSFER_VERSION || commitShaId || 'dev')
     }),
   ],
