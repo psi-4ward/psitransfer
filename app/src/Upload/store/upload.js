@@ -16,14 +16,19 @@ export function humanFileSize(fileSizeInBytes) {
 let onOnlineHandler = null;
 let onOnlineHandlerAttached = false;
 
-function getSid() {
+function getSid(state) {
   // support setting an explicit SID by location search param
   const match = document.location.search.match(/sid=([^&]+)/);
   if (match) {
     return match[1];
   } else {
-    return md5(uuid()).toString().substr(0, 12);
+    return getRandomId(state);
   }
+}
+
+function getRandomId(state) {
+  return md5(uuid()).toString().substr(0, state.config.randomDownloadSidLength);
+
 }
 
 export default {
@@ -33,7 +38,7 @@ export default {
     retention: null,
     password: '',
     files: [],
-    sid: getSid(),
+    sid: "",
     uploadURI: (window.PSITRANSFER_UPLOAD_PATH || '/') + 'files',
   },
 
@@ -51,8 +56,8 @@ export default {
     },
     bucketSizeError: (state, getters, rootState) => {
       const maxBucketSize = rootState.config && rootState.config.maxBucketSize;
-      if(!maxBucketSize) return false;
-      if(getters.bucketSize > maxBucketSize) {
+      if (!maxBucketSize) return false;
+      if (getters.bucketSize > maxBucketSize) {
         return rootState.lang.bucketSizeExceed
           .replace('%%', humanFileSize(getters.bucketSize))
           .replace('%%', humanFileSize(maxBucketSize));
@@ -83,12 +88,17 @@ export default {
     NEW_SESSION(state) {
       state.password = '';
       state.files.splice(0, state.files.length);
-      state.sid = md5(uuid()).toString().substr(0, 12);
+      state.sid = getRandomId(state);
     },
+    SET_SID(state, payload) {
+      state.sid = payload;
+    }
   },
 
   actions: {
     addFiles({ commit, state, rootState }, files) {
+      commit('SET_SID', getSid(rootState));
+
       if (state.disabled) return;
       for (let i = 0; i < files.length; i++) {
         let error = false;
@@ -113,7 +123,7 @@ export default {
       }
     },
 
-    removeFile({commit, state}, file) {
+    removeFile({ commit, state }, file) {
       commit('REMOVE_FILE', file);
     },
 
@@ -122,7 +132,7 @@ export default {
       commit('ERROR', '', { root: true });
 
       if (onOnlineHandler === null) {
-        onOnlineHandler = function() {
+        onOnlineHandler = function () {
           onOnlineHandlerAttached = false;
           commit('ERROR', false, { root: true });
           dispatch('upload');
@@ -156,9 +166,9 @@ export default {
             endpoint: state.uploadURI,
             storeFingerprintForResuming: false,
             retryDelays: null,
-            onAfterResponse: function(req, res) {
+            onAfterResponse: function (req, res) {
               // Remember uploadUrl for resuming
-              if(req.getMethod() === 'POST'
+              if (req.getMethod() === 'POST'
                 && req.getURL() === this.endpoint
                 && res.getStatus() === 201
               ) {
