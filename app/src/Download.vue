@@ -62,6 +62,15 @@
                       icon(name="copy")
                   a.btn.btn-sm.btn-default(:title="$root.lang.preview", @click.prevent.stop="preview=file", v-if="file.previewType")
                     icon(name="eye")
+                  a.btn.btn-sm.btn-default(
+                    :href="file.url"
+                    :download="file.metadata.name"
+                    :title="$root.lang.directDownload"
+                    @click.stop="onDownloadClick(file)"
+                    :class="{'disabled': file.downloaded && file.metadata.retention === 'one-time'}"
+                  )
+                    icon(name="download")
+                    |  direct
                 i.pull-right.fa.fa-check.text-success.downloaded(v-show='file.downloaded')
                 p
                   strong {{ file.metadata.name }}
@@ -147,6 +156,15 @@
         document.body.appendChild(aEl);
         aEl.click();
         document.body.removeChild(aEl);
+        file.downloaded = true;
+      },
+
+      onDownloadClick(file) {
+        if (file.downloaded && file.metadata.retention === 'one-time') {
+          event.preventDefault();
+          alert(this.$root.lang.oneTimeDownloadExpired);
+          return;
+        }
         file.downloaded = true;
       },
 

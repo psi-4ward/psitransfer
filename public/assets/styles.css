@@ -148,6 +148,11 @@ h1 .fa-icon {
 .download-app i.fa.downloaded {
   margin:10px;
 }
+.download-app .btn-group .btn.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
 
 
 /* Download::PreviewModal Component */

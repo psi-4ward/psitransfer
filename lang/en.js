@@ -29,6 +29,7 @@ module.exports = {
   zipDownload: "Download all files as ZIP (not resumeable)",
   tarGzDownload: "Download all files as tar.gz (not resumeable)",
   oneTimeDownloadExpired: "One-Time Download: File is not available anymore.",
+  directDownload: "Download file directly (faster, resumable)",
   fileSizeExceed: "File size %% exceeds maximum of %%",
   bucketSizeExceed: "Upload size %% exceeds maximum of %%",
   mailInvalid: "The e-mail address looks faulty",
