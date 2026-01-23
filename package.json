@@ -39,8 +39,7 @@
     "debug": "node --inspect app.js"
   },
   "engines": {
-    "node": ">= 22",
-    "npm": ">= 3"
+    "node": ">= 24"
   },
   "author": "Christoph Wiechert <wio@psitrax.de>",
   "contributors": [],
