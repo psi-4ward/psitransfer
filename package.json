@@ -18,7 +18,7 @@
     "common-streams": "^1.4.0",
     "compression": "^1.7.4",
     "cors": "^2.8.5",
-    "crypto-js": "^4.2.0",
+    "@node-rs/argon2": "^2.0.2",
     "debug": "^4.3.4",
     "express": "^4.21.2",
     "fs-promise": "^2.0.3",
@@ -39,7 +39,7 @@
     "debug": "node --inspect app.js"
   },
   "engines": {
-    "node": ">= 10",
+    "node": ">= 22",
     "npm": ">= 3"
   },
   "author": "Christoph Wiechert <wio@psitrax.de>",

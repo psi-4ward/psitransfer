@@ -11,7 +11,6 @@
   },
   "dependencies": {
     "@nuintun/qrcode": "^5.0.2",
-    "crypto-js": "^4.2.0",
     "drag-drop": "^7.2.0",
     "regenerator-runtime": "^0.14.1",
     "tus-js-client": "^2.3.1",

@@ -10,8 +10,13 @@ module.exports = function setupFileUploadedWebhook(eventBus, app, config, db) {
 
   function downloadWebook({ metadata }) {
     debug('Trigger: ' + config.fileUploadedWebhook);
+    const safeMetadata = metadata ? { ...metadata } : metadata;
+    if (safeMetadata && safeMetadata.password) {
+      safeMetadata._password = true;
+      delete safeMetadata.password;
+    }
     axios.post(config.fileUploadedWebhook, {
-      metadata,
+      metadata: safeMetadata,
       date: Date.now()
     }).catch(err => console.error(err));
   }

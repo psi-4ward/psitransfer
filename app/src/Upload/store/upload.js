@@ -1,4 +1,3 @@
-import md5 from 'crypto-js/md5';
 import * as tus from "tus-js-client";
 import { v4 as uuid } from 'uuid';
 
@@ -16,13 +15,24 @@ export function humanFileSize(fileSizeInBytes) {
 let onOnlineHandler = null;
 let onOnlineHandlerAttached = false;
 
+function randomSid() {
+  try {
+    const bytes = new Uint8Array(6); // 12 hex chars
+    crypto.getRandomValues(bytes);
+    return Array.from(bytes).map(b => b.toString(16).padStart(2, '0')).join('');
+  } catch (e) {
+    // Fallback: keep a stable shape without extra deps
+    return uuid().replace(/-/g, '').slice(0, 12);
+  }
+}
+
 function getSid() {
   // support setting an explicit SID by location search param
   const match = document.location.search.match(/sid=([^&]+)/);
   if (match) {
     return match[1];
   } else {
-    return md5(uuid()).toString().substr(0, 12);
+    return randomSid();
   }
 }
 
@@ -83,7 +93,7 @@ export default {
     NEW_SESSION(state) {
       state.password = '';
       state.files.splice(0, state.files.length);
-      state.sid = md5(uuid()).toString().substr(0, 12);
+      state.sid = randomSid();
     },
   },
 

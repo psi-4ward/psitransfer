@@ -75,7 +75,6 @@
 
 <script>
   "use strict";
-  import MD5 from 'crypto-js/md5';
 
   import FileIcon from './common/FileIcon.vue';
   import Clipboard from './common/Clipboard.vue';
@@ -118,12 +117,14 @@
         content: '',
         error: '',
         config: {},
+        archiveToken: '',
         preview: false
       }
     },
 
     computed: {
       downloadsAvailable: function() {
+        if (!this.archiveToken) return false;
         return this.files.filter(f => !f.downloaded || f.metadata.retention !== 'one-time').length > 0
       },
       previewFiles: function() {
@@ -133,6 +134,7 @@
     },
 
     methods: {
+
       download(file) {
         if(file.downloaded && file.metadata.retention === 'one-time') {
           alert(this.$root.lang.oneTimeDownloadExpired);
@@ -148,18 +150,16 @@
         file.downloaded = true;
       },
 
-      downloadAll(format) {
+      async downloadAll(format) {
+        let token = this.archiveToken;
+        if (!token) {
+          console.error('Archive token not found.');
+          return;
+        }
         document.location.href = this.$root.baseURI
           + '/files/' + this.sid + '++'
-          + MD5(
-            this.files
-              .filter(f => !f.downloaded || f.metadata.retention !== 'one-time')
-              .map(f => f.key).join()
-          ).toString() + '.' + format;
-
-        this.files.forEach(f => {
-          f.downloaded = true;
-        });
+          + this.archiveToken + '.' + format;
+        this.files.forEach(f => { f.downloaded = true; })
       },
 
       copied(file, $event) {
@@ -198,6 +198,7 @@
             try {
               const data = JSON.parse(xhr.responseText);
               this.config = data.config;
+              this.archiveToken = data.archiveToken || '';
               this.files = data.items.map(f => {
                 return Object.assign(f, {
                   downloaded: false,
