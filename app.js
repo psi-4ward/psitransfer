@@ -11,6 +11,16 @@ const eventBus = require('./lib/eventBus');
  * fid: {sid}++{key}
  */
 
+// Disable server timeouts that can interrupt long-running file transfers.
+// Node.js defaults (keepAliveTimeout=5s, requestTimeout=5min) are too
+// aggressive for multi-hour downloads of large files.
+function configureTimeouts(srv) {
+  srv.keepAliveTimeout = 0;
+  srv.headersTimeout = 65000;
+  srv.requestTimeout = 0;
+  srv.timeout = 0;
+}
+
 let server;
 if(config.port) {
   // HTTP Server
@@ -18,6 +28,7 @@ if(config.port) {
     console.log(`PsiTransfer listening on http://${config.iface}:${config.port}`);
     eventBus.emit('listen', server);
   });
+  configureTimeouts(server);
 }
 
 let httpsServer;
@@ -32,6 +43,7 @@ if(config.sslPort && config.sslKeyFile && config.sslCertFile) {
       console.log(`PsiTransfer listening on https://${config.iface}:${config.sslPort}`);
       eventBus.emit('listen', httpsServer);
     });
+  configureTimeouts(httpsServer);
 }
 
 
