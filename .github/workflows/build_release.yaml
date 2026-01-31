@@ -173,7 +173,7 @@ jobs:
           DOCKER_TAG: latest
         with:
           file: Dockerfile
-          platforms: linux/amd64,linux/arm64,linux/arm/v7
+          platforms: linux/amd64,linux/arm64
           push: true
           tags: |
             psitrax/psitransfer:${{ github.ref_name }}
