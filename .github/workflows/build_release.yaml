@@ -24,7 +24,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       id-token: write
-      contents: read
+      contents: write
     steps:
       - name: Install Node.js and NPM
         uses: actions/setup-node@v4
@@ -73,7 +73,64 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          commitMode: true
+          mode: "COMMIT"
+          configurationJson: |
+            {
+              "template": "#{{CHANGELOG}}",
+              "categories": [
+                {
+                  "title": "## Features",
+                  "labels": ["feat"]
+                },
+                {
+                  "title": "## Performance",
+                  "labels": ["perf"]
+                },
+                {
+                  "title": "## Fixes",
+                  "labels": ["fix", "bug"]
+                },
+                {
+                  "title": "## Maintenance",
+                  "labels": ["chore", "refactor", "cleanup"]
+                },
+                {
+                  "title": "## Build",
+                  "labels": ["build", "ci"]
+                },
+                {
+                  "title": "## Documentation",
+                  "labels": ["docs"]
+                },
+                {
+                  "title": "## Tests",
+                  "labels": ["test"]
+                },
+                {
+                  "title": "## Reverts",
+                  "labels": ["revert"]
+                },
+                {
+                  "title": "## Styling",
+                  "labels": ["style"]
+                },
+                {
+                  "title": "## Dependencies",
+                  "labels": ["deps"]
+                },
+                {
+                  "title": "## Other Changes",
+                  "labels": []
+                }
+              ],
+              "label_extractor": [
+                {
+                  "pattern": "^(build|chore|ci|docs|feat|fix|bug|perf|cleanup|refactor|revert|style|test|deps){1}(\\([\\w\\-\\.]+\\))?(!)?: ([\\w ])+([\\s\\S]*)",
+                  "target": "$1"
+                }
+              ],
+              "pr_template": "- [#{{TITLE}}](https://github.com/${{ github.repository }}/commit/#{{MERGE_SHA}}) by @#{{AUTHOR}}"
+            }
 
       - name: Release
         uses: softprops/action-gh-release@v2
