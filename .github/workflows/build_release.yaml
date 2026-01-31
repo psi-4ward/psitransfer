@@ -87,7 +87,7 @@ jobs:
                 },
                 {
                   "title": "## Build",
-                  "labels": ["build", "ci"]
+                  "labels": ["build"]
                 },
                 {
                   "title": "## Documentation",
