@@ -70,54 +70,81 @@ jobs:
               "template": "#{{CHANGELOG}}",
               "categories": [
                 {
+                  "title": "## ⚠️ Breaking Changes",
+                  "labels": ["breaking"]
+                },
+                {
                   "title": "## Features",
-                  "labels": ["feat"]
+                  "labels": ["feat"],
+                  "exclude_labels": ["breaking"]
                 },
                 {
                   "title": "## Performance",
-                  "labels": ["perf"]
+                  "labels": ["perf"],
+                  "exclude_labels": ["breaking"]
                 },
                 {
                   "title": "## Fixes",
-                  "labels": ["fix", "bug"]
+                  "labels": ["fix", "bug"],
+                  "exclude_labels": ["breaking"]
                 },
                 {
                   "title": "## Maintenance",
-                  "labels": ["chore", "refactor", "cleanup"]
+                  "labels": ["chore", "refactor", "cleanup"],
+                  "exclude_labels": ["breaking"]
                 },
                 {
                   "title": "## Build",
-                  "labels": ["build"]
+                  "labels": ["build"],
+                  "exclude_labels": ["breaking"]
                 },
                 {
                   "title": "## Documentation",
-                  "labels": ["docs"]
+                  "labels": ["docs"],
+                  "exclude_labels": ["breaking"]
                 },
                 {
                   "title": "## Tests",
-                  "labels": ["test"]
+                  "labels": ["test"],
+                  "exclude_labels": ["breaking"]
                 },
                 {
                   "title": "## Reverts",
-                  "labels": ["revert"]
+                  "labels": ["revert"],
+                  "exclude_labels": ["breaking"]
                 },
                 {
                   "title": "## Styling",
-                  "labels": ["style"]
+                  "labels": ["style"],
+                  "exclude_labels": ["breaking"]
                 },
                 {
                   "title": "## Dependencies",
-                  "labels": ["deps"]
+                  "labels": ["deps"],
+                  "exclude_labels": ["breaking"]
                 },
                 {
                   "title": "## Other Changes",
-                  "labels": []
+                  "labels": [],
+                  "exclude_labels": ["breaking"]
                 }
               ],
               "label_extractor": [
                 {
+                  "pattern": "^(build|chore|ci|docs|feat|fix|bug|perf|cleanup|refactor|revert|style|test|deps){1}(\\([\\w\\-\\.]+\\))?(!):",
+                  "on_property": "title",
+                  "target": "breaking"
+                },
+                {
                   "pattern": "^(build|chore|ci|docs|feat|fix|bug|perf|cleanup|refactor|revert|style|test|deps){1}(\\([\\w\\-\\.]+\\))?(!)?: ([\\w ])+([\\s\\S]*)",
+                  "on_property": "title",
                   "target": "$1"
+                }
+              ],
+              "transformers": [
+                {
+                  "pattern": "(^- \\[\\w+)\\([^)]*\\)(:)",
+                  "target": "$1$2"
                 }
               ],
               "pr_template": "- [#{{TITLE}}](https://github.com/${{ github.repository }}/commit/#{{MERGE_SHA}}) by @#{{AUTHOR}}"
