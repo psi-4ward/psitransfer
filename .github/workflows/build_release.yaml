@@ -42,15 +42,6 @@ jobs:
       - name: Create bundle
         run: scripts/create-bundle.sh
 
-      - name: NPM deploy
-        run: |
-          cd _releases
-          mkdir _pkg
-          cd _pkg
-          tar xzf ../psitransfer-$GITHUB_REF_NAME.tar.gz --strip 1
-          npm publish --provenance
-          cd ../..
-
       - name: Add Release artifact
         uses: softprops/action-gh-release@v2
         with:
@@ -178,3 +169,36 @@ jobs:
           tags: |
             psitrax/psitransfer:${{ github.ref_name }}
             ghcr.io/psi-4ward/psitransfer:${{ github.ref_name }}
+
+  npm_publish:
+    name: NPM publish
+    runs-on: ubuntu-latest
+    needs: [ publish_release, build_docker ]
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - name: Install Node.js and NPM
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Check out Git repository
+        uses: actions/checkout@v4
+
+      - name: Update version in package.json
+        run: |
+          npm version ${GITHUB_REF_NAME:1} --allow-same-version --git-tag-version=false
+
+      - name: Create bundle
+        run: scripts/create-bundle.sh
+
+      - name: NPM deploy
+        run: |
+          cd _releases
+          mkdir _pkg
+          cd _pkg
+          tar xzf ../psitransfer-$GITHUB_REF_NAME.tar.gz --strip 1
+          npm publish --provenance
+          cd ../..
