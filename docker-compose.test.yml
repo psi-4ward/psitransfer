@@ -1,0 +1,87 @@
+version: '3.8'
+
+services:
+  # LocalStack - AWS service emulator for testing
+  localstack:
+    image: localstack/localstack:latest
+    container_name: psitransfer-localstack
+    ports:
+      - "4566:4566"   # LocalStack endpoint
+    environment:
+      SERVICES: s3
+      DEBUG: 1
+      DATA_DIR: /data/localstack
+    volumes:
+      - localstack-data:/data/localstack
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4566/_localstack/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # AWS CLI - Creates test bucket on startup
+  aws-setup:
+    image: amazon/aws-cli:latest
+    depends_on:
+      localstack:
+        condition: service_healthy
+    environment:
+      AWS_ACCESS_KEY_ID: test
+      AWS_SECRET_ACCESS_KEY: test
+      AWS_DEFAULT_REGION: us-east-1
+    entrypoint: >
+      /bin/sh -c "
+      aws --endpoint-url=http://localstack:4566 s3 mb s3://test-bucket &&
+      echo 'Bucket created successfully' &&
+      exit 0
+      "
+
+  # PsiTransfer with filesystem storage (default)
+  psitransfer-fs:
+    build: .
+    container_name: psitransfer-filesystem
+    ports:
+      - "3000:3000"
+    volumes:
+      - psitransfer-data:/app/data
+    environment:
+      NODE_ENV: production
+      PSITRANSFER_PORT: 3000
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # PsiTransfer with S3/LocalStack storage
+  psitransfer-s3:
+    build: .
+    container_name: psitransfer-s3
+    depends_on:
+      localstack:
+        condition: service_healthy
+      aws-setup:
+        condition: service_completed_successfully
+    ports:
+      - "3001:3000"
+    environment:
+      NODE_ENV: production
+      PSITRANSFER_PORT: 3000
+      PSITRANSFER_ADMIN_PASS: admin
+      PSITRANSFER_STORAGE: '{"type":"s3","bucket":"test-bucket","region":"us-east-1","endpoint":"http://localstack:4566","credentials":{"accessKeyId":"test","secretAccessKey":"test"},"signedUrlExpiry":3600}'
+      AWS_ACCESS_KEY_ID: test
+      AWS_SECRET_ACCESS_KEY: test
+      DEBUG: 'psitransfer:*'
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  localstack-data:
+  psitransfer-data:
+
+networks:
+  default:
+    name: psitransfer-test-network

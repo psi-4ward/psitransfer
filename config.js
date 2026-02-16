@@ -7,6 +7,18 @@ const fsp = require('fs-promise');
 // or use ENV-VARS like PSITRANSFER_PORT=8000
 const config = {
   "uploadDir": path.resolve(__dirname + '/data'),
+  // Storage backend configuration
+  // type: 'filesystem' (default) or 's3'
+  "storage": {
+    "type": "filesystem",
+    // S3 configuration (only used when type is 's3')
+    "bucket": null,  // S3 bucket name
+    "region": null,  // AWS region (e.g., 'us-east-1')
+    // credentials: optional, if not set AWS SDK uses default credential chain
+    // (environment variables, IAM roles, etc.)
+    "credentials": null,  // { accessKeyId: '...', secretAccessKey: '...' }
+    "signedUrlExpiry": 3600,  // Signed URL expiry in seconds (1 hour)
+  },
   // set to serve PsiTransfer from a sub-path
   "baseUrl": '/',
   // use to set custom upload url (subfolder to baseUrl)
