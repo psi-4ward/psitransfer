@@ -1,0 +1,110 @@
+name: CI Tests
+
+on:
+  push:
+    branches: [ main, master, develop, feature/** ]
+  pull_request:
+    branches: [ main, master, develop ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [24.x]
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Run unit tests
+      run: npm run test:unit
+
+    - name: Run integration tests with LocalStack
+      run: npm run test:integration
+
+    - name: Run all tests with coverage (optional)
+      run: npm test
+      continue-on-error: true
+
+  docker-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    - name: Build Docker image
+      run: docker build -t psitransfer:test .
+
+    - name: Start MinIO for testing
+      run: |
+        docker run -d \
+          --name minio \
+          -p 9000:9000 \
+          -e MINIO_ROOT_USER=minioadmin \
+          -e MINIO_ROOT_PASSWORD=minioadmin \
+          minio/minio:latest server /data
+
+        # Wait for MinIO to be ready
+        sleep 5
+
+    - name: Create test bucket
+      run: |
+        docker run --rm \
+          --network host \
+          --entrypoint sh \
+          minio/mc:latest \
+          -c "mc alias set minio http://localhost:9000 minioadmin minioadmin && mc mb minio/psitransfer-test"
+
+    - name: Test PsiTransfer with S3 backend
+      run: |
+        docker run -d \
+          --name psitransfer \
+          --network host \
+          -e PSITRANSFER_STORAGE='{"type":"s3","bucket":"psitransfer-test","region":"us-east-1"}' \
+          -e AWS_ACCESS_KEY_ID=minioadmin \
+          -e AWS_SECRET_ACCESS_KEY=minioadmin \
+          -e AWS_ENDPOINT_URL=http://localhost:9000 \
+          psitransfer:test
+
+        # Wait for app to start
+        sleep 10
+
+        # Test if app is responding
+        curl -f http://localhost:3000/ || exit 1
+
+    - name: Cleanup
+      if: always()
+      run: |
+        docker stop psitransfer minio || true
+        docker rm psitransfer minio || true
+
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Use Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '24.x'
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Check for syntax errors
+      run: node -c lib/**/*.js config.js app.js

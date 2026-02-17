@@ -26,6 +26,8 @@ It's an alternative to paid services like Dropbox, WeTransfer.
 * `/admin` Page lists bucket information, [Screenshot](https://raw.githubusercontent.com/psi-4ward/psitransfer/master/docs/PsiTransfer-Admin.png) (_disabled until you set `adminPass` config value_)
 * Lightweight [Vue](https://vuejs.org) based frontend apps. Gzipped (on by default) less than 100k
 * Explicit named bucket IDs with query param `sid=<myBucketID>`
+* **Storage backends:** Local filesystem or Amazon S3 (or S3-compatible like MinIO)
+* S3 storage with presigned URLs for secure, direct downloads
 
 **See the blog posts about PsiTransfer: https://psi.cx/tags/PsiTransfer/ and checkout the
 [Documentation](https://github.com/psi-4ward/psitransfer/tree/master/docs)**
@@ -100,6 +102,59 @@ Psitransfer uses [debug](https://github.com/visionmedia/debug):
 ```bash
 DEBUG=psitransfer:* npm start
 ```
+
+## Testing
+
+PsiTransfer includes comprehensive tests for both filesystem and S3 storage backends.
+
+```bash
+# Run all tests
+npm test
+
+# Unit tests only (fast, no Docker required)
+npm run test:unit
+
+# Integration tests with MinIO (requires Docker)
+npm run test:integration
+```
+
+For local testing with MinIO S3-compatible storage:
+```bash
+docker-compose -f docker-compose.test.yml up
+```
+
+See [tests/README.md](tests/README.md) for detailed testing documentation and [docs/testing-status.md](docs/testing-status.md) for current test status.
+
+## Storage Backends
+
+PsiTransfer supports two storage backends:
+
+### Filesystem (Default)
+Stores files on local disk. No additional configuration needed.
+
+### Amazon S3
+Store files in S3 or S3-compatible services (MinIO, DigitalOcean Spaces, etc.)
+
+Example configuration:
+```javascript
+// config.production.js
+module.exports = {
+  storage: {
+    type: 's3',
+    bucket: 'your-bucket-name',
+    region: 'us-east-1',
+    signedUrlExpiry: 3600, // 1 hour
+  }
+};
+```
+
+Features:
+- Presigned URLs for direct S3→client downloads
+- Multipart uploads for large files
+- Resumable uploads via TUS protocol
+- Streaming archives (ZIP/TAR.GZ) without memory buffering
+
+See [docs/configuration.md](docs/configuration.md#s3-storage-backend) for complete S3 setup guide.
 
 ## Side notes
 
