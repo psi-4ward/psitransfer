@@ -38,3 +38,8 @@ export async function httpPost(url, data) {
     xhr.send(JSON.stringify(data));
   });
 }
+
+export function bytesToBase64(bytes) {
+  const binString = String.fromCodePoint(...bytes);
+  return btoa(binString);
+}
