@@ -14,7 +14,7 @@
   "main": "app.js",
   "dependencies": {
     "archiver": "^7.0.1",
-    "axios": "^1.13.5",
+    "axios": "^1.15.0",
     "common-streams": "^1.4.0",
     "compression": "^1.8.1",
     "cors": "^2.8.6",
@@ -25,8 +25,8 @@
     "http-errors": "^2.0.1",
     "method-override": "^3.0.0",
     "morgan": "^1.10.1",
-    "pug": "^3.0.3",
-    "tar-stream": "^3.1.7",
+    "pug": "^3.0.4",
+    "tar-stream": "^3.1.8",
     "to-object-reducer": "^1.0.1"
   },
   "bin": {
