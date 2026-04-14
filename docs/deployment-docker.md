@@ -26,4 +26,6 @@ docker run -v $PWD/data:/data -p 3000:8080 \
   psitrax/psitransfer
 ```
 
+To customize the name shown in the browser and in the UI (e.g. for branding), set `PSITRANSFER_APP_NAME`. The default is `PsiTransfer`.
+
 **Protipp**: By adding `--restart always` Docker will autostart the container after reboots.  
