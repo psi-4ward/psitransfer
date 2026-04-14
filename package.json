@@ -35,7 +35,10 @@
   "scripts": {
     "start": "NODE_ENV=production node app.js",
     "dev": "NODE_ENV=dev DEBUG=psitransfer:* nodemon -i app -i dist -i data app.js",
-    "debug": "node --inspect app.js"
+    "debug": "node --inspect app.js",
+    "test": "node --test 'tests/**/*.test.js'",
+    "test:unit": "node --test tests/unit/*.test.js",
+    "test:integration": "node --test tests/integration/*.test.js"
   },
   "engines": {
     "node": ">= 24"
