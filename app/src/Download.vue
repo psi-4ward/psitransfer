@@ -79,6 +79,7 @@
   import FileIcon from './common/FileIcon.vue';
   import Clipboard from './common/Clipboard.vue';
   import PreviewModal from './Download/PreviewModal.vue';
+  import {bytesToBase64} from './common/util.js';
 
   import 'vue-awesome/icons/cloud-upload-alt';
   import 'vue-awesome/icons/exclamation-triangle';
@@ -191,7 +192,7 @@
         const xhr = new XMLHttpRequest();
         xhr.open('GET', this.sid + '.json');
         if(this.password) {
-          xhr.setRequestHeader('x-download-pass', this.password);
+          xhr.setRequestHeader('x-download-pass', bytesToBase64(new TextEncoder().encode(this.password)));
         }
         xhr.onload = () => {
           if (xhr.status === 200) {
