@@ -6,6 +6,8 @@ const fsp = require('fs-promise');
 // Do not edit this, generate a config.<ENV>.js for your NODE_ENV
 // or use ENV-VARS like PSITRANSFER_PORT=8000
 const config = {
+  // display name shown in the UI (header/title)
+  "appName": "PsiTransfer",
   "uploadDir": path.resolve(__dirname + '/data'),
   // set to serve PsiTransfer from a sub-path
   "baseUrl": '/',

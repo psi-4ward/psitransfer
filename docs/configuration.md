@@ -39,6 +39,14 @@ node app.js
 
 > Environment parameters always have the highest priority.
 
+### Display name (branding)
+
+The application name shown in the browser tab and in page headers (upload, download, admin, error) is controlled by the `appName` config option (default: `"PsiTransfer"`). You can override it with the environment variable `PSITRANSFER_APP_NAME`:
+
+```bash
+export PSITRANSFER_APP_NAME="My File Transfer"
+```
+
 ## SSL
 
 It's recommended to use Nginx for SSL termination, see [nginx-ssl-example.conf](https://github.com/psi-4ward/psitransfer/blob/master/docs/nginx-ssl-example.conf).
