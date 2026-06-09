@@ -75,7 +75,9 @@ const config = {
   // Limit upload size
   "maxFileSize": null, // Math.pow(2, 30) * 2, // 2GB
   "maxBucketSize": null, // Math.pow(2, 30) * 2, // 10GB
-  "plugins": ['file-downloaded-webhook', 'file-uploaded-webhook'],
+  "plugins": ['file-downloaded-webhook', 'file-uploaded-webhook', 'analytics'],
+  // expose aggregate transfer totals at {baseUrl}stats.json (no per-user data)
+  "publicStats": true,
   // Disable the QR code button for download url sharing, set to true to disable
   "disableQrCode": false,
 };

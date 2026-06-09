@@ -40,13 +40,25 @@
           )
             icon.fa-fw(name="qrcode")
             | QR-Code
-          a.btn.btn-primary(
-            :href="mailLnk",
-            :title="$root.lang.sendViaMail",
-            tabindex="0"
-          )
-            icon.fa-fw(name="envelope")
-            |  {{ $root.lang.email }}
+          .btn-group(style="position: relative")
+            button.btn.btn-primary(
+              type="button",
+              @click.stop="emailMenu = !emailMenu",
+              :title="$root.lang.sendViaMail",
+              tabindex="0"
+            )
+              icon.fa-fw(name="envelope")
+              |  {{ $root.lang.email }}
+              span.caret(style="margin-left: 6px")
+            ul.email-providers(v-if="emailMenu", @click="emailMenu = false")
+              li
+                a(:href="mailLnk") Default mail app
+              li
+                a(:href="gmailLnk", target="_blank", rel="noopener") Gmail
+              li
+                a(:href="outlookLnk", target="_blank", rel="noopener") Outlook
+              li
+                a(:href="yahooLnk", target="_blank", rel="noopener") Yahoo
           clipboard.btn.btn-primary(
             :value='shareUrl',
             :title="$root.lang.copyToClipboard",
@@ -110,7 +122,17 @@
       return {
         uploadPassword: '',
         uploadPasswordWrong: null,
+        emailMenu: false,
       }
+    },
+
+    mounted() {
+      this._closeEmailMenu = () => { this.emailMenu = false; };
+      document.addEventListener('click', this._closeEmailMenu);
+    },
+
+    beforeDestroy() {
+      if (this._closeEmailMenu) document.removeEventListener('click', this._closeEmailMenu);
     },
 
     computed: {
@@ -123,6 +145,31 @@
         return this.$store.state.config
           && this.$store.state.config.mailTemplate
           && this.$store.state.config.mailTemplate.replace('%%URL%%', this.shareUrl);
+      },
+      emailSubject() {
+        const t = (this.$store.state.config && this.$store.state.config.mailTemplate) || '';
+        const m = t.match(/subject=([^&]*)/);
+        return m ? decodeURIComponent(m[1].replace(/\+/g, ' ')) : 'File Transfer';
+      },
+      emailBody() {
+        const t = (this.$store.state.config && this.$store.state.config.mailTemplate) || '';
+        const m = t.match(/body=([^&]*)/);
+        const raw = m ? m[1] : 'You can download the files here: %%URL%%';
+        return decodeURIComponent(raw.replace(/\+/g, ' ')).replace('%%URL%%', this.shareUrl);
+      },
+      // Webmail compose deep-links, so people on Gmail/Outlook/Yahoo are not
+      // forced into the OS default mail app (often Apple Mail) they never use.
+      gmailLnk() {
+        return 'https://mail.google.com/mail/?view=cm&fs=1&su='
+          + encodeURIComponent(this.emailSubject) + '&body=' + encodeURIComponent(this.emailBody);
+      },
+      outlookLnk() {
+        return 'https://outlook.office.com/mail/deeplink/compose?subject='
+          + encodeURIComponent(this.emailSubject) + '&body=' + encodeURIComponent(this.emailBody);
+      },
+      yahooLnk() {
+        return 'https://compose.mail.yahoo.com/?subject='
+          + encodeURIComponent(this.emailSubject) + '&body=' + encodeURIComponent(this.emailBody);
       },
       showLogin() {
         return this.uploadPassRequired && this.uploadPasswordWrong !== false;
