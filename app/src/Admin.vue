@@ -26,6 +26,23 @@
         strong Access denied!
 
     div(v-if="loggedIn")
+      .well.wallet-admin(style="margin-bottom: 1.5em")
+        h4 Admin wallets
+        p.text-muted Ethereum wallets allowed to open this panel.
+        ul.list-unstyled(style="margin-bottom: 10px")
+          li(v-for="w in wallets.env", style="margin: 4px 0")
+            code {{ w }}
+            span.label.label-default(style="margin-left: 8px") config
+          li(v-for="w in wallets.managed", style="margin: 4px 0")
+            code {{ w }}
+            button.btn.btn-xs.btn-danger(style="margin-left: 8px", @click="removeWallet(w)", title="Remove wallet")
+              icon(name="trash")
+          li(v-if="!wallets.env.length && !wallets.managed.length", class="text-muted") No wallets configured.
+        .input-group(style="max-width: 540px")
+          input.form-control(type="text", v-model="newWallet", placeholder="0x... wallet address", @keydown.enter.prevent="addWallet()")
+          span.input-group-btn
+            button.btn.btn-success(@click="addWallet()") Add wallet
+        p.text-danger(v-show="walletError", style="margin-top: 8px") {{ walletError }}
       table.table.table-hover
         thead
           tr
@@ -99,7 +116,10 @@
         error: '',
         passwordWrong: false,
         expand: false,
-        sizeSum: 0
+        sizeSum: 0,
+        wallets: { env: [], managed: [] },
+        newWallet: '',
+        walletError: ''
       }
     },
 
@@ -124,6 +144,44 @@
         if (this.token) h['x-admin-token'] = this.token;
         else if (this.password) h['x-passwd'] = this.password;
         return h;
+      },
+
+      loadWallets() {
+        fetch('admin/wallets', { headers: this.authHeaders() })
+          .then(r => r.ok ? r.json() : Promise.reject(r.status))
+          .then(d => { this.wallets = d; })
+          .catch(() => {});
+      },
+
+      async addWallet() {
+        const addr = (this.newWallet || '').trim();
+        if (!addr) return;
+        this.walletError = '';
+        try {
+          const res = await fetch('admin/wallets', {
+            method: 'POST',
+            headers: Object.assign({ 'Content-Type': 'application/json' }, this.authHeaders()),
+            body: JSON.stringify({ address: addr })
+          });
+          if (res.ok) { this.wallets = await res.json(); this.newWallet = ''; }
+          else { const d = await res.json().catch(() => ({})); this.walletError = d.error || ('Failed (' + res.status + ')'); }
+        } catch (e) {
+          this.walletError = (e && e.message) ? e.message : String(e);
+        }
+      },
+
+      async removeWallet(addr) {
+        if (!confirm('Remove this admin wallet?')) return;
+        this.walletError = '';
+        try {
+          const res = await fetch('admin/wallets/' + encodeURIComponent(addr), {
+            method: 'DELETE', headers: this.authHeaders()
+          });
+          if (res.ok) this.wallets = await res.json();
+          else { const d = await res.json().catch(() => ({})); this.walletError = d.error || ('Failed (' + res.status + ')'); }
+        } catch (e) {
+          this.walletError = (e && e.message) ? e.message : String(e);
+        }
       },
 
       // Wallet sign-in: prove ownership of an allowlisted address.
@@ -183,6 +241,7 @@
               this.error = '';
               this.passwordWrong = false;
               this.expandDb();
+              this.loadWallets();
             }
             catch(e) {
               this.error = e.toString();
