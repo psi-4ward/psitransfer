@@ -40,17 +40,11 @@
           )
             icon.fa-fw(name="qrcode")
             | QR-Code
-          .btn-group(style="position: relative")
-            button.btn.btn-primary(
-              type="button",
-              @click.stop="emailMenu = !emailMenu",
-              :title="$root.lang.sendViaMail",
-              tabindex="0"
-            )
+          details.email-details
+            summary.btn.btn-primary(:title="$root.lang.sendViaMail")
               icon.fa-fw(name="envelope")
               |  {{ $root.lang.email }}
-              span.caret(style="margin-left: 6px")
-            ul.email-providers(v-if="emailMenu", @click="emailMenu = false")
+            ul.email-providers
               li
                 a(:href="mailLnk") Default mail app
               li
@@ -141,21 +135,33 @@
       ...mapState('upload', ['sid', 'files', 'password']),
       ...mapGetters(['error', 'disabled']),
       ...mapGetters('upload', ['percentUploaded', 'shareUrl', 'bucketSize', 'bytesUploaded']),
-      mailLnk: function() {
-        return this.$store.state.config
-          && this.$store.state.config.mailTemplate
-          && this.$store.state.config.mailTemplate.replace('%%URL%%', this.shareUrl);
-      },
       emailSubject() {
-        const t = (this.$store.state.config && this.$store.state.config.mailTemplate) || '';
-        const m = t.match(/subject=([^&]*)/);
-        return m ? decodeURIComponent(m[1].replace(/\+/g, ' ')) : 'File Transfer';
+        return 'A secure file transfer for you';
       },
       emailBody() {
-        const t = (this.$store.state.config && this.$store.state.config.mailTemplate) || '';
-        const m = t.match(/body=([^&]*)/);
-        const raw = m ? m[1] : 'You can download the files here: %%URL%%';
-        return decodeURIComponent(raw.replace(/\+/g, ' ')).replace('%%URL%%', this.shareUrl);
+        const url = this.shareUrl;
+        const ret = this.$store.state.upload.retention;
+        const retentions = (this.$store.state.config && this.$store.state.config.retentions) || {};
+        let expiry;
+        if (ret === 'one-time') {
+          expiry = 'Heads up: this is a ONE-TIME link. The file is deleted the moment it is first '
+            + 'downloaded, so it only works once.';
+        } else if (ret && retentions[ret]) {
+          expiry = 'Heads up: this link EXPIRES after ' + retentions[ret]
+            + ' - after that it stops working and the file is deleted.';
+        } else {
+          expiry = 'Heads up: this link expires automatically, after which the file is deleted.';
+        }
+        const pw = this.$store.state.upload.password
+          ? '\n\nIt is also password protected - I will send you the password separately.' : '';
+        return 'Hey,\n\nA secure link for your files is presented below:\n\n'
+          + url + '\n\n' + expiry + pw
+          + '\n\nShared privately via ShadowDrop (transfer.chronara.io).';
+      },
+      // Default mail app (mailto:) with the same friendly, dynamic message.
+      mailLnk() {
+        return 'mailto:?subject=' + encodeURIComponent(this.emailSubject)
+          + '&body=' + encodeURIComponent(this.emailBody);
       },
       // Webmail compose deep-links, so people on Gmail/Outlook/Yahoo are not
       // forced into the OS default mail app (often Apple Mail) they never use.

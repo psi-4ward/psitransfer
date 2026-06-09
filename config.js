@@ -11,6 +11,10 @@ const config = {
   "baseUrl": '/',
   // use to set custom upload url (subfolder to baseUrl)
   "uploadAppPath": '/',
+  // canonical public URL for share links / QR codes (e.g. https://transfer.example.com/).
+  // when set, generated links use this instead of the origin the app was opened on,
+  // so links work for recipients even if you created them via a local/LAN address.
+  "publicUrl": '',
   "iface": '0.0.0.0',
   // set to false to disable HTTP
   "port": 3000,

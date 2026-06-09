@@ -49,7 +49,11 @@ export default {
   },
 
   getters: {
-    shareUrl: state => {
+    shareUrl: (state, getters, rootState) => {
+      // Prefer the configured public URL so links/QR always use the public domain
+      // (transfer.chronara.io) even when the app is opened via the local IP.
+      const pub = rootState.config && rootState.config.publicUrl;
+      if (pub) return pub.replace(/\/?$/, '/') + state.sid;
       return document.head.getElementsByTagName('base')[0].href + state.sid;
     },
     percentUploaded: (state, getters) => {
