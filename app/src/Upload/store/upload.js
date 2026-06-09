@@ -42,7 +42,7 @@ export default {
   state: {
     retention: null,
     password: '',
-    anonymous: false,
+    anonymous: true,   // ShadowDrop default: anonymous unless the user turns it off
     files: [],
     sid: getSid(),
     uploadURI: (window.PSITRANSFER_UPLOAD_PATH || '/') + 'files',
@@ -96,7 +96,7 @@ export default {
     },
     NEW_SESSION(state) {
       state.password = '';
-      state.anonymous = false;
+      state.anonymous = true;   // keep the anonymous default on a fresh session
       state.files.splice(0, state.files.length);
       state.sid = randomSid();
     },
