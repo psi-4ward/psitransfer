@@ -11,6 +11,8 @@ module.exports = {
   required: "required",
   optional: "optional",
   generateRandomPassword: "Generate a random password",
+  anonymous: "Anonymous transfer",
+  anonymousHelp: "Do not show this transfer's file names in the admin view - only its size, dates and retention are kept.",
   newUpload: "New upload",
   accessDenied: "Access denied!",
   login: "Login",

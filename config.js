@@ -54,6 +54,12 @@ const config = {
   // see https://github.com/expressjs/morgan
   // set to false to disable logging
   "accessLog": ':date[iso] :method :url :status :response-time :remote-addr',
+  // when true, the :remote-addr token in the access log is masked
+  // (e.g. 192.168.x.x / 2001:db8::redacted) so client IPs are not logged in full
+  "redactIp": false,
+  // allow uploaders to mark a transfer as "anonymous": its file names/comments are
+  // not shown in the /admin audit view (only size, dates and retention are kept)
+  "allowAnonymous": true,
   // event webhooks
   // invokes an HTTP POST to a url whenever a file is downloaded
   // for more info, see the webhooks section of docs/configuration.md

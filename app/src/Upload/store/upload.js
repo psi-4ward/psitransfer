@@ -42,6 +42,7 @@ export default {
   state: {
     retention: null,
     password: '',
+    anonymous: false,
     files: [],
     sid: getSid(),
     uploadURI: (window.PSITRANSFER_UPLOAD_PATH || '/') + 'files',
@@ -78,6 +79,9 @@ export default {
     PASSWORD(state, pwd) {
       state.password = pwd;
     },
+    ANONYMOUS(state, val) {
+      state.anonymous = !!val;
+    },
     ADD_FILE(state, file) {
       state.files.splice(0, 0, file);
     },
@@ -92,6 +96,7 @@ export default {
     },
     NEW_SESSION(state) {
       state.password = '';
+      state.anonymous = false;
       state.files.splice(0, state.files.length);
       state.sid = randomSid();
     },
@@ -154,6 +159,7 @@ export default {
               sid: state.sid,
               retention: state.retention,
               password: state.password,
+              anonymous: state.anonymous ? '1' : '',
               name: file.name,
               comment: file.comment,
               type: file._File.type
