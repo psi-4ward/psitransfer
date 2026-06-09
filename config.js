@@ -41,6 +41,11 @@ const config = {
   // to enable /admin page set your password like this:
   // "adminPass": "YourSecurePassword",
   "adminPass": false,
+  // restrict /admin to specific Ethereum wallet addresses (sign-in with wallet).
+  // when set (array, or comma-separated string of 0x addresses), the admin panel
+  // requires a signature from one of these wallets instead of the admin password,
+  // and anyone else is redirected away. takes precedence over adminPass.
+  "adminWallets": [],
   // upload password, set to false to disable
   "uploadPass": false,
   // make the bucket-password field mandatory
