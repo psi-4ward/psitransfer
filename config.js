@@ -11,6 +11,10 @@ const config = {
   "baseUrl": '/',
   // use to set custom upload url (subfolder to baseUrl)
   "uploadAppPath": '/',
+  // canonical public URL for share links / QR codes (e.g. https://transfer.example.com/).
+  // when set, generated links use this instead of the origin the app was opened on,
+  // so links work for recipients even if you created them via a local/LAN address.
+  "publicUrl": '',
   "iface": '0.0.0.0',
   // set to false to disable HTTP
   "port": 3000,
@@ -41,6 +45,11 @@ const config = {
   // to enable /admin page set your password like this:
   // "adminPass": "YourSecurePassword",
   "adminPass": false,
+  // restrict /admin to specific Ethereum wallet addresses (sign-in with wallet).
+  // when set (array, or comma-separated string of 0x addresses), the admin panel
+  // requires a signature from one of these wallets instead of the admin password,
+  // and anyone else is redirected away. takes precedence over adminPass.
+  "adminWallets": [],
   // upload password, set to false to disable
   "uploadPass": false,
   // make the bucket-password field mandatory
@@ -54,6 +63,12 @@ const config = {
   // see https://github.com/expressjs/morgan
   // set to false to disable logging
   "accessLog": ':date[iso] :method :url :status :response-time :remote-addr',
+  // when true, the :remote-addr token in the access log is masked
+  // (e.g. 192.168.x.x / 2001:db8::redacted) so client IPs are not logged in full
+  "redactIp": false,
+  // allow uploaders to mark a transfer as "anonymous": its file names/comments are
+  // not shown in the /admin audit view (only size, dates and retention are kept)
+  "allowAnonymous": true,
   // event webhooks
   // invokes an HTTP POST to a url whenever a file is downloaded
   // for more info, see the webhooks section of docs/configuration.md
@@ -64,7 +79,9 @@ const config = {
   // Limit upload size
   "maxFileSize": null, // Math.pow(2, 30) * 2, // 2GB
   "maxBucketSize": null, // Math.pow(2, 30) * 2, // 10GB
-  "plugins": ['file-downloaded-webhook', 'file-uploaded-webhook'],
+  "plugins": ['file-downloaded-webhook', 'file-uploaded-webhook', 'analytics'],
+  // expose aggregate transfer totals at {baseUrl}stats.json (no per-user data)
+  "publicStats": true,
   // Disable the QR code button for download url sharing, set to true to disable
   "disableQrCode": false,
 };

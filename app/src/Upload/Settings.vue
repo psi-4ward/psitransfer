@@ -35,6 +35,15 @@
               @keydown.space.prevent='generatePassword()'
             )
               icon(name="key")
+        .checkbox(v-if="config.allowAnonymous", style="margin-top: 12px")
+          label(:title="$root.lang.anonymousHelp")
+            input(
+              type='checkbox'
+              :checked='anonymous'
+              :disabled='disabled'
+              @change="$store.commit('upload/ANONYMOUS', $event.target.checked)"
+            )
+            |  {{ $root.lang.anonymous }}
 </template>
 
 <script type="text/babel">
@@ -76,6 +85,7 @@
       disabled: 'disabled',
       retention: state => state.upload.retention,
       password: state => state.upload.password,
+      anonymous: state => state.upload.anonymous,
     }),
 
     methods: {

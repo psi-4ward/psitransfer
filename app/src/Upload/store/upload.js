@@ -42,13 +42,18 @@ export default {
   state: {
     retention: null,
     password: '',
+    anonymous: true,   // ShadowDrop default: anonymous unless the user turns it off
     files: [],
     sid: getSid(),
     uploadURI: (window.PSITRANSFER_UPLOAD_PATH || '/') + 'files',
   },
 
   getters: {
-    shareUrl: state => {
+    shareUrl: (state, getters, rootState) => {
+      // Prefer the configured public URL so links/QR always use the public domain
+      // (transfer.chronara.io) even when the app is opened via the local IP.
+      const pub = rootState.config && rootState.config.publicUrl;
+      if (pub) return pub.replace(/\/?$/, '/') + state.sid;
       return document.head.getElementsByTagName('base')[0].href + state.sid;
     },
     percentUploaded: (state, getters) => {
@@ -78,6 +83,9 @@ export default {
     PASSWORD(state, pwd) {
       state.password = pwd;
     },
+    ANONYMOUS(state, val) {
+      state.anonymous = !!val;
+    },
     ADD_FILE(state, file) {
       state.files.splice(0, 0, file);
     },
@@ -92,6 +100,7 @@ export default {
     },
     NEW_SESSION(state) {
       state.password = '';
+      state.anonymous = true;   // keep the anonymous default on a fresh session
       state.files.splice(0, state.files.length);
       state.sid = randomSid();
     },
@@ -154,6 +163,7 @@ export default {
               sid: state.sid,
               retention: state.retention,
               password: state.password,
+              anonymous: state.anonymous ? '1' : '',
               name: file.name,
               comment: file.comment,
               type: file._File.type

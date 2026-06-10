@@ -40,13 +40,19 @@
           )
             icon.fa-fw(name="qrcode")
             | QR-Code
-          a.btn.btn-primary(
-            :href="mailLnk",
-            :title="$root.lang.sendViaMail",
-            tabindex="0"
-          )
-            icon.fa-fw(name="envelope")
-            |  {{ $root.lang.email }}
+          details.email-details
+            summary.btn.btn-primary(:title="$root.lang.sendViaMail")
+              icon.fa-fw(name="envelope")
+              |  {{ $root.lang.email }}
+            ul.email-providers
+              li
+                a(:href="mailLnk") Default mail app
+              li
+                a(:href="gmailLnk", target="_blank", rel="noopener") Gmail
+              li
+                a(:href="outlookLnk", target="_blank", rel="noopener") Outlook
+              li
+                a(:href="yahooLnk", target="_blank", rel="noopener") Yahoo
           clipboard.btn.btn-primary(
             :value='shareUrl',
             :title="$root.lang.copyToClipboard",
@@ -110,7 +116,17 @@
       return {
         uploadPassword: '',
         uploadPasswordWrong: null,
+        emailMenu: false,
       }
+    },
+
+    mounted() {
+      this._closeEmailMenu = () => { this.emailMenu = false; };
+      document.addEventListener('click', this._closeEmailMenu);
+    },
+
+    beforeDestroy() {
+      if (this._closeEmailMenu) document.removeEventListener('click', this._closeEmailMenu);
     },
 
     computed: {
@@ -119,10 +135,47 @@
       ...mapState('upload', ['sid', 'files', 'password']),
       ...mapGetters(['error', 'disabled']),
       ...mapGetters('upload', ['percentUploaded', 'shareUrl', 'bucketSize', 'bytesUploaded']),
-      mailLnk: function() {
-        return this.$store.state.config
-          && this.$store.state.config.mailTemplate
-          && this.$store.state.config.mailTemplate.replace('%%URL%%', this.shareUrl);
+      emailSubject() {
+        return 'A secure file transfer for you';
+      },
+      emailBody() {
+        const url = this.shareUrl;
+        const ret = this.$store.state.upload.retention;
+        const retentions = (this.$store.state.config && this.$store.state.config.retentions) || {};
+        let expiry;
+        if (ret === 'one-time') {
+          expiry = 'Heads up: this is a ONE-TIME link. The file is deleted the moment it is first '
+            + 'downloaded, so it only works once.';
+        } else if (ret && retentions[ret]) {
+          expiry = 'Heads up: this link EXPIRES after ' + retentions[ret]
+            + ' - after that it stops working and the file is deleted.';
+        } else {
+          expiry = 'Heads up: this link expires automatically, after which the file is deleted.';
+        }
+        const pw = this.$store.state.upload.password
+          ? '\n\nIt is also password protected - I will send you the password separately.' : '';
+        return 'Hey,\n\nA secure link for your files is presented below:\n\n'
+          + url + '\n\n' + expiry + pw
+          + '\n\nShared privately via ShadowDrop (transfer.chronara.io).';
+      },
+      // Default mail app (mailto:) with the same friendly, dynamic message.
+      mailLnk() {
+        return 'mailto:?subject=' + encodeURIComponent(this.emailSubject)
+          + '&body=' + encodeURIComponent(this.emailBody);
+      },
+      // Webmail compose deep-links, so people on Gmail/Outlook/Yahoo are not
+      // forced into the OS default mail app (often Apple Mail) they never use.
+      gmailLnk() {
+        return 'https://mail.google.com/mail/?view=cm&fs=1&su='
+          + encodeURIComponent(this.emailSubject) + '&body=' + encodeURIComponent(this.emailBody);
+      },
+      outlookLnk() {
+        return 'https://outlook.office.com/mail/deeplink/compose?subject='
+          + encodeURIComponent(this.emailSubject) + '&body=' + encodeURIComponent(this.emailBody);
+      },
+      yahooLnk() {
+        return 'https://compose.mail.yahoo.com/?subject='
+          + encodeURIComponent(this.emailSubject) + '&body=' + encodeURIComponent(this.emailBody);
       },
       showLogin() {
         return this.uploadPassRequired && this.uploadPasswordWrong !== false;
