@@ -33,6 +33,7 @@ function request(port, method, pathname, headers = {}, body = null) {
         res.on('end', () => {
           resolve({
             status: res.statusCode,
+            headers: res.headers,
             body: Buffer.concat(chunks).toString(),
           });
         });
@@ -132,5 +133,36 @@ test('lock PATCH with traversal bucket id is rejected', async (t) => {
     assert.strictEqual(res.status, 400);
   } finally {
     await new Promise((resolve) => server.close(resolve));
+  }
+});
+
+test('PATCH on a running upload of a locked bucket is rejected', async (t) => {
+  const server = http.createServer(app);
+  await new Promise((resolve) => server.listen(0, '127.0.0.1', resolve));
+  const port = server.address().port;
+
+  try {
+    const sid = 'lockedbucket';
+    const created = await request(port, 'POST', '/files/', {
+      ...TUS,
+      'Upload-Length': '10',
+      'Upload-Metadata': tusMeta.encode({ name: 'x', sid, retention: '3600' }),
+    });
+    assert.strictEqual(created.status, 201);
+    const fid = decodeURIComponent(created.headers.location.split('/').pop());
+
+    const lock = await request(port, 'PATCH', `/files/${sid}?lock=yes`, TUS);
+    assert.strictEqual(lock.status, 204);
+
+    const res = await request(port, 'PATCH', `/files/${encodeURIComponent(fid)}`, {
+      ...TUS,
+      'Upload-Offset': '0',
+      'Content-Type': 'application/offset+octet-stream',
+    }, '0123456789');
+    assert.strictEqual(res.status, 400);
+    assert.match(res.body, /Bucket locked/);
+  } finally {
+    await new Promise((resolve) => server.close(resolve));
+    fs.rmSync(path.join(tmpDir, 'lockedbucket'), { recursive: true, force: true });
   }
 });
