@@ -28,7 +28,7 @@
     "file-loader": "^6.2.0",
     "pug": "^3.0.3",
     "pug-plain-loader": "^1.1.0",
-    "vue-loader": "^15.9.8",
+    "vue-loader": "^17.4.2",
     "vue-template-compiler": "^2.7.16",
     "webpack": "^5.99.9",
     "webpack-bundle-analyzer": "^4.10.2",
