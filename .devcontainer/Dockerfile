@@ -1,4 +1,4 @@
-FROM node:24
+FROM node:26
 
 # Default when the builder does not inject TARGETARCH (plain `docker compose build`).
 ARG TARGETARCH=amd64

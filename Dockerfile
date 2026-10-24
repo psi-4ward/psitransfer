@@ -1,4 +1,4 @@
-FROM node:24-alpine
+FROM node:26-alpine
 
 ENV PSITRANSFER_UPLOAD_DIR=/data \
     NODE_ENV=production
