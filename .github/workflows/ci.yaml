@@ -32,9 +32,35 @@ jobs:
       - name: Run tests
         run: npm test
 
+  build_frontend:
+    name: Build frontend
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 26
+          cache: npm
+          cache-dependency-path: app/package-lock.json
+
+      - name: Install dependencies
+        working-directory: app
+        run: npm ci
+
+      - name: Build
+        working-directory: app
+        run: npm run build
+
   docker:
     name: Docker latest
-    needs: [ test ]
+    needs: [ test, build_frontend ]
     if: github.event_name == 'push' && github.ref == 'refs/heads/master'
     # Don't let parallel pushes race for the latest tag
     concurrency:

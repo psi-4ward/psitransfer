@@ -1,12 +1,13 @@
 version: 2
 
-# cooldown: wait a few days before proposing a fresh release, so compromised
-# versions are usually yanked before they reach us
 updates:
+  # Keeps the SHA-pinned actions current
   - package-ecosystem: github-actions
     directory: /
     schedule:
-      interval: weekly
+      interval: monthly
+    # Wait before proposing a fresh release, so compromised versions are
+    # usually yanked before they reach us
     cooldown:
       default-days: 7
     commit-message:
@@ -16,29 +17,21 @@ updates:
         patterns:
           - "*"
 
+  # Security updates only (needs "Dependabot security updates" enabled in the
+  # repo settings), runtime dependencies only
   - package-ecosystem: npm
     directories:
       - /
       - /app
     schedule:
       interval: weekly
-    cooldown:
-      default-days: 7
-      semver-major-days: 14
+    open-pull-requests-limit: 0
+    allow:
+      - dependency-type: production
     commit-message:
       prefix: deps
-    # Bundle minor/patch updates, majors come as separate PRs
     groups:
-      minor-and-patch:
-        update-types:
-          - minor
-          - patch
-
-  - package-ecosystem: docker
-    directory: /
-    schedule:
-      interval: weekly
-    cooldown:
-      default-days: 7
-    commit-message:
-      prefix: build
+      security:
+        applies-to: security-updates
+        patterns:
+          - "*"
