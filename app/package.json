@@ -17,7 +17,7 @@
     "uuid": "^11.1.0",
     "vue": "^2.7.16",
     "vue-awesome": "^4.5.0",
-    "vuex": "^3.6.2"
+    "vuex": "^4.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.27.4",
