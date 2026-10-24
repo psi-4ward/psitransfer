@@ -22,7 +22,7 @@
   "devDependencies": {
     "@babel/core": "^7.27.4",
     "@babel/preset-env": "^7.27.2",
-    "babel-loader": "^8.2.5",
+    "babel-loader": "^10.1.1",
     "cross-env": "^7.0.3",
     "css-loader": "^5.2.7",
     "file-loader": "^6.2.0",
