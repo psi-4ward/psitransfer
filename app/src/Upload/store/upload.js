@@ -140,8 +140,21 @@ export default {
       }
       if (onOnlineHandlerAttached) window.removeEventListener('online', onOnlineHandler);
 
-      // upload all files in parallel
+      // all files finished: lock the bucket on success, show the error otherwise
+      const checkDone = () => {
+        if (!state.files.every(f => f.uploaded || f.error)) return;
+        if (state.files.every(f => f.uploaded)) {
+          fetch(state.uploadURI + '/' + state.sid + '?lock=yes', { method: 'PATCH' });
+          commit('STATE', 'uploaded', { root: true });
+        } else {
+          commit('STATE', 'uploadError', { root: true });
+          commit('ERROR', 'Upload failed.', { root: true });
+        }
+      };
+
+      // upload all files in parallel, skip the finished ones on retry
       state.files.forEach(async file => {
+        if (file.uploaded) return;
         file.error = '';
         file._retries = 0;
         file._retryDelay = 500;
@@ -199,6 +212,7 @@ export default {
                     error: jsonResMessage || error.message || error.toString()
                   }
                 });
+                checkDone();
               }
               // Generic Error
               else {
@@ -208,10 +222,7 @@ export default {
                       error: jsonResMessage || error.message || error.toString()
                     }
                   });
-                  if (state.files.every(f => f.error)) {
-                    commit('STATE', 'uploadError', { root: true });
-                    commit('ERROR', 'Upload failed.', { root: true });
-                  }
+                  checkDone();
                   return;
                 }
 
@@ -241,10 +252,7 @@ export default {
                   progress: { percentage: 100, humanFileSize: file.humanSize, bytesUploaded: file._File.size }
                 }
               });
-              if (state.files.every(f => f.uploaded)) {
-                fetch(state.uploadURI + '/' + state.sid + '?lock=yes', { method: 'PATCH' });
-                commit('STATE', 'uploaded', { root: true });
-              }
+              checkDone();
             }
           }).start();
         }

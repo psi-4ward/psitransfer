@@ -130,6 +130,7 @@
       showUploadBtn() {
         return this.files.length
           && !this.disabled
+          && !this.files.some(file => file.error)
           && (this.requireBucketPassword && this.password || !this.requireBucketPassword)
       }
     },
