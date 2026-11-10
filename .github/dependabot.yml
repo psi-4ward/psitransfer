@@ -30,6 +30,16 @@ updates:
       - dependency-type: production
     commit-message:
       prefix: deps
+    # Vue 3 is a migration (vue-awesome, vuex, vue-loader), not an update
+    ignore:
+      - dependency-name: vue
+        update-types: [ version-update:semver-major ]
+      - dependency-name: vue-template-compiler
+        update-types: [ version-update:semver-major ]
+      - dependency-name: vuex
+        update-types: [ version-update:semver-major ]
+      - dependency-name: vue-loader
+        update-types: [ version-update:semver-major ]
     groups:
       security:
         applies-to: security-updates
