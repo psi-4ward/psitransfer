@@ -12,6 +12,13 @@ export function humanFileSize(fileSizeInBytes) {
   return Math.max(fileSizeInBytes, 0.01).toFixed(2) + byteUnits[i];
 }
 
+// Chunks grow with the measured upload speed so each takes about CHUNK_SECONDS: fewer
+// round trips on fast links, while staying inside proxy limits. Cloudflare, for example,
+// caps a request at 100MB and its 100s origin timeout covers the whole streamed chunk.
+const MIN_CHUNK = 5000000;
+const MAX_CHUNK = 50000000;
+const CHUNK_SECONDS = 20;
+
 let onOnlineHandler = null;
 let onOnlineHandlerAttached = false;
 
@@ -161,7 +168,7 @@ export default {
 
         const _File = file._File;
         const startTusUpload = () => {
-          new tus.Upload(_File, {
+          const tusUpload = new tus.Upload(_File, {
             uploadUrl: file._uploadUrl,
             metadata: {
               sid: state.sid,
@@ -175,7 +182,15 @@ export default {
               "x-passwd": rootState.config.uploadPass
             },
             parallelUploads: 1,
-            chunkSize: 5000000,
+            chunkSize: file._chunkSize || MIN_CHUNK,
+            // called on the options object, whose chunkSize tus reads for every chunk
+            onChunkComplete(chunkSize) {
+              const now = Date.now();
+              const seconds = Math.max((now - file._chunkStart) / 1000, 0.001);
+              file._chunkStart = now;
+              const next = Math.round(chunkSize / seconds * CHUNK_SECONDS);
+              this.chunkSize = file._chunkSize = Math.min(MAX_CHUNK, Math.max(MIN_CHUNK, next));
+            },
             endpoint: state.uploadURI,
             storeFingerprintForResuming: false,
             retryDelays: null,
@@ -226,6 +241,8 @@ export default {
                   return;
                 }
 
+                // the link may have slowed down or a chunk hit a proxy timeout: smaller chunks
+                file._chunkSize = Math.max(MIN_CHUNK, Math.floor((file._chunkSize || MIN_CHUNK) / 2));
                 file._retryDelay = Math.min(file._retryDelay * 1.7, 10000);
                 file._retries++;
                 if (console) console.log(error.message || error.toString(), '; will retry in', file._retryDelay, 'ms');
@@ -254,7 +271,9 @@ export default {
               });
               checkDone();
             }
-          }).start();
+          });
+          file._chunkStart = Date.now();
+          tusUpload.start();
         }
         startTusUpload();
       });
