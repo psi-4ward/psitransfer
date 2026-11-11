@@ -144,7 +144,12 @@ export default {
       const checkDone = () => {
         if (!state.files.every(f => f.uploaded || f.error)) return;
         if (state.files.every(f => f.uploaded)) {
-          fetch(state.uploadURI + '/' + state.sid + '?lock=yes', { method: 'PATCH' });
+          // the upload endpoints are behind the upload password, the lock request too
+          const uploadPass = rootState.config.uploadPass;
+          fetch(state.uploadURI + '/' + state.sid + '?lock=yes', {
+            method: 'PATCH',
+            headers: uploadPass ? { 'x-passwd': uploadPass } : {},
+          });
           commit('STATE', 'uploaded', { root: true });
         } else {
           commit('STATE', 'uploadError', { root: true });
