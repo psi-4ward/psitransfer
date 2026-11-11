@@ -3,6 +3,9 @@ html(lang='en')
   head
     include partials/head
     include partials/head_custom
+    //- fetch the app's data in parallel with its scripts instead of after them
+    link(href='lang.json' rel='preload' as='fetch' crossorigin)
+    link(href=sid + '.json' rel='preload' as='fetch' crossorigin)
   body
     .container
       h1
@@ -12,5 +15,5 @@ html(lang='en')
       hr
       #download
     include partials/footer
-    script(src='app/common.js')
-    script(src='app/download.js')
+    script(src=appUrl + '/common.js')
+    script(src=appUrl + '/download.js')

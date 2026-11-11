@@ -3,6 +3,9 @@ html(lang='en')
   head
     include partials/head
     include partials/head_custom
+    //- fetch the app's data in parallel with its scripts instead of after them
+    link(href='lang.json' rel='preload' as='fetch' crossorigin)
+    link(href='config.json' rel='preload' as='fetch' crossorigin)
   body
     #dropHelper
     .container
@@ -13,6 +16,6 @@ html(lang='en')
       hr
       #upload
     include partials/footer
-    script(src='app/common.js')
+    script(src=appUrl + '/common.js')
     script PSITRANSFER_UPLOAD_PATH = '#{uploadAppPath}';
-    script(src='app/upload.js')
+    script(src=appUrl + '/upload.js')
