@@ -166,3 +166,38 @@ test('PATCH on a running upload of a locked bucket is rejected', async (t) => {
     fs.rmSync(path.join(tmpDir, 'lockedbucket'), { recursive: true, force: true });
   }
 });
+
+test('with an upload password, the bucket lock needs it like every other upload request', async (t) => {
+  const config = require('../../config');
+  const prev = config.uploadPass;
+  config.uploadPass = 'up';
+  const server = http.createServer(app);
+  await new Promise((resolve) => server.listen(0, '127.0.0.1', resolve));
+  const port = server.address().port;
+  const AUTH = { ...TUS, 'x-passwd': 'up' };
+  const sid = 'lockpassbucket';
+  const create = () => request(port, 'POST', '/files/', {
+    ...AUTH,
+    'Upload-Length': '10',
+    'Upload-Metadata': tusMeta.encode({ name: 'x', sid, retention: '3600' }),
+  });
+
+  try {
+    assert.strictEqual((await create()).status, 201);
+
+    // what the upload page sent before it passed the password on: rejected, nothing locked
+    const anonymous = await request(port, 'PATCH', `/files/${sid}?lock=yes`);
+    assert.strictEqual(anonymous.status, 401);
+    assert.strictEqual((await create()).status, 201);
+
+    const lock = await request(port, 'PATCH', `/files/${sid}?lock=yes`, { 'x-passwd': 'up' });
+    assert.strictEqual(lock.status, 204);
+    const afterLock = await create();
+    assert.strictEqual(afterLock.status, 400);
+    assert.match(afterLock.body, /Bucket locked/);
+  } finally {
+    config.uploadPass = prev;
+    await new Promise((resolve) => server.close(resolve));
+    fs.rmSync(path.join(tmpDir, sid), { recursive: true, force: true });
+  }
+});
